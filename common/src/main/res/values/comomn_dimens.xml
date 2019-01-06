@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 字体大小 -->
+    <dimen name="xxlarge_text_size">35sp</dimen>
+    <dimen name="xlarge_text_size">20sp</dimen>
+    <dimen name="large_text_size">18sp</dimen>
+    <dimen name="big_text_size">16sp</dimen>
+    <dimen name="xnormal_text_size">15sp</dimen>
+    <dimen name="normal_text_size">14sp</dimen>
+    <dimen name="text_size_13">13sp</dimen>
+    <dimen name="small_text_size">12sp</dimen>
+    <dimen name="smaller_text_size">10sp</dimen>
+    <dimen name="smaller_size">8sp</dimen>
+
+    <dimen name="small_dimen">5dp</dimen>
+    <dimen name="default_dimen">10dp</dimen>
+    <dimen name="large_dimen">15dp</dimen>
+    <dimen name="xlarge_dimen">20dp</dimen>
+
+    <dimen name="detail_toolbar_height">200dp</dimen>
+
+    <dimen name="img_small">20dp</dimen>
+    <dimen name="iv_title_dimen">30dp</dimen>
+    <dimen name="img_middle">40dp</dimen>
+    <dimen name="img_large">60dp</dimen>
+    <dimen name="img_xlarge">80dp</dimen>
+    <dimen name="img_xxlarge">100dp</dimen>
+    <dimen name="iv_logo">150dp</dimen>
+
+    <!-- 公用的间距，以距离值标记 -->
+    <dimen name="public_space_value_0">0dp</dimen>
+    <dimen name="public_space_value_0.5">0.5dp</dimen>
+    <dimen name="public_space_value_0.7">0.7dp</dimen>
+    <dimen name="public_space_value_1">1dp</dimen>
+    <dimen name="public_space_value_2">2dp</dimen>
+    <dimen name="public_space_value_3">3dp</dimen>
+    <dimen name="public_space_value_4">4dp</dimen>
+    <dimen name="public_space_value_5">5dp</dimen>
+    <dimen name="public_space_value_6">6dp</dimen>
+    <dimen name="public_space_value_7">7dp</dimen>
+    <dimen name="public_space_value_8">8dp</dimen>
+    <dimen name="public_space_value_9">9dp</dimen>
+    <dimen name="public_space_value_10">10dp</dimen>
+    <dimen name="public_space_value_11">11dp</dimen>
+    <dimen name="public_space_value_12">12dp</dimen>
+    <dimen name="public_space_value_13">13dp</dimen>
+    <dimen name="public_space_value_14">14dp</dimen>
+    <dimen name="public_space_value_15">15dp</dimen>
+    <dimen name="public_space_value_16">16dp</dimen>
+    <dimen name="public_space_value_17">17dp</dimen>
+    <dimen name="public_space_value_18">18dp</dimen>
+    <dimen name="public_space_value_20">20dp</dimen>
+    <dimen name="public_space_value_22">22dp</dimen>
+
+    <dimen name="public_space_value_24">24dp</dimen>
+    <dimen name="public_space_value_25">25dp</dimen>
+    <dimen name="public_space_value_26">26dp</dimen>
+    <dimen name="public_space_value_28">28dp</dimen>
+
+    <dimen name="public_space_value_30">30dp</dimen>
+    <dimen name="public_space_value_32">32dp</dimen>
+    <dimen name="public_space_value_35">35dp</dimen>
+    <dimen name="public_space_value_36">36dp</dimen>
+    <dimen name="public_space_value_38">38dp</dimen>
+    <dimen name="public_space_value_40">40dp</dimen>
+    <dimen name="public_space_value_42">42dp</dimen>
+
+    <dimen name="public_space_value_44">44dp</dimen>
+    <dimen name="public_space_value_45">45dp</dimen>
+    <dimen name="public_space_value_46">46dp</dimen>
+    <dimen name="public_space_value_48">48dp</dimen>
+
+    <dimen name="public_space_value_50">50dp</dimen>
+    <dimen name="public_space_value_53">53dp</dimen>
+    <dimen name="public_space_value_54">54dp</dimen>
+    <dimen name="public_space_value_56">56dp</dimen>
+    <dimen name="public_space_value_60">60dp</dimen>
+    <dimen name="public_space_value_62">62dp</dimen>
+    <dimen name="public_space_value_64">64dp</dimen>
+    <dimen name="public_space_value_68">68dp</dimen>
+    <dimen name="public_space_value_69">69dp</dimen>
+    <dimen name="public_space_value_70">70dp</dimen>
+    <dimen name="public_space_value_72">72dp</dimen>
+    <dimen name="public_space_value_73">73dp</dimen>
+    <dimen name="public_space_value_74">74dp</dimen>
+    <dimen name="public_space_value_76">76dp</dimen>
+    <dimen name="public_space_value_78">78dp</dimen>
+
+    <dimen name="public_space_value_80">80dp</dimen>
+    <dimen name="public_space_value_82">82dp</dimen>
+    <dimen name="public_space_value_85">85dp</dimen>
+    <dimen name="public_space_value_86">86dp</dimen>
+    <dimen name="public_space_value_87">87dp</dimen>
+    <dimen name="public_space_value_88">88dp</dimen>
+    <dimen name="public_space_value_90">90dp</dimen>
+    <dimen name="public_space_value_92">92dp</dimen>
+    <dimen name="public_space_value_97">97dp</dimen>
+
+    <dimen name="public_space_value_100">100dp</dimen>
+    <dimen name="public_space_value_104">104dp</dimen>
+    <dimen name="public_space_value_111">111dp</dimen>
+    <dimen name="public_space_value_112">112dp</dimen>
+    <dimen name="public_space_value_116">116dp</dimen>
+    <dimen name="public_space_value_120">120dp</dimen>
+    <dimen name="public_space_value_125">125dp</dimen>
+    <dimen name="public_space_value_130">130dp</dimen>
+    <dimen name="public_space_value_140">140dp</dimen>
+    <dimen name="public_space_value_144">144dp</dimen>
+    <dimen name="public_space_value_150">150dp</dimen>
+    <dimen name="public_space_value_152">152dp</dimen>
+    <dimen name="public_space_value_160">160dp</dimen>
+    <dimen name="public_space_value_164">164dp</dimen>
+    <dimen name="public_space_value_166">166dp</dimen>
+    <dimen name="public_space_value_172">172dp</dimen>
+    <dimen name="public_space_value_190">190dp</dimen>
+    <dimen name="public_space_value_200">200dp</dimen>
+    <dimen name="public_space_value_210">210dp</dimen>
+    <dimen name="public_space_value_224">224dp</dimen>
+    <dimen name="public_space_value_230">230dp</dimen>
+    <dimen name="public_space_value_260">260dp</dimen>
+    <dimen name="public_space_value_280">280dp</dimen>
+    <dimen name="public_space_value_290">290dp</dimen>
+    <!-- 公用的字体大小引用值 -->
+
+    <dimen name="public_textsize_value_10">10sp</dimen>
+    <dimen name="public_textsize_value_11">11sp</dimen>
+    <dimen name="public_textsize_value_12">12sp</dimen>
+    <dimen name="public_textsize_value_13">13sp</dimen>
+    <dimen name="public_textsize_value_14">14sp</dimen>
+
+    <dimen name="public_textsize_value_15">15sp</dimen>
+    <dimen name="public_textsize_value_16">16sp</dimen>
+    <dimen name="public_textsize_value_18">18sp</dimen>
+    <dimen name="public_textsize_value_20">20sp</dimen>
+    <dimen name="public_textsize_value_24">24sp</dimen>
+    <dimen name="public_textsize_value_32">32sp</dimen>
+</resources>

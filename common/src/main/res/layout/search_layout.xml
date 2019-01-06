@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_block"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_search"
+        android:layout_width="@dimen/public_space_value_35"
+        android:layout_height="@dimen/public_space_value_35"
+        android:layout_gravity="center_vertical"
+        android:padding="10dp"
+        android:src="@drawable/search" />
+
+    <com.example.hongcheng.common.view.searchview.EditText_Clear
+        android:id="@+id/et_search"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="1"
+        android:background="@null"
+        android:paddingRight="@dimen/public_space_value_10"
+        android:drawablePadding="@dimen/public_space_value_10"
+        android:gravity="start|center_vertical"
+        android:imeOptions="actionSearch"
+        android:singleLine="true"
+        />
+</LinearLayout>

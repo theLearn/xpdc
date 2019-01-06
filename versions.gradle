@@ -1,0 +1,58 @@
+ext{
+    androidVersion = [
+            compileSdkVersion : 28,
+            minSdkVersion : 15,
+            targetSdkVersion : 28,
+            versionCode : 1,
+            versionName : "1.0",
+            androidSupport : "28.0.0",
+            junit : "4.12",
+            espresso : "3.0.2",
+            runner : "1.0.2",
+            multidex : "1.0.2",
+    ]
+
+    kotlinVersion = [
+            kotlinPlugin : "1.2.30",
+            ktx : "1.0.1",
+    ]
+
+    libVersion = [
+            rxjava : "2.2.3",
+            rxAndroid : "2.1.0",
+            retrofit : "2.4.0",
+            okhttp : "3.12.0",
+            room : "1.1.1",
+            glide : "4.8.0",
+            gson : "2.8.5",
+            logger : "2.2.0",
+            pickerView : "4.1.6",
+            lifecycleVersion : "1.1.1",
+    ]
+
+    supportLibs = [
+            multidex : "com.android.support:multidex:$androidVersion.multidex",
+            appcompat : "com.android.support:appcompat-v7:$androidVersion.androidSupport",
+            design : "com.android.support:design:$androidVersion.androidSupport",
+            palette : "com.android.support:palette-v7:$androidVersion.androidSupport",
+            junit : "junit:junit:$androidVersion.junit",
+            espresso : "com.android.support.test.espresso:espresso-core:$androidVersion.espresso",
+            runner : "com.android.support.test:runner:$androidVersion.runner",
+            kotlinVersion : "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion.kotlinPlugin",
+            kotlinStdlib : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion.kotlinPlugin",
+            ktx : "androidx.core:core-ktx:$kotlinVersion.ktx",
+            rxjava : "io.reactivex.rxjava2:rxjava:$libVersion.rxjava",
+            rxAndroid : "io.reactivex.rxjava2:rxandroid:$libVersion.rxAndroid",
+            retrofit : "com.squareup.retrofit2:retrofit:$libVersion.retrofit",
+            retrofitConverter : "com.squareup.retrofit2:converter-gson:$libVersion.retrofit",
+            retrofitAdapter : "com.squareup.retrofit2:adapter-rxjava2:$libVersion.retrofit",
+            okhttpLogger : "com.squareup.okhttp3:logging-interceptor:$libVersion.okhttp",
+            gson : "com.google.code.gson:gson:$libVersion.gson",
+            logger : "com.orhanobut:logger:$libVersion.logger",
+            pickerView : "com.contrarywind:Android-PickerView:$libVersion.pickerView",
+            glide : "com.github.bumptech.glide:glide:$libVersion.glide",
+            roomRuntime : "android.arch.persistence.room:runtime:$libVersion.room",
+            roomCompiler : "android.arch.persistence.room:compiler:$libVersion.room",
+            roomRxjava : "android.arch.persistence.room:rxjava2:$libVersion.room",
+    ]
+}

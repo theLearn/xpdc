@@ -1,0 +1,12 @@
+<resources>
+    <string name="save">保存</string>
+    <string name="ok">确认</string>
+    <string name="cancel">取消</string>
+    <string name="loading_more_load_foot">正在加载更多数据</string>
+    <string name="loading">请稍后...</string>
+    <string name="hint_search">请输入搜索内容</string>
+	<string name="app_load_more_text">正在为您加载更多...</string>
+    <string name="app_load_complete">加载完成</string>
+    <string name="app_load_error">加载出错</string>
+    <string name="app_load_no_more_data">没有更多数据</string>
+</resources>

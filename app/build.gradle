@@ -1,0 +1,38 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+
+android {
+    compileSdkVersion androidVersion.compileSdkVersion
+    defaultConfig {
+        applicationId "com.xp.dc.xpdc"
+        minSdkVersion androidVersion.minSdkVersion
+        targetSdkVersion androidVersion.targetSdkVersion
+        versionCode androidVersion.versionCode
+        versionName androidVersion.versionName
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    testImplementation supportLibs.junit
+    androidTestImplementation supportLibs.espresso
+    androidTestImplementation supportLibs.runner
+    kapt 'com.android.databinding:compiler:3.1.2'
+    kapt "com.github.bumptech.glide:compiler:4.8.0"
+    implementation project(':data')
+    implementation project(':PhotoPicker')
+}

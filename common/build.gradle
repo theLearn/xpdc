@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion androidVersion.compileSdkVersion
+
+    defaultConfig {
+        minSdkVersion androidVersion.minSdkVersion
+        targetSdkVersion androidVersion.targetSdkVersion
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled true
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    //android必要依賴
+    implementation supportLibs.multidex
+    api supportLibs.appcompat
+    api supportLibs.design
+    api supportLibs.palette
+    testImplementation supportLibs.junit
+    androidTestImplementation supportLibs.espresso
+    androidTestImplementation supportLibs.runner
+    //三方依赖
+    implementation supportLibs.logger
+    api supportLibs.gson
+    api supportLibs.glide
+    //三方組件
+    api supportLibs.pickerView
+
+    //rxjava retrofit
+    api supportLibs.rxjava
+    api supportLibs.rxAndroid
+    api supportLibs.retrofit
+    api supportLibs.retrofitConverter
+    api supportLibs.retrofitAdapter
+    api supportLibs.okhttpLogger
+
+    //lifecycle
+    api "android.arch.lifecycle:extensions:$libVersion.lifecycleVersion"
+
+    //kotlin
+//    api "androidx.core:core-ktx:1.0.0"
+    api supportLibs.kotlinStdlib
+}
