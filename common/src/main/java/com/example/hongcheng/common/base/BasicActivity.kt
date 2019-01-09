@@ -4,6 +4,7 @@ import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.widget.ImageView
 import com.example.hongcheng.common.view.fragment.LoadingFragment
 
 abstract class BasicActivity : AppCompatActivity(), CommonUI {
