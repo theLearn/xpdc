@@ -17,12 +17,24 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            signingConfig getSignInfo("../sign.property")
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 
     dataBinding {
         enabled true
+    }
+
+    signingConfigs {
+        debug {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
+        release {
+            v1SigningEnabled true
+            v2SigningEnabled true
+        }
     }
 
     sourceSets {
@@ -32,6 +44,22 @@ android {
     }
 }
 
+def getSignInfo(propFileName) {
+    def com.android.build.gradle.internal.dsl.SigningConfig signingConfig = new com.android.build.gradle.internal.dsl.SigningConfig("signInfo")
+    File propFile = file(propFileName);
+    if (propFile.exists()) {
+        def Properties props = new Properties()
+        props.load(new FileInputStream(propFile))
+        signingConfig.storeFile = file(props['STORE_FILE'])
+        signingConfig.storePassword = props['STORE_PASSWORD']
+        signingConfig.keyAlias = props['KEY_ALIAS']
+        signingConfig.keyPassword = props['KEY_PASSWORD']
+        signingConfig.v2SigningEnabled = false
+    } else {
+        signingConfig = null
+    }
+    return signingConfig
+}
 
 
 dependencies {

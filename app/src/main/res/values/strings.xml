@@ -7,4 +7,5 @@
     <string name="current_position_tip">深圳南山公园</string>
     <string name="destination_tip">您要去哪儿？</string>
     <string name="order">订单</string>
+    <string name="use_car_order">用车订单</string>
 </resources>

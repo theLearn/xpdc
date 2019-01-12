@@ -120,7 +120,8 @@ public class AppLocationUtils {
                 tempLocation.setAddress(bdLocation.getAddrStr());
                 tempLocation.setProvince(bdLocation.getProvince());
                 tempLocation.setCity(bdLocation.getCity());
-                tempLocation.setDistrict(bdLocation.getAddress().district);
+                tempLocation.setDistrict(bdLocation.getDistrict());
+                tempLocation.setStreet(bdLocation.getStreet());
                 if (tempLocation.getAddress() == null || "".equals(tempLocation.getAddress())) {
                     if(tempLocation.getProvince() != null && !"null".equals(tempLocation.getProvince()) && !"".equals(tempLocation.getProvince())){
                         tempLocation.setAddress(tempLocation.getProvince() + tempLocation.getCity() + tempLocation.getDistrict());

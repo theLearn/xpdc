@@ -14,12 +14,13 @@ public class XPLocation implements Parcelable {
     private double alt;     // 高度
     private int accuracy;   // 精确度
     private double speed;   // 速度
-    private double direction;   // 方向
+    private float direction;   // 方向
     private int locType;    // 类型
     private int satellites; // 卫星数量
     private String province;    // 省份
     private String city;        // 城市
     private String district;    // 区
+    public  String street;      // 街道
     private String address;     // 详细地址，如果地址为空，可以用省份+城市代替
     private String posDate;     // 定位时间
     private int posFlag;    // 位置标识 0 其他；1起点；2中间点；3终点
@@ -64,11 +65,11 @@ public class XPLocation implements Parcelable {
         this.speed = speed;
     }
 
-    public double getDirection() {
+    public float getDirection() {
         return direction;
     }
 
-    public void setDirection(double direction) {
+    public void setDirection(float direction) {
         this.direction = direction;
     }
 
@@ -136,6 +137,16 @@ public class XPLocation implements Parcelable {
         return posFlag;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
+    public XPLocation() {
+    }
 
     @Override
     public int describeContents() {
@@ -149,18 +160,16 @@ public class XPLocation implements Parcelable {
         dest.writeDouble(this.alt);
         dest.writeInt(this.accuracy);
         dest.writeDouble(this.speed);
-        dest.writeDouble(this.direction);
+        dest.writeFloat(this.direction);
         dest.writeInt(this.locType);
         dest.writeInt(this.satellites);
         dest.writeString(this.province);
         dest.writeString(this.city);
         dest.writeString(this.district);
+        dest.writeString(this.street);
         dest.writeString(this.address);
         dest.writeString(this.posDate);
         dest.writeInt(this.posFlag);
-    }
-
-    public XPLocation() {
     }
 
     protected XPLocation(Parcel in) {
@@ -169,18 +178,19 @@ public class XPLocation implements Parcelable {
         this.alt = in.readDouble();
         this.accuracy = in.readInt();
         this.speed = in.readDouble();
-        this.direction = in.readDouble();
+        this.direction = in.readFloat();
         this.locType = in.readInt();
         this.satellites = in.readInt();
         this.province = in.readString();
         this.city = in.readString();
         this.district = in.readString();
+        this.street = in.readString();
         this.address = in.readString();
         this.posDate = in.readString();
         this.posFlag = in.readInt();
     }
 
-    public static final Parcelable.Creator<XPLocation> CREATOR = new Parcelable.Creator<XPLocation>() {
+    public static final Creator<XPLocation> CREATOR = new Creator<XPLocation>() {
         @Override
         public XPLocation createFromParcel(Parcel source) {
             return new XPLocation(source);

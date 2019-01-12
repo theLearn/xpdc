@@ -131,6 +131,7 @@ public class CustomMapView extends LinearLayout {
         if (baiduMap == null) {
             return null;
         }
+        removeStartMarker();
         startMarker = addMarker(startPos, startPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 1.0f);
         return startMarker;
     }
@@ -144,6 +145,7 @@ public class CustomMapView extends LinearLayout {
         if (baiduMap == null) {
             return null;
         }
+        removeEndMarker();
         endMarker = addMarker(endPos, endPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 1.0f);
         return endMarker;
     }
