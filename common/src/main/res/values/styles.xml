@@ -1,28 +1,18 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Application theme. -->
-    <style name="AppTheme" parent="AppBaseTheme">
-        <item name="android:windowContentOverlay">@null</item>
-    </style>
-
-    <style name="AppFullTheme" parent="AppTheme">
-        <item name="android:windowFullscreen">true</item>
-    </style>
-
-    <style name="AppTheme.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/colorBase</item>
         <item name="colorPrimaryDark">@color/colorBase</item>
         <item name="colorAccent">@color/colorBase</item>
         <item name="actionMenuTextColor">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorBlack</item>
         <item name="android:windowBackground">@color/default_background</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>

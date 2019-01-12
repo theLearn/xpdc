@@ -751,6 +751,15 @@ public final class DateUtils {
      *
      * @return
      */
+    public static String getCurrentTimeInString(String dateFormat) {
+        return getTime(getCurrentTimeInLong(), new SimpleDateFormat(dateFormat));
+    }
+
+    /**
+     * get current time in milliseconds
+     *
+     * @return
+     */
     public static String getCurrentTimeInString(SimpleDateFormat dateFormat) {
         return getTime(getCurrentTimeInLong(), dateFormat);
     }

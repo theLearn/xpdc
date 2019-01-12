@@ -1,4 +1,10 @@
-<resources>
-    <string name="app_name">xpdc</string>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="MissingTranslation">
+    <string name="app_name">小平打车</string>
     <string name="map_main">打车</string>
+
+    <string name="call_car_now">现在用车</string>
+    <string name="call_car_pre">预约用车</string>
+    <string name="current_position_tip">深圳南山公园</string>
+    <string name="destination_tip">您要去哪儿？</string>
+    <string name="order">订单</string>
 </resources>
