@@ -75,7 +75,7 @@ class MainActivity : BaseActivity(), View.OnClickListener, AppLocationUtils.XPLo
         //设置地图状态更改完成的函数
         mv_main.setOnMapStatusChangeFinishListener {
             mv_main.addStartMarker(it.target)
-            getPositioninfo(it.target)
+            getAddressInfo(it.target)
         }
     }
 
@@ -85,13 +85,8 @@ class MainActivity : BaseActivity(), View.OnClickListener, AppLocationUtils.XPLo
             curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
             if (lastPosition == null) {
                 mv_main.updateMapCenter(ll)
-                val positionStr = if (StringUtils.isEmpty(it.street)) {
-                    it.address
-                } else {
-                    it.street
-                }
-                tv_current_position.text = positionStr + "附近"
                 mv_main.addStartMarker(ll)
+                getAddressInfo(ll)
             }
             lastPosition = it
         }
@@ -101,19 +96,25 @@ class MainActivity : BaseActivity(), View.OnClickListener, AppLocationUtils.XPLo
     }
 
 
-    private fun getPositioninfo(latLng: LatLng) {
+    private fun getAddressInfo(latLng: LatLng) {
         val geoCoder = GeoCoder.newInstance()
         geoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener {
             override fun onGetGeoCodeResult(geoCodeResult: GeoCodeResult) {
             }
 
             override fun onGetReverseGeoCodeResult(reverseGeoCodeResult: ReverseGeoCodeResult) {
-                val positionStr = if (StringUtils.isEmpty(reverseGeoCodeResult.addressDetail.street)) {
-                    reverseGeoCodeResult.address
+                val sb = StringBuilder()
+                val poiList = reverseGeoCodeResult.poiList
+                if(poiList != null && !poiList.isEmpty()) {
+                    sb.append(poiList[0].name)
+                } else if(!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail.street)) {
+                    sb.append(reverseGeoCodeResult.addressDetail.street)
+                } else if(!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail.town)){
+                    sb.append(reverseGeoCodeResult.addressDetail.district).append(reverseGeoCodeResult.addressDetail.town)
                 } else {
-                    reverseGeoCodeResult.addressDetail.street
+                    sb.append(reverseGeoCodeResult.addressDetail.city).append(reverseGeoCodeResult.addressDetail.district)
                 }
-                tv_current_position.text = positionStr + "附近"
+                tv_current_position.text = sb.toString()
             }
         })
         geoCoder.reverseGeoCode(ReverseGeoCodeOption().location(latLng))

@@ -15,6 +15,9 @@ android {
         multiDexEnabled true
     }
     buildTypes {
+        debug {
+            signingConfig getSignInfo("../sign.property")
+        }
         release {
             minifyEnabled false
             signingConfig getSignInfo("../sign.property")
