@@ -11,8 +11,6 @@
         <item name="actionMenuTextColor">@color/colorWhite</item>
         <item name="android:textColorPrimary">@color/colorBlack</item>
         <item name="android:windowBackground">@color/default_background</item>
-        <item name="android:fitsSystemWindows">true</item>
-        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
@@ -81,7 +79,7 @@
         <item name="android:windowDisablePreview">true</item>
     </style>
     <!--底部弹框-->
-    <style name="BottomDialog" parent="@style/AppTheme">
+    <style name="BottomDialog" parent="@style/AppBaseTheme">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:windowIsFloating">true</item>
