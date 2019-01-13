@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <RelativeLayout android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_160"
+                    android:padding="@dimen/public_space_value_20">
+
+
+        <ImageView
+                android:id="@+id/iv_head"
+                android:layout_width="@dimen/public_space_value_80" android:layout_height="@dimen/public_space_value_80"
+                android:src="@mipmap/ico_head"
+                android:layout_centerHorizontal="true"/>
+        <ImageView android:layout_width="@dimen/public_space_value_15"
+                   android:layout_height="@dimen/public_space_value_15"
+                   android:src="@mipmap/ic_back"
+                   android:layout_alignTop="@id/iv_head"
+                   android:id="@+id/back"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:layout_centerHorizontal="true"
+                  android:text="@string/change_icon"
+                  android:textColor="@color/text_gray1"
+                  android:textSize="@dimen/large_text_size"
+                  android:layout_marginTop="@dimen/public_space_value_10"
+                  android:layout_below="@id/iv_head"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+            android:id="@+id/rl_nickname"
+            android:paddingRight="@dimen/public_space_value_20"
+            android:paddingLeft="@dimen/public_space_value_20"
+            android:paddingBottom="@dimen/public_space_value_15"
+            android:paddingTop="@dimen/public_space_value_15"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="@dimen/public_space_value_17"
+                android:layout_height="@dimen/public_space_value_17"
+                android:src="@mipmap/arrow_right" android:layout_alignParentRight="true"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/public_space_value_15"
+                android:text="@string/nickname"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_black_call"/>
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_1"
+          android:background="@color/line_gray"
+          android:layout_marginRight="@dimen/public_space_value_20"
+          android:layout_marginLeft="@dimen/public_space_value_20"/>
+
+    <RelativeLayout
+            android:id="@+id/rl_sex"
+            android:paddingRight="@dimen/public_space_value_20"
+            android:paddingLeft="@dimen/public_space_value_20"
+            android:paddingBottom="@dimen/public_space_value_15"
+            android:paddingTop="@dimen/public_space_value_15"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="@dimen/public_space_value_17"
+                android:layout_height="@dimen/public_space_value_17"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/arrow_right"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/public_space_value_15"
+                android:text="@string/sex"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_black_call"/>
+    </RelativeLayout>
+
+    <View android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_1"
+          android:background="@color/line_gray"
+          android:layout_marginRight="@dimen/public_space_value_20"
+          android:layout_marginLeft="@dimen/public_space_value_20"/>
+
+    <RelativeLayout
+            android:id="@+id/rl_telNo"
+            android:paddingRight="@dimen/public_space_value_20"
+            android:paddingLeft="@dimen/public_space_value_20"
+            android:paddingBottom="@dimen/public_space_value_15"
+            android:paddingTop="@dimen/public_space_value_15"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <ImageView
+                android:layout_width="@dimen/public_space_value_17"
+                android:layout_height="@dimen/public_space_value_17"
+                android:layout_alignParentRight="true"
+                android:src="@mipmap/arrow_right"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/public_space_value_15"
+                android:text="@string/telNo"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_black_call"/>
+    </RelativeLayout>
+</LinearLayout>

@@ -294,5 +294,8 @@
     <color name="text_default">#666666</color>
     <color name="text_default_second">#6A6A6A</color>
     <color name="text_gray">#AAAAAA</color>
-    <color name="line_gray">#d5d5d5</color>
+    <color name="line_gray">#E6E6E6</color>
+    <color name="text_gray1">#ABABAB</color>
+
+
 </resources>

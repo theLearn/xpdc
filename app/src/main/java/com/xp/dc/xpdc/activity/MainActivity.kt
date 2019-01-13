@@ -128,6 +128,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         when (v?.id) {
             R.id.ll_nv_main_head_edit
             -> {
+                startActivity(Intent(this, UserCenterActivity::class.java))
                 dl_main.closeDrawers()
             }
             R.id.ll_nv_main_head_order -> {

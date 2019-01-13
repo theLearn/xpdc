@@ -15,7 +15,7 @@ android {
         multiDexEnabled true
     }
     buildTypes {
-        debug {
+        debug{
             signingConfig getSignInfo("../sign.property")
         }
         release {

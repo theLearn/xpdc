@@ -23,7 +23,7 @@
                 android:scaleType="fitXY"
                 android:layout_marginBottom="@dimen/public_space_value_20"
                 android:layout_marginRight="@dimen/public_space_value_20"/>
-</RelativeLayout>
+    </RelativeLayout>
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -89,7 +89,8 @@
         </LinearLayout>
 
         <ImageView
-                android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_1"
                 android:layout_marginLeft="@dimen/public_space_value_20"
                 android:layout_marginRight="@dimen/public_space_value_20"
                 android:scaleType="fitXY"

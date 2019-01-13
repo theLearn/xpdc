@@ -11,6 +11,11 @@
     <string name="my_order">我的订单</string>
     <string name="edit_pw">修改密码</string>
     <string name="about_app">关于小平</string>
+    <string name="change_icon">点击修改头像</string>
+    <string name="nickname">昵称</string>
+    <string name="sex">性别</string>
+    <string name="telNo">手机号码</string>
+    <string name="change_nick">修改昵称</string>
     <string name="select_start_address">选择出发地</string>
     <string name="select_destination">选择目的地</string>
     <string name="city_search_hint">城市中文名或拼音</string>
