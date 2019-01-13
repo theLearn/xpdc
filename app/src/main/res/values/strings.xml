@@ -11,4 +11,15 @@
     <string name="my_order">我的订单</string>
     <string name="edit_pw">修改密码</string>
     <string name="about_app">关于小平</string>
+    <string name="select_start_address">选择出发地</string>
+    <string name="select_destination">选择目的地</string>
+    <string name="city_search_hint">城市中文名或拼音</string>
+    <string name="address_search_hint">搜索地址</string>
+    <string name="recommend">推荐</string>
+    <string name="history">历史</string>
+    <string name="airport">机场</string>
+    <string name="train_station">火车站</string>
+    <string name="bus_station">汽车站</string>
+    <string name="port">港口</string>
+    <string name="nothing_info">没有相关数据哦</string>
 </resources>

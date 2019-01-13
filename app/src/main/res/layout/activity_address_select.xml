@@ -2,6 +2,22 @@
 <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical">
+
+    <android.support.design.widget.TabLayout
+            android:id="@+id/tabs_address_select"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            app:tabIndicatorColor="@color/app_theme"
+            app:tabSelectedTextColor="@color/app_theme"
+            app:tabTextAppearance="@style/AppTabTextStyle"
+            app:tabTextColor="@color/text_black_call"/>
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/vp_address_select"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 </LinearLayout>

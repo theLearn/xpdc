@@ -21,4 +21,8 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="AppTabTextStyle" parent="TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textSize">@dimen/normal_text_size</item>
+    </style>
+
 </resources>

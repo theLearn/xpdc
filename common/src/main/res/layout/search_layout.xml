@@ -3,6 +3,7 @@
     android:id="@+id/search_block"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:paddingLeft="@dimen/public_space_value_10"
     android:orientation="horizontal">
 
     <ImageView
@@ -10,7 +11,9 @@
         android:layout_width="@dimen/public_space_value_35"
         android:layout_height="@dimen/public_space_value_35"
         android:layout_gravity="center_vertical"
-        android:padding="10dp"
+        android:paddingTop="@dimen/public_space_value_10"
+        android:paddingBottom="@dimen/public_space_value_10"
+        android:paddingRight="@dimen/public_space_value_10"
         android:src="@drawable/search" />
 
     <com.example.hongcheng.common.view.searchview.EditText_Clear

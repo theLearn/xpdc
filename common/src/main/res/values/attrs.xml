@@ -6,6 +6,8 @@
         <attr name="textHintSearch" format="string" />
         <attr name="searchBlockHeight" format="integer" />
         <attr name="searchBlockColor" format="color" />
+        <attr name="showSearchIcon" format="boolean" />
+        <attr name="hintCenter" format="boolean" />
     </declare-styleable>
     <declare-styleable name="NiceSpinner">
         <attr name="arrowTint" format="color" />

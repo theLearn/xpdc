@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+
+    <android.support.design.widget.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/tb_search"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="@color/white"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                    android:id="@+id/tv_address_search_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:singleLine="true"
+                    android:text="@string/select_start_address"
+                    android:textColor="@color/text_black_call"
+                    android:textSize="20sp"/>
+
+        </android.support.v7.widget.Toolbar>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/public_space_value_10"
+                android:orientation="horizontal">
+            <com.example.hongcheng.common.view.searchview.SearchView
+                    android:id="@+id/sv_city"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/shape_search_gray_corner"
+                    app:textSizeSearch="@dimen/normal_text_size"
+                    app:textColorSearch="@color/text_black_call"
+                    app:textHintSearch="@string/city_search_hint"
+                    app:showSearchIcon="false"
+                    app:hintCenter="true"
+                    app:searchBlockColor="@color/default_background"/>
+
+            <com.example.hongcheng.common.view.searchview.SearchView
+                    android:id="@+id/sv_address"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="3"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:background="@drawable/shape_search_gray_corner"
+                    app:textSizeSearch="@dimen/normal_text_size"
+                    app:textColorSearch="@color/text_black_call"
+                    app:textHintSearch="@string/address_search_hint"
+                    app:searchBlockColor="@color/default_background"/>
+        </LinearLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+</LinearLayout>

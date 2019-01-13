@@ -1,14 +1,12 @@
 package com.example.hongcheng.common.view;
 
 import android.content.Context;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
-import android.widget.ScrollView;
 
 /**
  * Created by hongcheng on 17/7/25.
@@ -88,19 +86,7 @@ public class EmptyRecyclerView extends RecyclerView
 		group.removeView(this);
 		group.addView(container, index, lp);
 		container.addView(this);
-		
-		if(group instanceof SwipeRefreshLayout)
-		{
-			ScrollView sl = new ScrollView(getContext());
-			sl.setLayoutParams(emptyView.getLayoutParams());
-			sl.setFillViewport(true);
-			sl.addView(emptyView);
-			container.addView(sl);
-		}
-		else
-		{
-			container.addView(emptyView);
-		}
+		container.addView(emptyView);
 		
 		checkIfEmpty();
 	}

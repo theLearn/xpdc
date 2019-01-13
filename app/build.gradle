@@ -67,6 +67,7 @@ def getSignInfo(propFileName) {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:support-v4:28.0.0'
     testImplementation supportLibs.junit
     androidTestImplementation supportLibs.espresso
     androidTestImplementation supportLibs.runner

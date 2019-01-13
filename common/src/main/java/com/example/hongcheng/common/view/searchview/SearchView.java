@@ -8,12 +8,12 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
 import com.example.hongcheng.common.R;
 
 /**
@@ -28,7 +28,7 @@ public class SearchView extends LinearLayout {
     private Context context;
 
     // 搜索框组件
-    private EditText et_search; // 搜索按键
+    private EditText_Clear et_search; // 搜索按键
     private LinearLayout search_block; // 搜索框布局
 
     // 自定义属性设置
@@ -40,6 +40,9 @@ public class SearchView extends LinearLayout {
     // 2. 搜索框设置：高度 & 颜色
     private int searchBlockHeight;
     private int searchBlockColor;
+
+    private boolean showSearchIcon;
+    private boolean hintCenter;
 
     // 数据库变量
     // 用于存放历史搜索记录
@@ -98,6 +101,9 @@ public class SearchView extends LinearLayout {
         int defaultColor2 = context.getResources().getColor(R.color.colorDefault); // 默认颜色 = 白色
         searchBlockColor = typedArray.getColor(R.styleable.Search_View_searchBlockColor, defaultColor2);
 
+        showSearchIcon = typedArray.getBoolean(R.styleable.Search_View_showSearchIcon, true);
+        hintCenter = typedArray.getBoolean(R.styleable.Search_View_hintCenter, false);
+
         // 释放资源
         typedArray.recycle();
     }
@@ -115,10 +121,16 @@ public class SearchView extends LinearLayout {
         LayoutInflater.from(context).inflate(R.layout.search_layout,this);
 
         // 2. 绑定搜索框EditText
-        et_search = (EditText) findViewById(R.id.et_search);
+        et_search = (EditText_Clear) findViewById(R.id.et_search);
         et_search.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSizeSearch);
         et_search.setTextColor(textColorSearch);
+        et_search.setHintTextColor(getContext().getResources().getColor(R.color.text_gray_99));
         et_search.setHint(textHintSearch);
+        et_search.setNeedClearIcon(showSearchIcon);
+        if(hintCenter) {
+            et_search.setGravity(Gravity.CENTER);
+        }
+
 
         // 3. 搜索框背景颜色
         search_block = (LinearLayout)findViewById(R.id.search_block);
@@ -179,6 +191,7 @@ public class SearchView extends LinearLayout {
             }
         });
 
+        findViewById(R.id.iv_search).setVisibility(showSearchIcon ? View.VISIBLE : View.GONE);
         findViewById(R.id.iv_search).setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {

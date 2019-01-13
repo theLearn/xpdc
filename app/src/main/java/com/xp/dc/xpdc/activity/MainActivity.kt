@@ -194,7 +194,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     mv_main.updateMapCenter(ll)
                     curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
                     mv_main.addStartMarker(ll)
-                    tv_current_position.text = it.address
+                    getAddressInfo(ll)
                 }
             }
             else -> {

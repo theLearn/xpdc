@@ -16,6 +16,7 @@ import com.example.hongcheng.common.util.ScreenUtils;
 public class EditText_Clear extends android.support.v7.widget.AppCompatEditText {
 
 
+    private boolean isNeedClearIcon = true;
     /**
      * 步骤1：定义左侧搜索图标 & 一键删除图标
      */
@@ -86,7 +87,7 @@ public class EditText_Clear extends android.support.v7.widget.AppCompatEditText 
      */
     private void setClearIconVisible(boolean visible) {
         setCompoundDrawables(null, null,
-                visible ? clearDrawable : null, null);
+                isNeedClearIcon && visible ? clearDrawable : null, null);
     }
 
     /**
@@ -115,6 +116,8 @@ public class EditText_Clear extends android.support.v7.widget.AppCompatEditText 
         return super.onTouchEvent(event);
     }
 
-
+    public void setNeedClearIcon(boolean needClearIcon) {
+        isNeedClearIcon = needClearIcon;
+    }
 }
 
