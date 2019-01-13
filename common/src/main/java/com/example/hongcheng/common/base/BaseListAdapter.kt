@@ -8,7 +8,11 @@ import com.example.hongcheng.common.constant.BaseConstants
  */
 abstract class BaseListAdapter<T, K : RecyclerView.ViewHolder>() : RecyclerView.Adapter<K>(){
     var onItemClickListener : OnItemClickListener? = null
-    var data = arrayListOf<T>()
+    var data : MutableList<T> = arrayListOf()
+        set(value) {
+            this.data.clear()
+            this.data.addAll(value)
+        }
 
     constructor(data : List<T>) : this()
     {
@@ -55,9 +59,9 @@ abstract class BaseListAdapter<T, K : RecyclerView.ViewHolder>() : RecyclerView.
 
     override fun onBindViewHolder(holder: K, position: Int, payloads: MutableList<Any>) {
         super.onBindViewHolder(holder, position, payloads)
-        holder.itemView.setOnClickListener({
+        holder.itemView.setOnClickListener {
             onItemClickListener?.onItemClick(position)
-        })
+        }
     }
 
     interface OnItemClickListener {

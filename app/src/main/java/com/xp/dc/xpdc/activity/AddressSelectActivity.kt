@@ -1,30 +1,78 @@
 package com.xp.dc.xpdc.activity
 
-import android.database.Cursor
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
+import android.support.v7.widget.DefaultItemAnimator
+import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.Toolbar
 import android.view.View
-import android.widget.ListView
+import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener
+import com.baidu.mapapi.search.sug.SuggestionResult
+import com.baidu.mapapi.search.sug.SuggestionSearch
+import com.baidu.mapapi.search.sug.SuggestionSearchOption
 import com.example.hongcheng.common.base.BaseActivity
+import com.example.hongcheng.common.base.BaseListAdapter
 import com.example.hongcheng.common.base.FragmentAdapter
 import com.example.hongcheng.common.util.ScreenUtils
+import com.example.hongcheng.common.util.StringUtils
+import com.example.hongcheng.common.view.DividerItemDecoration
+import com.example.hongcheng.common.view.DividerItemDecoration.HORIZONTAL_LIST
 import com.example.hongcheng.common.view.searchview.ICallBack
 import com.example.hongcheng.common.view.searchview.SearchView
 import com.xp.dc.xpdc.R
+import com.xp.dc.xpdc.adapter.SearchAddressAdapter
 import com.xp.dc.xpdc.fragment.AddressListFragment
+import com.xp.dc.xpdc.location.XPLocation
 import kotlinx.android.synthetic.main.activity_address_select.*
+import kotlinx.android.synthetic.main.layout_address_search_list.*
+import kotlinx.android.synthetic.main.layout_address_search_title.*
+
 
 class AddressSelectActivity : BaseActivity() {
+    companion object {
+        public const val START: Int = 0
+        public const val END: Int = 1
+    }
     private lateinit var svCity : SearchView
     private lateinit var svAddress : SearchView
-    private lateinit var searchCityList : ListView
-    private lateinit var searchAddressList : ListView
+
+    private lateinit var addressAdapter: SearchAddressAdapter
+    private lateinit var cityAdapter: SearchAddressAdapter
 
     private lateinit var mAdapter: FragmentAdapter
     private val fragments: MutableList<Fragment> = arrayListOf()
     private val titles: MutableList<String> = arrayListOf()
+
+    public var location : XPLocation? = null
+    private var type : Int = START
+
+    private lateinit var mSuggestionSearch : SuggestionSearch
+    private var listener: OnGetSuggestionResultListener = OnGetSuggestionResultListener {
+        //处理sug检索结果
+        addressAdapter.data = getSearchInfo(svAddress.text, it.allSuggestions)
+        addressAdapter.notifyDataSetChanged()
+        setMessageViewVisible(true)
+    }
+
+    public fun getSearchInfo(key : String , list : List<SuggestionResult.SuggestionInfo>, isEndWith : Boolean = false) : MutableList<XPLocation> {
+        val xpLocationList = arrayListOf<XPLocation>()
+        for (info : SuggestionResult.SuggestionInfo in list) {
+            if(info.pt == null)  continue
+            if(info.city != location?.city)  continue
+            if(isEndWith && !info.key.endsWith(key))  continue
+            val xpLocation  = XPLocation()
+            xpLocation.lat = info.pt.latitude
+            xpLocation.lon = info.pt.longitude
+            xpLocation.city = info.city
+            xpLocation.address = info.key
+            xpLocationList.add(xpLocation)
+        }
+
+        return xpLocationList
+    }
 
     override fun getTitleLayoutResId(): Int {
         return R.layout.layout_address_search_title
@@ -38,59 +86,109 @@ class AddressSelectActivity : BaseActivity() {
         return R.layout.activity_address_select
     }
 
+    private fun initData() {
+        location = intent.getParcelableExtra("location")
+        type = intent.getIntExtra("type", START)
+        if(location == null) {
+            finish()
+            return
+        }
+        mSuggestionSearch = SuggestionSearch.newInstance()
+        mSuggestionSearch.setOnGetSuggestionResultListener(listener)
+    }
+
     override fun initTitleView(view: View) {
+        initData()
+
         val toolbar = view.findViewById<Toolbar>(R.id.tb_search)
         setSupportActionBar(toolbar)
         ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.white))
         ScreenUtils.setLightStatusBar(this, true)
-        toolbar.setNavigationIcon(R.drawable.back)
+        toolbar.setNavigationIcon(R.mipmap.ic_back)
         toolbar.setNavigationOnClickListener { onBackPressed() }
         val actionBar : ActionBar? = supportActionBar
         actionBar?.title = ""
+        if(type == END) tv_address_search_title.setText(R.string.select_destination)
 
         svCity = view.findViewById(R.id.sv_city)
-        svCity.setText("武汉")
-        svCity.setOnClickSearch(object : ICallBack {
-            override fun searchAction(string: String?) {
+        svCity.text = location?.city
+        svCity.setOnSearchListener(object : ICallBack {
+            override fun queryData(string: String?) {
             }
 
-            override fun queryResult(cursor: Cursor?) {
-                if(cursor == null) return
-
-                // 数据库中有搜索记录时，显示 "删除搜索记录"按钮
-                setMessageViewVisible(cursor.count != 0)
+            override fun onFocusChange(hasFocus : Boolean) {
+                if(hasFocus) {
+                    rv_city_search_list.visibility = View.VISIBLE
+                    rv_address_search_list.visibility = View.GONE
+                }
             }
         })
 
         svAddress = view.findViewById(R.id.sv_address)
-        svAddress.setOnClickSearch(object : ICallBack {
-            override fun searchAction(string: String?) {
+        svAddress.setOnSearchListener(object : ICallBack {
+            override fun queryData(string: String?) {
+                if(StringUtils.isEmpty(string)) {
+                    setMessageViewVisible(false)
+                } else {
+                    mSuggestionSearch.requestSuggestion(
+                        SuggestionSearchOption()
+                            .city(svCity.text)
+                            .keyword(svAddress.text)
+                    )
+                }
             }
 
-            override fun queryResult(cursor: Cursor?) {
-                if(cursor == null) return
-
-                // 数据库中有搜索记录时，显示 "删除搜索记录"按钮
-                setMessageViewVisible(cursor.count != 0)
+            override fun onFocusChange(hasFocus : Boolean) {
+                if(hasFocus) {
+                    rv_city_search_list.visibility = View.GONE
+                    rv_address_search_list.visibility = View.VISIBLE
+                }
             }
         })
     }
 
     override fun initMessageView(view: View) {
-        searchCityList = view.findViewById(R.id.lv_city_search_list)
-        searchAddressList = view.findViewById(R.id.lv_address_search_list)
+        rv_city_search_list.layoutManager = LinearLayoutManager(rv_city_search_list.context)
+        rv_city_search_list.itemAnimator = DefaultItemAnimator()
+        rv_city_search_list.addItemDecoration(
+            DividerItemDecoration(
+                this, HORIZONTAL_LIST, ScreenUtils.dp2px(this, 1f),
+                resources.getColor(R.color.line_gray)
+            )
+        )
+        cityAdapter = SearchAddressAdapter()
+        rv_city_search_list.adapter = cityAdapter
+        cityAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int) {
 
-        /**
-         * 搜索记录列表（ListView）监听
-         * 即当用户点击搜索历史里的字段后,会直接将结果当作搜索字段进行搜索
-         */
-//        searchList.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
-//            // 获取用户点击列表里的文字,并自动填充到搜索框内
-//            val textView = view.findViewById<View>(R.id.tv_search_content) as TextView
-//            val name = textView.text.toString()
-//            svTitle.setText(name)
-//            setMessageViewVisible(false)
-//        }
+            }
+
+            override fun onItemLongClick(position: Int) {
+            }
+        }
+
+        rv_address_search_list.layoutManager = LinearLayoutManager(rv_address_search_list.context)
+        rv_address_search_list.itemAnimator = DefaultItemAnimator()
+        rv_address_search_list.addItemDecoration(
+            DividerItemDecoration(
+                this, HORIZONTAL_LIST, ScreenUtils.dp2px(this, 1f),
+                resources.getColor(R.color.line_gray)
+            )
+        )
+        addressAdapter = SearchAddressAdapter()
+        rv_address_search_list.adapter = addressAdapter
+        addressAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int) {
+                val model = addressAdapter.getItem(position)
+                val intent = Intent()
+                intent.putExtra("selectLocation", model)
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+
+            override fun onItemLongClick(position: Int) {
+            }
+        }
 
         view.setOnClickListener {
             setMessageViewVisible(false)
@@ -100,7 +198,12 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     override fun initBodyView(view: View) {
-        titles.add(getString(R.string.history))
+        if(type == END) {
+            titles.add(getString(R.string.history))
+        } else {
+            titles.add(getString(R.string.recommend))
+        }
+
         titles.add(getString(R.string.airport))
         titles.add(getString(R.string.train_station))
         titles.add(getString(R.string.bus_station))
@@ -108,7 +211,12 @@ class AddressSelectActivity : BaseActivity() {
 
         for (i : Int in titles.indices) {
             val bundle = Bundle()
-            bundle.putString("type", i.toString())
+            if(0 == i && type == START) {
+                bundle.putInt("type", 0)
+            } else {
+                bundle.putInt("type", i + 1)
+            }
+
             val fragment = AddressListFragment()
             fragment.arguments = bundle
             fragments.add(fragment)
@@ -137,5 +245,10 @@ class AddressSelectActivity : BaseActivity() {
         } else {
             tabs_address_select.visibility = View.GONE
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mSuggestionSearch.destroy()
     }
 }

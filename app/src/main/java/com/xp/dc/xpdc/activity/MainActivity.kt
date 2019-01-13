@@ -1,5 +1,6 @@
 package com.xp.dc.xpdc.activity
 
+import android.app.Activity
 import android.content.Intent
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBar
@@ -26,11 +27,14 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     companion object {
         private const val NOW: Int = 0
         private const val APPOINTMENT: Int = 1
+        private const val START_REQUEST: Int = 100
+        private const val END_REQUEST: Int = 200
     }
 
     private var CURRENT_STATE: Int = NOW
 
     private var lastPosition: XPLocation? = null
+    private var selectPosition: XPLocation? = null
     private var curPosMark: Marker? = null          // 位置图标标记
 
     override fun getLayoutResId(): Int {
@@ -182,11 +186,19 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.ll_start_select
             -> {
-                startActivity(Intent(this, AddressSelectActivity::class.java))
+                if(lastPosition == null) return
+                val startIntent = Intent(this, AddressSelectActivity::class.java)
+                startIntent.putExtra("location", lastPosition)
+                startIntent.putExtra("type", AddressSelectActivity.START)
+                startActivityForResult(startIntent, START_REQUEST)
             }
             R.id.ll_destination_select
             -> {
-                startActivity(Intent(this, AddressSelectActivity::class.java))
+                if(lastPosition == null) return
+                val endIntent = Intent(this, AddressSelectActivity::class.java)
+                endIntent.putExtra("location", lastPosition)
+                endIntent.putExtra("type", AddressSelectActivity.END)
+                startActivityForResult(endIntent, END_REQUEST)
             }
             R.id.iv_map_reset
             -> {
@@ -202,6 +214,24 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
         }
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(Activity.RESULT_OK == resultCode ) {
+            val xpLocation = data?.getParcelableExtra<XPLocation>("selectLocation")
+            xpLocation?.let {
+                selectPosition = it
+                when (requestCode) {
+                    START_REQUEST
+                    -> tv_current_position.text = it.address
+                    END_REQUEST
+                    -> tv_destination_position.text = it.address
+                    else -> {
+                    }
+                }
+            }
+        }
     }
 
     override fun onResume() {

@@ -22,7 +22,7 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:layout_centerHorizontal="true"
                   android:text="@string/change_icon"
-                  android:textColor="@color/text_gray1"
+                  android:textColor="@color/text_gray_call"
                   android:textSize="@dimen/large_text_size"
                   android:layout_marginTop="@dimen/public_space_value_10"
                   android:layout_below="@id/iv_head"/>

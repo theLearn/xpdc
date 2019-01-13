@@ -18,7 +18,7 @@ abstract class AppCommonActivity : CommonActivity() {
         ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.white))
         ScreenUtils.setLightStatusBar(this, true)
         if (isNeedShowBack()) {
-            tb_app_common.setNavigationIcon(R.drawable.back)
+            tb_app_common.setNavigationIcon(R.mipmap.ic_back)
             tb_app_common.setNavigationOnClickListener { onBackPressed() }
         }
         val actionBar : ActionBar? = supportActionBar
