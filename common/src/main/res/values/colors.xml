@@ -295,4 +295,7 @@
     <color name="text_default_second">#6A6A6A</color>
     <color name="text_gray">#AAAAAA</color>
     <color name="line_gray">#E6E6E6</color>
+    <color name="text_ab">#ffababab</color>
+    <color name="text_26">#ff262626</color>
+    <color name="gray_e6">#ffe6e6e6</color>
 </resources>

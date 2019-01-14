@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white">
+
+    <com.example.hongcheng.common.view.EmptyRecyclerView
+            android:id="@+id/city_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="none" />
+
+    <com.example.hongcheng.common.view.citylist.LetterListView
+            android:id="@+id/letter_container"
+            android:layout_width="22dp"
+            android:layout_margin="@dimen/public_space_value_10"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true" />
+</RelativeLayout>

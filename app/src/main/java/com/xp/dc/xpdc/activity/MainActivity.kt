@@ -107,19 +107,19 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             override fun onGetGeoCodeResult(geoCodeResult: GeoCodeResult) {
             }
 
-            override fun onGetReverseGeoCodeResult(reverseGeoCodeResult: ReverseGeoCodeResult) {
+            override fun onGetReverseGeoCodeResult(reverseGeoCodeResult : ReverseGeoCodeResult) {
                 val sb = StringBuilder()
                 val poiList = reverseGeoCodeResult.poiList
                 if (poiList != null && !poiList.isEmpty()) {
                     sb.append(poiList[0].name)
-                } else if (!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail.street)) {
+                } else if (!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail?.street)) {
                     sb.append(reverseGeoCodeResult.addressDetail.street)
-                } else if (!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail.town)) {
-                    sb.append(reverseGeoCodeResult.addressDetail.district)
-                        .append(reverseGeoCodeResult.addressDetail.town)
+                } else if (!StringUtils.isEmpty(reverseGeoCodeResult.addressDetail?.town)) {
+                    sb.append(reverseGeoCodeResult.addressDetail?.district)
+                        .append(reverseGeoCodeResult.addressDetail?.town)
                 } else {
-                    sb.append(reverseGeoCodeResult.addressDetail.city)
-                        .append(reverseGeoCodeResult.addressDetail.district)
+                    sb.append(reverseGeoCodeResult.addressDetail?.city)
+                        .append(reverseGeoCodeResult.addressDetail?.district)
                 }
                 tv_current_position.text = sb.toString()
             }

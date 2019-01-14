@@ -1,27 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white">
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/public_space_value_5"
+        app:cardElevation="@dimen/public_space_value_3"
+        android:layout_marginRight="@dimen/public_space_value_15"
+        android:layout_marginLeft="@dimen/public_space_value_15"
+        android:layout_marginTop="@dimen/public_space_value_15"
+        app:cardUseCompatPadding="true">
 
-    <ScrollView
+    <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <LinearLayout
+        <com.example.hongcheng.common.view.citylist.CityListSelectView
+                android:id="@+id/cs_city_search_list"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:layout_height="match_parent"/>
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_address_search_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"/>
 
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_city_search_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-            <android.support.v7.widget.RecyclerView
-                    android:id="@+id/rv_address_search_list"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
+</android.support.v7.widget.CardView>
 
-</LinearLayout>

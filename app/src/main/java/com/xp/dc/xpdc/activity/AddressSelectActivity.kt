@@ -4,10 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.ActionBar
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.Toolbar
 import android.view.View
 import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener
 import com.baidu.mapapi.search.sug.SuggestionResult
@@ -28,7 +26,6 @@ import com.xp.dc.xpdc.fragment.AddressListFragment
 import com.xp.dc.xpdc.location.XPLocation
 import kotlinx.android.synthetic.main.activity_address_select.*
 import kotlinx.android.synthetic.main.layout_address_search_list.*
-import kotlinx.android.synthetic.main.layout_address_search_title.*
 
 
 class AddressSelectActivity : BaseActivity() {
@@ -36,20 +33,20 @@ class AddressSelectActivity : BaseActivity() {
         public const val START: Int = 0
         public const val END: Int = 1
     }
-    private lateinit var svCity : SearchView
-    private lateinit var svAddress : SearchView
+
+    private lateinit var svCity: SearchView
+    private lateinit var svAddress: SearchView
 
     private lateinit var addressAdapter: SearchAddressAdapter
-    private lateinit var cityAdapter: SearchAddressAdapter
 
     private lateinit var mAdapter: FragmentAdapter
     private val fragments: MutableList<Fragment> = arrayListOf()
     private val titles: MutableList<String> = arrayListOf()
 
-    public var location : XPLocation? = null
-    private var type : Int = START
+    public var location: XPLocation? = null
+    private var type: Int = START
 
-    private lateinit var mSuggestionSearch : SuggestionSearch
+    private lateinit var mSuggestionSearch: SuggestionSearch
     private var listener: OnGetSuggestionResultListener = OnGetSuggestionResultListener {
         //处理sug检索结果
         addressAdapter.data = getSearchInfo(svAddress.text, it.allSuggestions)
@@ -57,13 +54,17 @@ class AddressSelectActivity : BaseActivity() {
         setMessageViewVisible(true)
     }
 
-    public fun getSearchInfo(key : String , list : List<SuggestionResult.SuggestionInfo>, isEndWith : Boolean = false) : MutableList<XPLocation> {
+    public fun getSearchInfo(
+        key: String,
+        list: List<SuggestionResult.SuggestionInfo>,
+        isEndWith: Boolean = false
+    ): MutableList<XPLocation> {
         val xpLocationList = arrayListOf<XPLocation>()
-        for (info : SuggestionResult.SuggestionInfo in list) {
-            if(info.pt == null)  continue
-            if(info.city != location?.city)  continue
-            if(isEndWith && !info.key.endsWith(key))  continue
-            val xpLocation  = XPLocation()
+        for (info: SuggestionResult.SuggestionInfo in list) {
+            if (info.pt == null) continue
+            if (info.city != location?.city) continue
+            if (isEndWith && !info.key.endsWith(key)) continue
+            val xpLocation = XPLocation()
             xpLocation.lat = info.pt.latitude
             xpLocation.lon = info.pt.longitude
             xpLocation.city = info.city
@@ -89,7 +90,7 @@ class AddressSelectActivity : BaseActivity() {
     private fun initData() {
         location = intent.getParcelableExtra("location")
         type = intent.getIntExtra("type", START)
-        if(location == null) {
+        if (location == null) {
             finish()
             return
         }
@@ -100,15 +101,8 @@ class AddressSelectActivity : BaseActivity() {
     override fun initTitleView(view: View) {
         initData()
 
-        val toolbar = view.findViewById<Toolbar>(R.id.tb_search)
-        setSupportActionBar(toolbar)
         ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.white))
         ScreenUtils.setLightStatusBar(this, true)
-        toolbar.setNavigationIcon(R.mipmap.ic_back)
-        toolbar.setNavigationOnClickListener { onBackPressed() }
-        val actionBar : ActionBar? = supportActionBar
-        actionBar?.title = ""
-        if(type == END) tv_address_search_title.setText(R.string.select_destination)
 
         svCity = view.findViewById(R.id.sv_city)
         svCity.text = location?.city
@@ -116,9 +110,9 @@ class AddressSelectActivity : BaseActivity() {
             override fun queryData(string: String?) {
             }
 
-            override fun onFocusChange(hasFocus : Boolean) {
-                if(hasFocus) {
-                    rv_city_search_list.visibility = View.VISIBLE
+            override fun onFocusChange(hasFocus: Boolean) {
+                if (hasFocus) {
+                    cs_city_search_list.visibility = View.VISIBLE
                     rv_address_search_list.visibility = View.GONE
                 }
             }
@@ -127,7 +121,7 @@ class AddressSelectActivity : BaseActivity() {
         svAddress = view.findViewById(R.id.sv_address)
         svAddress.setOnSearchListener(object : ICallBack {
             override fun queryData(string: String?) {
-                if(StringUtils.isEmpty(string)) {
+                if (StringUtils.isEmpty(string)) {
                     setMessageViewVisible(false)
                 } else {
                     mSuggestionSearch.requestSuggestion(
@@ -138,9 +132,9 @@ class AddressSelectActivity : BaseActivity() {
                 }
             }
 
-            override fun onFocusChange(hasFocus : Boolean) {
-                if(hasFocus) {
-                    rv_city_search_list.visibility = View.GONE
+            override fun onFocusChange(hasFocus: Boolean) {
+                if (hasFocus) {
+                    cs_city_search_list.visibility = View.GONE
                     rv_address_search_list.visibility = View.VISIBLE
                 }
             }
@@ -148,36 +142,17 @@ class AddressSelectActivity : BaseActivity() {
     }
 
     override fun initMessageView(view: View) {
-        rv_city_search_list.layoutManager = LinearLayoutManager(rv_city_search_list.context)
-        rv_city_search_list.itemAnimator = DefaultItemAnimator()
-        rv_city_search_list.addItemDecoration(
-            DividerItemDecoration(
-                this, HORIZONTAL_LIST, ScreenUtils.dp2px(this, 1f),
-                resources.getColor(R.color.line_gray)
-            )
-        )
-        cityAdapter = SearchAddressAdapter()
-        rv_city_search_list.adapter = cityAdapter
-        cityAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener{
-            override fun onItemClick(position: Int) {
-
-            }
-
-            override fun onItemLongClick(position: Int) {
-            }
-        }
-
         rv_address_search_list.layoutManager = LinearLayoutManager(rv_address_search_list.context)
         rv_address_search_list.itemAnimator = DefaultItemAnimator()
         rv_address_search_list.addItemDecoration(
             DividerItemDecoration(
-                this, HORIZONTAL_LIST, ScreenUtils.dp2px(this, 1f),
+                this, HORIZONTAL_LIST, 1,
                 resources.getColor(R.color.line_gray)
             )
         )
         addressAdapter = SearchAddressAdapter()
         rv_address_search_list.adapter = addressAdapter
-        addressAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener{
+        addressAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val model = addressAdapter.getItem(position)
                 val intent = Intent()
@@ -190,15 +165,15 @@ class AddressSelectActivity : BaseActivity() {
             }
         }
 
-        view.setOnClickListener {
-            setMessageViewVisible(false)
-        }
+        cs_city_search_list.load()
 
-        setMessageViewVisible(false)
+//        view.setOnClickListener {
+//            setMessageViewVisible(false)
+//        }
     }
 
     override fun initBodyView(view: View) {
-        if(type == END) {
+        if (type == END) {
             titles.add(getString(R.string.history))
         } else {
             titles.add(getString(R.string.recommend))
@@ -209,9 +184,9 @@ class AddressSelectActivity : BaseActivity() {
         titles.add(getString(R.string.bus_station))
         titles.add(getString(R.string.port))
 
-        for (i : Int in titles.indices) {
+        for (i: Int in titles.indices) {
             val bundle = Bundle()
-            if(0 == i && type == START) {
+            if (0 == i && type == START) {
                 bundle.putInt("type", 0)
             } else {
                 bundle.putInt("type", i + 1)
