@@ -27,14 +27,13 @@
         <activity
                 android:name=".activity.WelcomeActivity"
                 android:theme="@style/AppFullTheme">
-
-        </activity>
-        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".activity.MainActivity">
         </activity>
 
         <meta-data
@@ -48,7 +47,8 @@
 
         <activity android:name=".activity.OrderShowActivity">
         </activity>
-        <activity android:name=".activity.AddressSelectActivity">
+        <activity android:name=".activity.AddressSelectActivity"
+                  android:theme="@style/AppTranslucentTheme">
         </activity>
         <activity android:name=".activity.UserCenterActivity">
         </activity>

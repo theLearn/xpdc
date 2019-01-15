@@ -22,6 +22,7 @@ public class XPLocation implements Parcelable {
     private String district;    // 区
     public  String street;      // 街道
     private String address;     // 详细地址，如果地址为空，可以用省份+城市代替
+    private String des;     // 描述
     private String posDate;     // 定位时间
     private int posFlag;    // 位置标识 0 其他；1起点；2中间点；3终点
 
@@ -145,6 +146,14 @@ public class XPLocation implements Parcelable {
         this.street = street;
     }
 
+    public String getDes() {
+        return des;
+    }
+
+    public void setDes(String des) {
+        this.des = des;
+    }
+
     public XPLocation() {
     }
 
@@ -168,6 +177,7 @@ public class XPLocation implements Parcelable {
         dest.writeString(this.district);
         dest.writeString(this.street);
         dest.writeString(this.address);
+        dest.writeString(this.des);
         dest.writeString(this.posDate);
         dest.writeInt(this.posFlag);
     }
@@ -186,6 +196,7 @@ public class XPLocation implements Parcelable {
         this.district = in.readString();
         this.street = in.readString();
         this.address = in.readString();
+        this.des = in.readString();
         this.posDate = in.readString();
         this.posFlag = in.readInt();
     }

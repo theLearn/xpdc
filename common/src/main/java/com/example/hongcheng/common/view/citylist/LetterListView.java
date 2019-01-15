@@ -12,7 +12,7 @@ import com.example.hongcheng.common.util.ScreenUtils;
 public class LetterListView extends View {
 
     private OnTouchingLetterChangedListener onTouchingLetterChangedListener;
-    private String[] b = {"热门",  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
+    private String[] b = {"★",  "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K",
             "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
     int choose = -1;
     private Paint paint = new Paint();

@@ -16,6 +16,12 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="AppTranslucentTheme" parent="AppTheme">
+        <item name="android:windowBackground">@color/transparency</item>
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Translucent</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

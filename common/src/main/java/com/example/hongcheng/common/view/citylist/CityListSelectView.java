@@ -4,21 +4,20 @@ import android.content.Context;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.example.hongcheng.common.R;
+import com.example.hongcheng.common.base.BaseListAdapter;
 import com.example.hongcheng.common.view.DividerItemDecoration;
 import com.example.hongcheng.common.view.EmptyRecyclerView;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
-public class CityListSelectView extends LinearLayout implements LetterListView.OnTouchingLetterChangedListener {
+public class CityListSelectView extends LinearLayout implements LetterListView.OnTouchingLetterChangedListener, View.OnClickListener {
 
     private CityListAdapter mAdapter;
+    private TextView tvCurrentCity;
+    private OnCitySelectListener listener;
 
     public CityListSelectView(Context context) {
         this(context, null);
@@ -41,6 +40,9 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
     private void init() {
         LayoutInflater.from(getContext()).inflate(R.layout.layout_city_list, this);
 
+        findViewById(R.id.ll_current_city_block).setOnClickListener(this);
+        tvCurrentCity = findViewById(R.id.tv_city_current);
+
         EmptyRecyclerView mRecyclerView = findViewById(R.id.city_container);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
@@ -49,55 +51,50 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
                 new DividerItemDecoration(getContext(), DividerItemDecoration.HORIZONTAL_LIST, 1,
                         getResources().getColor(R.color.gray_e6)));
         mAdapter = new CityListAdapter();
+        mAdapter.setSource(CityData.getInstance().getAllSource());
         mRecyclerView.setAdapter(mAdapter);
+
+        mAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(int position) {
+                if(listener != null) {
+                    listener.onSelect(tvCurrentCity.getText().toString().trim(), false);
+                }
+            }
+
+            @Override
+            public void onItemLongClick(int position) {
+
+            }
+        });
 
         LetterListView letter_container = findViewById(R.id.letter_container);
         letter_container.setOnTouchingLetterChangedListener(this);
     }
 
-    public void load() {
-        List<Pair<String, List<CityItem>>> source = new ArrayList<>();
-        source.add(Pair.create("0", CityData.getHotCityList()));
-
-        List<CityItem> list = CityData.getCityList();
-        Collections.sort(list, comparator);
-        String lastTitle = "";
-        for (CityItem cityItem : list) {
-            if (!source.isEmpty()) {
-                lastTitle = source.get(source.size() - 1).first;
-            }
-            String currentTitle = cityItem.getPinyin().substring(0, 1);
-            if (currentTitle.equals(lastTitle)) {
-                source.get(source.size() - 1).second.add(cityItem);
-            } else {
-                List<CityItem> temp = new ArrayList<>();
-                temp.add(cityItem);
-                source.add(Pair.create(currentTitle, temp));
-            }
-        }
-        mAdapter.setSource(source);
-        mAdapter.notifyDataSetChanged();
-    }
-
-    /**
-     * a-z排序
-     */
-    Comparator comparator = new Comparator<CityItem>() {
-        @Override
-        public int compare(CityItem lhs, CityItem rhs) {
-            String a = lhs.getPinyin().substring(0, 1);
-            String b = rhs.getPinyin().substring(0, 1);
-            int flag = a.compareTo(b);
-            if (flag == 0) {
-                return a.compareTo(b);
-            } else {
-                return flag;
-            }
-        }
-    };
-
     @Override
     public void onTouchingLetterChanged(String s) {
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (R.id.ll_current_city_block  == v.getId()) {
+            if(listener != null) {
+                listener.onSelect(tvCurrentCity.getText().toString().trim(), true);
+            }
+        }
+    }
+
+    public void setCurrentCity(String cityName) {
+        tvCurrentCity.setText(cityName);
+    }
+
+    public void setOnCitySelectListener(OnCitySelectListener listener) {
+        this.listener = listener;
+    }
+
+    public interface OnCitySelectListener{
+        void onSelect(String cityName, boolean isCurrentCity);
     }
 }

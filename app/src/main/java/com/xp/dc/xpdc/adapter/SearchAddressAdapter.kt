@@ -16,5 +16,6 @@ class SearchAddressAdapter : BaseListAdapter<XPLocation, SearchAddressViewHolder
     override fun onBindViewHolder(holder: SearchAddressViewHolder, position: Int) {
         val model = data[position]
         holder.tvName.text = model.address
+        holder.tvDes.text = model.des
     }
 }

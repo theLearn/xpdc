@@ -5,6 +5,7 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
 import com.example.hongcheng.common.util.DateUtils;
 
 import java.util.ArrayList;
@@ -19,6 +20,10 @@ public class AppLocationUtils {
     private MyBDLocationListener myBDLocationListener;
     private LocationClientOption option;
     private Context context;
+
+    private ReverseGeoCodeResult currentLocationInfo;
+    private XPLocation startLocation;
+    private XPLocation endLocation;
 
     private AppLocationUtils(){
 
@@ -147,6 +152,30 @@ public class AppLocationUtils {
 
             locationListenerOnceList.clear();
         }
+    }
+
+    public ReverseGeoCodeResult getCurrentLocationInfo() {
+        return currentLocationInfo;
+    }
+
+    public void setCurrentLocationInfo(ReverseGeoCodeResult currentLocationInfo) {
+        this.currentLocationInfo = currentLocationInfo;
+    }
+
+    public XPLocation getStartLocation() {
+        return startLocation;
+    }
+
+    public void setStartLocation(XPLocation startLocation) {
+        this.startLocation = startLocation;
+    }
+
+    public XPLocation getEndLocation() {
+        return endLocation;
+    }
+
+    public void setEndLocation(XPLocation endLocation) {
+        this.endLocation = endLocation;
     }
 
     public interface XPLocationListener {

@@ -9,4 +9,5 @@
     <string name="app_load_complete">加载完成</string>
     <string name="app_load_error">加载出错</string>
     <string name="app_load_no_more_data">没有更多数据</string>
+    <string name="city_select_current_locate">当前定位城市：</string>
 </resources>

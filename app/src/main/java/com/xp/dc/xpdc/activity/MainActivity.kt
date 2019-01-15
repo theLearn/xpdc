@@ -14,7 +14,6 @@ import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
 import com.example.hongcheng.common.util.StringUtils
 import com.example.hongcheng.common.util.ViewUtils
-import com.example.hongcheng.common.view.fragment.LoadingFragment
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.application.BaseApplication
 import com.xp.dc.xpdc.fragment.LoginFragment
@@ -127,6 +126,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                         .append(reverseGeoCodeResult.addressDetail?.district)
                 }
                 tv_current_position.text = sb.toString()
+                AppLocationUtils.getInstance().currentLocationInfo = reverseGeoCodeResult
             }
         })
         geoCoder.reverseGeoCode(ReverseGeoCodeOption().location(latLng))
@@ -199,17 +199,13 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.ll_start_select
             -> {
-                if (lastPosition == null) return
                 val startIntent = Intent(this, AddressSelectActivity::class.java)
-                startIntent.putExtra("location", lastPosition)
                 startIntent.putExtra("type", AddressSelectActivity.START)
                 startActivityForResult(startIntent, START_REQUEST)
             }
             R.id.ll_destination_select
             -> {
-                if (lastPosition == null) return
                 val endIntent = Intent(this, AddressSelectActivity::class.java)
-                endIntent.putExtra("location", lastPosition)
                 endIntent.putExtra("type", AddressSelectActivity.END)
                 startActivityForResult(endIntent, END_REQUEST)
             }

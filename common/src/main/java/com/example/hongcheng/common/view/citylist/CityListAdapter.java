@@ -62,7 +62,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
     }
 
     @Override
-    public void onBindViewHolder(@NonNull CityListViewHolder holder, int i) {
+    public void onBindViewHolder(@NonNull CityListViewHolder holder, final int i) {
         int type = getItemViewType(i);
         holder.icon.setVisibility(View.GONE);
         if (TYPE_HEAD == type) {
@@ -80,6 +80,14 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
             holder.itemView.setBackgroundResource(R.color.white);
             holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_26));
             holder.name.setText(model.getName());
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (getOnItemClickListener() != null) {
+                        getOnItemClickListener().onItemClick(i);
+                    }
+                }
+            });
         }
     }
 }
