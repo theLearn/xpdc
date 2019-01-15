@@ -54,7 +54,7 @@ public class UserCenterActivity extends BasicActivity implements View.OnClickLis
     }
 
     private void changeTelNo() {
-
+        startActivity(new Intent(this, TelPhoneActivity.class));
     }
 
     private void changeSex() {

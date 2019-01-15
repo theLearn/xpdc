@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="250dp"
+              android:layout_height="wrap_content"
+              android:background="@color/white">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:padding="@dimen/public_space_value_10">
+        <RelativeLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textSize="@dimen/large_text_size"
+                      android:layout_centerHorizontal="true"
+                      android:textColor="@color/text_black"
+                      android:text="@string/loginOrRegist"/>
+
+            <ImageView android:layout_width="10dp" android:layout_height="10dp"
+                       android:src="@mipmap/ic_close"
+                       android:layout_alignParentRight="true"/>
+        </RelativeLayout>
+        <ImageView android:layout_width="60dp" android:layout_height="60dp"
+                   android:layout_marginTop="@dimen/public_space_value_10"
+                   android:layout_gravity="center_horizontal"
+                   android:src="@mipmap/ic_phone"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:textSize="@dimen/normal_text_size"
+                  android:textColor="@color/text_black"
+                  android:padding="@dimen/public_space_value_10"
+                  android:layout_marginTop="@dimen/public_space_value_10"
+                  android:layout_marginLeft="@dimen/public_space_value_10"
+                  android:layout_marginRight="@dimen/public_space_value_10"
+                  android:text="您的手机号码"/>
+        <EditText android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:id="@+id/et_telNo"
+                  android:inputType="number"
+                  android:textSize="@dimen/big_text_size"
+                  android:background="@drawable/editview_bg"
+                  android:layout_marginLeft="@dimen/public_space_value_20"
+                  android:layout_marginRight="@dimen/public_space_value_20"
+                  android:focusable="true"
+                  android:textColor="@color/text_black_call"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:gravity="center_vertical"
+                      android:layout_marginTop="@dimen/public_space_value_5"
+                      android:padding="@dimen/public_space_value_5">
+            <CheckBox
+                    android:id="@+id/checkbox"
+                    android:layout_width="20dp" android:layout_height="20dp"
+                    android:button="@null"
+                    android:background="@drawable/checkbox_bg"/>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textSize="@dimen/smaller_text_size"
+                      android:textColor="@color/text_black"
+                      android:text="已阅读并同意"/>
+
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                      android:textSize="@dimen/smaller_text_size"
+                      android:textColor="@color/darkcyan"
+                      android:text="《会员注册协议》《隐私政策》"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <ImageView android:layout_width="match_parent" android:layout_height="1dp"
+               android:src="@mipmap/dashed"/>
+    <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent" android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/darkcyan"
+            android:textSize="@dimen/large_text_size"
+            android:background="@null"
+            android:text="@string/next"/>
+</LinearLayout>

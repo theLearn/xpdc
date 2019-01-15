@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/content_register"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fitsSystemWindows="true"
+                android:background="@color/white">
+
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/public_space_value_10"
+            android:orientation="vertical">
+
+        <EditText
+                android:id="@+id/et_tel_phone"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_45"
+                android:layout_marginLeft="@dimen/public_space_value_40"
+                android:layout_marginRight="@dimen/public_space_value_40"
+                android:layout_marginTop="@dimen/public_space_value_20"
+                android:hint="@string/inputNo"
+                android:inputType="phone"
+                android:textSize="@dimen/big_text_size"
+                android:background="@drawable/editview_bg"
+                android:focusable="true"
+                android:textColor="@color/text_black_call"/>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_45"
+                android:layout_marginLeft="@dimen/public_space_value_40"
+                android:layout_marginRight="@dimen/public_space_value_40"
+                android:layout_marginTop="@dimen/public_space_value_20"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+            <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:hint="@string/inputCode"
+                    android:inputType="number"
+                    android:textSize="@dimen/big_text_size"
+                    android:background="@drawable/editview_bg"
+                    android:textColor="@color/text_black_call"/>
+
+            <Button
+                    android:id="@+id/btn_send"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/public_space_value_38"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:background="@mipmap/yanzheng"
+            />
+
+        </LinearLayout>
+
+
+        <EditText
+                android:id="@+id/et_pwd"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_45"
+                android:layout_marginLeft="@dimen/public_space_value_40"
+                android:layout_marginRight="@dimen/public_space_value_40"
+                android:layout_marginTop="@dimen/public_space_value_20"
+                android:hint="@string/input_new_pwd"
+                android:inputType="textPassword"
+                android:textSize="@dimen/big_text_size"
+                android:background="@drawable/editview_bg"
+                android:textColor="@color/text_black_call"/>
+
+
+        <EditText
+                android:id="@+id/et_pwd_again"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_45"
+                android:layout_marginLeft="@dimen/public_space_value_40"
+                android:layout_marginRight="@dimen/public_space_value_40"
+                android:layout_marginTop="@dimen/public_space_value_20"
+                android:hint="@string/new_pwd_again"
+                android:inputType="textPassword"
+                android:textSize="@dimen/big_text_size"
+                android:background="@drawable/editview_bg"
+                android:textColor="@color/text_black_call"/>
+
+
+        <TextView
+                android:id="@+id/tv_commit"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/public_space_value_45"
+                android:layout_marginLeft="@dimen/public_space_value_35"
+                android:layout_marginRight="@dimen/public_space_value_35"
+                android:layout_marginTop="@dimen/public_space_value_50"
+                android:background="@mipmap/btn_confirm"
+        />
+
+    </LinearLayout>
+
+</RelativeLayout>

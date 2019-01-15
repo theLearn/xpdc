@@ -27,4 +27,15 @@
     <string name="bus_station">汽车站</string>
     <string name="port">港口</string>
     <string name="nothing_info">没有相关数据哦</string>
+    <string name="confirm">确定</string>
+    <string name="complete">完成</string>
+    <string name="loginOrRegist">登录/注册</string>
+    <string name="inputNo">请输入手机号码</string>
+    <string name="next">下一步</string>
+    <string name="inputCode">输入验证码</string>
+    <string name="change_pwd">修改密码</string>
+    <string name="send_code">发送验证码</string>
+    <string name="input_new_pwd">输入新的密码</string>
+    <string name="new_pwd_again">再次输入新的密码</string>
+    <string name="change_tel">修改电话</string>
 </resources>

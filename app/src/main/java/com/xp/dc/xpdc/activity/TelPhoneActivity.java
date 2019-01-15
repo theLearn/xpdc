@@ -8,10 +8,8 @@ import com.example.hongcheng.common.util.ToastUtils;
 import com.xp.dc.xpdc.R;
 import org.jetbrains.annotations.NotNull;
 
-public class NameSettingActivity extends AppCommonActivity implements View.OnClickListener {
-
-
-    private EditText et_nickname;
+public class TelPhoneActivity extends AppCommonActivity implements View.OnClickListener{
+    private EditText et_tel_phone;
 
     @Override
     public boolean isNeedShowBack() {
@@ -20,17 +18,17 @@ public class NameSettingActivity extends AppCommonActivity implements View.OnCli
 
     @Override
     public int setToolbarTitle() {
-        return R.string.change_nick;
+        return R.string.change_tel;
     }
 
     @Override
     public int getBodyLayoutResId() {
-        return R.layout.activity_name_setting;
+        return R.layout.activity_tel_phone;
     }
 
     @Override
     public void initBodyView(@NotNull View view) {
-        et_nickname = view.findViewById(R.id.et_nickname);
+        et_tel_phone = view.findViewById(R.id.et_tel_phone);
         initData();
     }
 
@@ -51,12 +49,12 @@ public class NameSettingActivity extends AppCommonActivity implements View.OnCli
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.tv_app_common_right:
-                String nickname = et_nickname.getText().toString().trim();
-                if (TextUtils.isEmpty(nickname)) {
-                    ToastUtils.show(this, "昵称不能为空");
+                String telphone = et_tel_phone.getText().toString().trim();
+                if (TextUtils.isEmpty(telphone)) {
+                    ToastUtils.show(this, "电话不能为空");
                     return;
                 }
-                commitData(nickname);
+                commitData(telphone);
                 break;
         }
     }

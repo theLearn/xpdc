@@ -27,13 +27,14 @@
         <activity
                 android:name=".activity.WelcomeActivity"
                 android:theme="@style/AppFullTheme">
+
+        </activity>
+        <activity android:name=".activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity android:name=".activity.MainActivity">
         </activity>
 
         <meta-data
@@ -52,6 +53,10 @@
         <activity android:name=".activity.UserCenterActivity">
         </activity>
         <activity android:name=".activity.NameSettingActivity">
+        </activity>
+        <activity android:name=".activity.PasswordActivity">
+        </activity>
+        <activity android:name=".activity.TelPhoneActivity">
         </activity>
     </application>
 

@@ -14,8 +14,10 @@ import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
 import com.example.hongcheng.common.util.StringUtils
 import com.example.hongcheng.common.util.ViewUtils
+import com.example.hongcheng.common.view.fragment.LoadingFragment
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.application.BaseApplication
+import com.xp.dc.xpdc.fragment.LoginFragment
 import com.xp.dc.xpdc.location.AppLocationUtils
 import com.xp.dc.xpdc.location.XPLocation
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,6 +38,9 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     private var lastPosition: XPLocation? = null
     private var selectPosition: XPLocation? = null
     private var curPosMark: Marker? = null          // 位置图标标记
+    private var isLogin: Boolean = false
+
+    private var mLoginDialog: LoginFragment? = null
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
@@ -141,6 +146,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
 
             R.id.ll_nv_main_head_edit_pw -> {
+                startActivity(Intent(this, PasswordActivity::class.java))
                 dl_main.closeDrawers()
             }
 
@@ -150,7 +156,14 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
             R.id.tv_app_common_right
             -> {
-                startActivity(Intent(this, OrderShowActivity::class.java))
+                if (isLogin)
+                    startActivity(Intent(this, OrderShowActivity::class.java))
+                else {
+                    if (mLoginDialog == null) {
+                        mLoginDialog = LoginFragment()
+                    }
+                    mLoginDialog?.show(supportFragmentManager, "LoginFragment")
+                }
             }
             R.id.tv_call_car_now
             -> {
@@ -186,7 +199,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.ll_start_select
             -> {
-                if(lastPosition == null) return
+                if (lastPosition == null) return
                 val startIntent = Intent(this, AddressSelectActivity::class.java)
                 startIntent.putExtra("location", lastPosition)
                 startIntent.putExtra("type", AddressSelectActivity.START)
@@ -194,7 +207,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.ll_destination_select
             -> {
-                if(lastPosition == null) return
+                if (lastPosition == null) return
                 val endIntent = Intent(this, AddressSelectActivity::class.java)
                 endIntent.putExtra("location", lastPosition)
                 endIntent.putExtra("type", AddressSelectActivity.END)
@@ -218,7 +231,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if(Activity.RESULT_OK == resultCode ) {
+        if (Activity.RESULT_OK == resultCode) {
             val xpLocation = data?.getParcelableExtra<XPLocation>("selectLocation")
             xpLocation?.let {
                 selectPosition = it
