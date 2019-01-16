@@ -1,16 +1,11 @@
 package com.xp.dc.xpdc.activity
 
 import android.app.Activity
-import android.content.Intent
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.baidu.mapapi.search.core.PoiInfo
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult
-import com.baidu.mapapi.search.sug.OnGetSuggestionResultListener
-import com.baidu.mapapi.search.sug.SuggestionResult
-import com.baidu.mapapi.search.sug.SuggestionSearch
-import com.baidu.mapapi.search.sug.SuggestionSearchOption
+import com.baidu.mapapi.search.poi.*
 import com.example.hongcheng.common.base.BaseListAdapter
 import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
@@ -39,32 +34,43 @@ class AddressSelectActivity : BasicActivity() {
     private lateinit var addressAdapter: SearchAddressAdapter
 
     private var type: Int = START
-    private var reverseGeoCodeResult: ReverseGeoCodeResult? = null
+    private lateinit var startLocation: XPLocation
 
-    private lateinit var mSuggestionSearch: SuggestionSearch
-    private var listener: OnGetSuggestionResultListener = OnGetSuggestionResultListener {
-        //处理sug检索结果
-        addressAdapter.data = getSearchInfo(svAddress.text, it.allSuggestions)
-        addressAdapter.notifyDataSetChanged()
+    private lateinit var poiSearch: PoiSearch
+
+    private var listener: OnGetPoiSearchResultListener = object : OnGetPoiSearchResultListener {
+        override fun onGetPoiResult(poiResult: PoiResult) {
+            addressAdapter.data = getPoiListInfo(poiResult.allPoi)
+            addressAdapter.notifyDataSetChanged()
+        }
+
+        override fun onGetPoiDetailResult(poiDetailSearchResult: PoiDetailSearchResult) {
+
+        }
+
+        override fun onGetPoiIndoorResult(poiIndoorResult: PoiIndoorResult) {
+
+        }
+
+        //废弃
+        override fun onGetPoiDetailResult(poiDetailResult: PoiDetailResult) {
+
+        }
     }
 
-    private fun getSearchInfo(
-        key: String,
-        list: List<SuggestionResult.SuggestionInfo>,
-        isEndWith: Boolean = false
-    ): MutableList<XPLocation> {
+    private fun getPoiListInfo(poiList: List<PoiInfo>?): MutableList<XPLocation> {
         val xpLocationList = arrayListOf<XPLocation>()
-        for (info: SuggestionResult.SuggestionInfo in list) {
-            if (info.pt == null) continue
-            if (info.city != reverseGeoCodeResult?.addressDetail?.city) continue
-            if (isEndWith && !info.key.endsWith(key)) continue
-            val xpLocation = XPLocation()
-            xpLocation.lat = info.pt.latitude
-            xpLocation.lon = info.pt.longitude
-            xpLocation.city = info.city
-            xpLocation.address = info.key
-            xpLocation.des = info.address
-            xpLocationList.add(xpLocation)
+        poiList?.let {
+            for (poi: PoiInfo in it) {
+                val xpLocation = XPLocation()
+                xpLocation.lat = poi.location.latitude
+                xpLocation.lon = poi.location.longitude
+                xpLocation.province = poi.province
+                xpLocation.city = poi.city
+                xpLocation.address = poi.address
+                xpLocation.name = poi.name
+                xpLocationList.add(xpLocation)
+            }
         }
 
         return xpLocationList
@@ -79,7 +85,7 @@ class AddressSelectActivity : BasicActivity() {
 
         ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.white))
         ScreenUtils.setLightStatusBar(this, true)
-        tv_city_show.text = reverseGeoCodeResult?.addressDetail?.city
+        tv_city_show.text = startLocation.city
 
         ll_block_city_show.setOnClickListener {
             ll_block_city_show.visibility = View.GONE
@@ -105,15 +111,7 @@ class AddressSelectActivity : BasicActivity() {
         svAddress = findViewById(R.id.sv_address)
         svAddress.setOnSearchListener(object : ICallBack {
             override fun queryData(string: String?) {
-                if (StringUtils.isEmpty(string)) {
-
-                } else {
-                    mSuggestionSearch.requestSuggestion(
-                        SuggestionSearchOption()
-                            .city(tv_city_show.text.toString())
-                            .keyword(svAddress.text)
-                    )
-                }
+                searchPoi()
             }
 
             override fun onFocusChange(hasFocus: Boolean) {
@@ -135,14 +133,23 @@ class AddressSelectActivity : BasicActivity() {
             )
         )
         addressAdapter = SearchAddressAdapter()
-        addressAdapter.data = getPoiListInfo()
         rv_address_search_list.adapter = addressAdapter
         addressAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener {
             override fun onItemClick(position: Int) {
                 val model = addressAdapter.getItem(position)
-                val intent = Intent()
-                intent.putExtra("selectLocation", model)
-                setResult(Activity.RESULT_OK, intent)
+                when (type) {
+                    START
+                    -> {
+                        AppLocationUtils.getInstance().startLocation = model
+                    }
+                    END
+                    -> {
+                        AppLocationUtils.getInstance().endLocation = model
+                    }
+                    else -> {
+                    }
+                }
+                setResult(Activity.RESULT_OK)
                 finish()
             }
 
@@ -150,47 +157,43 @@ class AddressSelectActivity : BasicActivity() {
             }
         }
 
-        cs_city_search_list.setCurrentCity(reverseGeoCodeResult?.addressDetail?.city)
+        cs_city_search_list.setCurrentCity(startLocation.city)
         cs_city_search_list.setOnCitySelectListener { cityName, isCurrentCity ->
             cs_city_search_list.visibility = View.GONE
             rv_address_search_list.visibility = View.VISIBLE
             ll_block_city_show.visibility = View.VISIBLE
             svCity.visibility = View.GONE
-            tv_city_show.text = reverseGeoCodeResult?.addressDetail?.city
+            tv_city_show.text = cityName
+            searchPoi()
         }
+
+        searchPoi()
     }
 
     private fun initData() {
-        reverseGeoCodeResult = AppLocationUtils.getInstance().currentLocationInfo
+        startLocation = AppLocationUtils.getInstance().startLocation
         type = intent.getIntExtra("type", START)
-        if (reverseGeoCodeResult == null) {
+        if (startLocation == null) {
             finish()
             return
         }
-        mSuggestionSearch = SuggestionSearch.newInstance()
-        mSuggestionSearch.setOnGetSuggestionResultListener(listener)
+        poiSearch = PoiSearch.newInstance()
+        poiSearch.setOnGetPoiSearchResultListener(listener)
     }
 
-    private fun getPoiListInfo(): MutableList<XPLocation> {
-        val xpLocationList = arrayListOf<XPLocation>()
-        val poiList = reverseGeoCodeResult?.poiList
-        poiList?.let {
-            for (poi: PoiInfo in it) {
-                val xpLocation = XPLocation()
-                xpLocation.lat = poi.location.latitude
-                xpLocation.lon = poi.location.longitude
-                xpLocation.city = poi.city
-                xpLocation.address = poi.name
-                xpLocation.des = poi.address
-                xpLocationList.add(xpLocation)
-            }
-        }
-
-        return xpLocationList
+    private fun searchPoi() {
+        var key = svAddress.text
+        if (StringUtils.isEmpty(key)) key = "火车站"
+        poiSearch.searchInCity(
+            PoiCitySearchOption()
+                .city(tv_city_show.text.toString()) //必填
+                .keyword(key) //必填
+                .pageCapacity(20)
+        )
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mSuggestionSearch.destroy()
+        poiSearch.destroy()
     }
 }

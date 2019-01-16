@@ -2,6 +2,7 @@ package com.xp.dc.xpdc.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Handler
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBar
 import android.util.TypedValue
@@ -14,6 +15,10 @@ import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
 import com.example.hongcheng.common.util.StringUtils
 import com.example.hongcheng.common.util.ViewUtils
+import com.example.hongcheng.common.view.spinkit.SpriteFactory
+import com.example.hongcheng.common.view.spinkit.Style
+import com.example.hongcheng.common.view.spinkit.sprite.Sprite
+import com.example.hongcheng.common.view.spinkit.sprite.SpriteContainer
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.application.BaseApplication
 import com.xp.dc.xpdc.fragment.LoginFragment
@@ -26,16 +31,20 @@ import kotlinx.android.synthetic.main.layout_app_common_title.*
 
 class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPLocationListener {
     companion object {
+        private const val LOADING: Int = -1
         private const val NOW: Int = 0
         private const val APPOINTMENT: Int = 1
+        private const val SELECT_CAR: Int = 2
+        private const val WAIT_ORDER_ACCEPT: Int = 3
+        private const val WAIT_CAR: Int = 4
         private const val START_REQUEST: Int = 100
         private const val END_REQUEST: Int = 200
     }
 
     private var CURRENT_STATE: Int = NOW
 
+    private lateinit var geoCoder : GeoCoder
     private var lastPosition: XPLocation? = null
-    private var selectPosition: XPLocation? = null
     private var curPosMark: Marker? = null          // 位置图标标记
     private var isLogin: Boolean = false
 
@@ -46,6 +55,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     }
 
     override fun initView() {
+        geoCoder = GeoCoder.newInstance()
         setSupportActionBar(tb_app_common)
         ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.white))
         ScreenUtils.setLightStatusBar(this, true)
@@ -69,13 +79,20 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         ll_destination_select.setOnClickListener(this)
         iv_map_reset.setOnClickListener(this)
 
+        val style: Style = Style.values()[7]
+        val drawable: Sprite = SpriteFactory.create(style)
+        (drawable as SpriteContainer).color = resources.getColor(R.color.app_theme)
+        sk_call_query_load.setIndeterminateDrawable(drawable)
+
         AppLocationUtils.getInstance().init(BaseApplication.getInstance())
         AppLocationUtils.getInstance().startLocate(this)
 
         //设置地图状态更改完成的函数
         mv_main.setOnMapStatusChangeFinishListener {
-            mv_main.addStartMarker(it.target)
-            getAddressInfo(it.target)
+            if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
+                mv_main.addStartMarker(it.target)
+                getAddressInfo(it.target)
+            }
         }
     }
 
@@ -106,7 +123,6 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
 
     private fun getAddressInfo(latLng: LatLng) {
-        val geoCoder = GeoCoder.newInstance()
         geoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener {
             override fun onGetGeoCodeResult(geoCodeResult: GeoCodeResult) {
             }
@@ -126,7 +142,17 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                         .append(reverseGeoCodeResult.addressDetail?.district)
                 }
                 tv_current_position.text = sb.toString()
-                AppLocationUtils.getInstance().currentLocationInfo = reverseGeoCodeResult
+
+                val xpLocation = XPLocation()
+                xpLocation.lat = latLng.latitude
+                xpLocation.lon = latLng.longitude
+                xpLocation.province = reverseGeoCodeResult.addressDetail?.province
+                xpLocation.city = reverseGeoCodeResult.addressDetail?.city
+                xpLocation.district = reverseGeoCodeResult.addressDetail?.district
+                xpLocation.street = reverseGeoCodeResult.addressDetail?.street
+                xpLocation.address = reverseGeoCodeResult.address
+                xpLocation.name = reverseGeoCodeResult.address
+                AppLocationUtils.getInstance().startLocation = xpLocation
             }
         })
         geoCoder.reverseGeoCode(ReverseGeoCodeOption().location(latLng))
@@ -167,35 +193,11 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.tv_call_car_now
             -> {
-                if (CURRENT_STATE == APPOINTMENT) {
-                    CURRENT_STATE = NOW
-                    tv_call_car_now.setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        resources.getDimension(R.dimen.normal_text_size)
-                    )
-                    tv_call_car_now.setBackgroundResource(R.drawable.tv_gray_conner)
-                    tv_call_car_pre.setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        resources.getDimension(R.dimen.text_size_13)
-                    )
-                    tv_call_car_pre.setBackgroundDrawable(null)
-                }
+                changeView(NOW)
             }
             R.id.tv_call_car_pre
             -> {
-                if (CURRENT_STATE == NOW) {
-                    CURRENT_STATE = APPOINTMENT
-                    tv_call_car_pre.setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        resources.getDimension(R.dimen.normal_text_size)
-                    )
-                    tv_call_car_pre.setBackgroundResource(R.drawable.tv_gray_conner)
-                    tv_call_car_now.setTextSize(
-                        TypedValue.COMPLEX_UNIT_PX,
-                        resources.getDimension(R.dimen.text_size_13)
-                    )
-                    tv_call_car_now.setBackgroundDrawable(null)
-                }
+                changeView(APPOINTMENT)
             }
             R.id.ll_start_select
             -> {
@@ -213,10 +215,12 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             -> {
                 lastPosition?.let {
                     val ll = LatLng(it.lat, it.lon)
-                    mv_main.updateMapCenter(ll)
                     curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
-                    mv_main.addStartMarker(ll)
-                    getAddressInfo(ll)
+                    mv_main.updateMapCenter(ll)
+                    if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
+                        mv_main.addStartMarker(ll)
+                        getAddressInfo(ll)
+                    }
                 }
             }
             else -> {
@@ -225,19 +229,94 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
     }
 
+    private fun changeView(state : Int) {
+        if(CURRENT_STATE == state) return
+        sk_call_query_load.visibility = View.GONE
+        wc_main.visibility = View.GONE
+        ll_block_select_position.visibility = View.GONE
+        when (state) {
+            NOW
+            -> {
+                ll_block_select_position.visibility = View.VISIBLE
+                tv_call_car_now.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.normal_text_size)
+                )
+                tv_call_car_now.setBackgroundResource(R.drawable.tv_gray_conner)
+                tv_call_car_pre.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.text_size_13)
+                )
+                tv_call_car_pre.setBackgroundDrawable(null)
+            }
+            APPOINTMENT
+            -> {
+                ll_block_select_position.visibility = View.VISIBLE
+                tv_call_car_pre.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.normal_text_size)
+                )
+                tv_call_car_pre.setBackgroundResource(R.drawable.tv_gray_conner)
+                tv_call_car_now.setTextSize(
+                    TypedValue.COMPLEX_UNIT_PX,
+                    resources.getDimension(R.dimen.text_size_13)
+                )
+                tv_call_car_now.setBackgroundDrawable(null)
+            }
+            SELECT_CAR
+            -> {
+                tv_app_common_title.setText(R.string.main_title_call_confirm)
+            }
+            WAIT_ORDER_ACCEPT
+            -> {
+                showPointInMap()
+                tv_app_common_title.setText(R.string.main_title_calling)
+                wc_main.visibility = View.VISIBLE
+            }
+            WAIT_CAR
+            -> {
+            }
+            LOADING
+            -> {
+                sk_call_query_load.visibility = View.VISIBLE
+            }
+            else -> {
+            }
+        }
+
+        CURRENT_STATE = state
+    }
+
+    private fun showPointInMap() {
+        val startPosition = AppLocationUtils.getInstance().startLocation
+        val endPosition = AppLocationUtils.getInstance().endLocation
+        mv_main.addStartMarker(LatLng(startPosition.lat, startPosition.lon))
+        mv_main.addEndMarker(LatLng(endPosition.lat, endPosition.lon))
+    }
+
+    private fun calculate() {
+        changeView(LOADING)
+        Handler().postDelayed({ changeView(WAIT_ORDER_ACCEPT) }, 2000)
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (Activity.RESULT_OK == resultCode) {
-            val xpLocation = data?.getParcelableExtra<XPLocation>("selectLocation")
-            xpLocation?.let {
-                selectPosition = it
-                when (requestCode) {
-                    START_REQUEST
-                    -> tv_current_position.text = it.address
-                    END_REQUEST
-                    -> tv_destination_position.text = it.address
-                    else -> {
-                    }
+            when (requestCode) {
+                START_REQUEST
+                -> {
+                    val startLocation = AppLocationUtils.getInstance().startLocation
+                    tv_current_position.text = startLocation.name
+                    mv_main.addStartMarker(LatLng(startLocation.lat, startLocation.lon))
+                }
+                END_REQUEST
+                -> {
+                    val endLocation = AppLocationUtils.getInstance().endLocation
+                    tv_destination_position.text = endLocation.name
+                    mv_main.addEndMarker(LatLng(endLocation.lat, endLocation.lon))
+                    calculate()
+                }
+                else -> {
                 }
             }
         }
@@ -256,5 +335,6 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     override fun onDestroy() {
         super.onDestroy()
         mv_main.onDestroy()
+        geoCoder.destroy()
     }
 }

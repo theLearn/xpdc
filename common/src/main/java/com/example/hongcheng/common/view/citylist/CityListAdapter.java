@@ -40,8 +40,16 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
 
     @Override
     public int getItemCount() {
-
         return size;
+    }
+
+    public CityItem getItemInfo(int position) {
+        int type = getItemViewType(position);
+        if(TYPE_HEAD == type) {
+            return null;
+        } else {
+            return getData().get(sourceMap.get(position).first).second.get(sourceMap.get(position).second);
+        }
     }
 
     @Override

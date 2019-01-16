@@ -20,8 +20,8 @@ public class LetterListView extends View {
     private Context context;
     private int textSize;
     private int textDefaultColor = Color.parseColor("#8c8c8c");
-    private int textFocusColor = Color.parseColor("#40c60a");
-    private int bgColor = Color.parseColor("#40000000");
+    private int textFocusColor = Color.parseColor("#ff6adabe");
+    private int bgColor = Color.parseColor("#00000000");
 
     public LetterListView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);

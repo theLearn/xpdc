@@ -5,8 +5,6 @@ import com.baidu.location.BDAbstractLocationListener;
 import com.baidu.location.BDLocation;
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.baidu.mapapi.search.geocode.ReverseGeoCodeResult;
-import com.example.hongcheng.common.util.DateUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +19,6 @@ public class AppLocationUtils {
     private LocationClientOption option;
     private Context context;
 
-    private ReverseGeoCodeResult currentLocationInfo;
     private XPLocation startLocation;
     private XPLocation endLocation;
 
@@ -119,7 +116,6 @@ public class AppLocationUtils {
                     tempLocation.setAlt(bdLocation.getAltitude());
                 }
                 tempLocation.setLocType(bdLocation.getLocType());
-                tempLocation.setAccuracy(bdLocation.getGpsAccuracyStatus());
                 tempLocation.setSpeed(bdLocation.getSpeed());
                 tempLocation.setDirection(bdLocation.getDirection());
                 tempLocation.setAddress(bdLocation.getAddrStr());
@@ -127,15 +123,15 @@ public class AppLocationUtils {
                 tempLocation.setCity(bdLocation.getCity());
                 tempLocation.setDistrict(bdLocation.getDistrict());
                 tempLocation.setStreet(bdLocation.getStreet());
-                if (tempLocation.getAddress() == null || "".equals(tempLocation.getAddress())) {
-                    if(tempLocation.getProvince() != null && !"null".equals(tempLocation.getProvince()) && !"".equals(tempLocation.getProvince())){
-                        tempLocation.setAddress(tempLocation.getProvince() + tempLocation.getCity() + tempLocation.getDistrict());
-                    }else{
-                        tempLocation.setAddress("经度：" + tempLocation.getLon() + ", 纬度：" + tempLocation.getLat());
-                    }
+                if(tempLocation.getCity() != null && !"null".equals(tempLocation.getCity()) && !"".equals(tempLocation.getCity())){
+                    tempLocation.setAddress(tempLocation.getCity() + tempLocation.getDistrict() + tempLocation.getStreet());
+                    tempLocation.setName(tempLocation.getAddress());
+                }else{
+                    tempLocation.setAddress("经度：" + tempLocation.getLon() + ", 纬度：" + tempLocation.getLat());
+                    tempLocation.setName(tempLocation.getAddress());
                 }
 
-                tempLocation.setPosDate(DateUtils.getCurrentTimeInString("yyyy-MM-dd HH:mm:ss"));
+                tempLocation.setPosDate(System.currentTimeMillis() + "");
 
                 for (XPLocationListener listener : locationListenerList) {
                     listener.onLocateSuccess(tempLocation);
@@ -152,14 +148,6 @@ public class AppLocationUtils {
 
             locationListenerOnceList.clear();
         }
-    }
-
-    public ReverseGeoCodeResult getCurrentLocationInfo() {
-        return currentLocationInfo;
-    }
-
-    public void setCurrentLocationInfo(ReverseGeoCodeResult currentLocationInfo) {
-        this.currentLocationInfo = currentLocationInfo;
     }
 
     public XPLocation getStartLocation() {

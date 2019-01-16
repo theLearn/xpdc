@@ -75,7 +75,7 @@ public class CustomMapView extends LinearLayout {
     private void initialize(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         curPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location_arrow);
         startPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
-        endPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
+        endPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_end_position);
         mapZoom = 17;
         routeOverlayList = new ArrayList<>();
         overlayOptionsList = new ArrayList<>();

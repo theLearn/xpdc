@@ -12,7 +12,6 @@ public class XPLocation implements Parcelable {
     private double lon;     // 纬度
     private double lat;     // 经度
     private double alt;     // 高度
-    private int accuracy;   // 精确度
     private double speed;   // 速度
     private float direction;   // 方向
     private int locType;    // 类型
@@ -20,8 +19,9 @@ public class XPLocation implements Parcelable {
     private String province;    // 省份
     private String city;        // 城市
     private String district;    // 区
-    public  String street;      // 街道
+    private  String street;      // 街道
     private String address;     // 详细地址，如果地址为空，可以用省份+城市代替
+    private String name;     // 详细地址，如果地址为空，可以用省份+城市代替
     private String des;     // 描述
     private String posDate;     // 定位时间
     private int posFlag;    // 位置标识 0 其他；1起点；2中间点；3终点
@@ -48,14 +48,6 @@ public class XPLocation implements Parcelable {
 
     public void setAlt(double alt) {
         this.alt = alt;
-    }
-
-    public int getAccuracy() {
-        return accuracy;
-    }
-
-    public void setAccuracy(int accuracy) {
-        this.accuracy = accuracy;
     }
 
     public double getSpeed() {
@@ -114,6 +106,14 @@ public class XPLocation implements Parcelable {
         this.district = district;
     }
 
+    public String getStreet() {
+        return street;
+    }
+
+    public void setStreet(String street) {
+        this.street = street;
+    }
+
     public String getAddress() {
         return address;
     }
@@ -122,28 +122,12 @@ public class XPLocation implements Parcelable {
         this.address = address;
     }
 
-    public String getPosDate() {
-        return posDate;
+    public String getName() {
+        return name;
     }
 
-    public void setPosDate(String posDate) {
-        this.posDate = posDate;
-    }
-
-    public void setPosFlag(int posFlag){
-        this.posFlag = posFlag;
-    }
-
-    public int getPosFlag(){
-        return posFlag;
-    }
-
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDes() {
@@ -154,8 +138,22 @@ public class XPLocation implements Parcelable {
         this.des = des;
     }
 
-    public XPLocation() {
+    public String getPosDate() {
+        return posDate;
     }
+
+    public void setPosDate(String posDate) {
+        this.posDate = posDate;
+    }
+
+    public int getPosFlag() {
+        return posFlag;
+    }
+
+    public void setPosFlag(int posFlag) {
+        this.posFlag = posFlag;
+    }
+
 
     @Override
     public int describeContents() {
@@ -167,7 +165,6 @@ public class XPLocation implements Parcelable {
         dest.writeDouble(this.lon);
         dest.writeDouble(this.lat);
         dest.writeDouble(this.alt);
-        dest.writeInt(this.accuracy);
         dest.writeDouble(this.speed);
         dest.writeFloat(this.direction);
         dest.writeInt(this.locType);
@@ -177,16 +174,19 @@ public class XPLocation implements Parcelable {
         dest.writeString(this.district);
         dest.writeString(this.street);
         dest.writeString(this.address);
+        dest.writeString(this.name);
         dest.writeString(this.des);
         dest.writeString(this.posDate);
         dest.writeInt(this.posFlag);
+    }
+
+    public XPLocation() {
     }
 
     protected XPLocation(Parcel in) {
         this.lon = in.readDouble();
         this.lat = in.readDouble();
         this.alt = in.readDouble();
-        this.accuracy = in.readInt();
         this.speed = in.readDouble();
         this.direction = in.readFloat();
         this.locType = in.readInt();
@@ -196,6 +196,7 @@ public class XPLocation implements Parcelable {
         this.district = in.readString();
         this.street = in.readString();
         this.address = in.readString();
+        this.name = in.readString();
         this.des = in.readString();
         this.posDate = in.readString();
         this.posFlag = in.readInt();

@@ -58,7 +58,10 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
             @Override
             public void onItemClick(int position) {
                 if(listener != null) {
-                    listener.onSelect(tvCurrentCity.getText().toString().trim(), false);
+                    CityItem cityItem = mAdapter.getItemInfo(position);
+                    if(cityItem != null) {
+                        listener.onSelect(cityItem.getName(), false);
+                    }
                 }
             }
 

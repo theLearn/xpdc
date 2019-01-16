@@ -30,4 +30,13 @@
     <string name="input_new_pwd">输入新的密码</string>
     <string name="new_pwd_again">再次输入新的密码</string>
     <string name="change_tel">修改电话</string>
+
+    <string name="main_title_call_confirm">确认叫车</string>
+    <string name="main_title_select_car">选择车型</string>
+    <string name="main_title_calling">正在叫车</string>
+    <string name="call_car_wait_tip1">下单成功，叫车中...</string>
+    <string name="call_car_wait_tip2">等待%1$s种车型应答</string>
+    <string name="call_car_wait_tip3">滴滴快车-经济型</string>
+    <string name="call_car_wait_tip4">平均等待一分钟</string>
+    <string name="cancel_order">取消订单</string>
 </resources>
