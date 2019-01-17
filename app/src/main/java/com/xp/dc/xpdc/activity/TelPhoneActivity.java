@@ -1,14 +1,16 @@
 package com.xp.dc.xpdc.activity;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.example.hongcheng.common.util.ToastUtils;
 import com.xp.dc.xpdc.R;
+import com.xp.dc.xpdc.constants.Constants;
 import org.jetbrains.annotations.NotNull;
 
-public class TelPhoneActivity extends AppCommonActivity implements View.OnClickListener{
+public class TelPhoneActivity extends AppCommonActivity implements View.OnClickListener {
     private EditText et_tel_phone;
 
     @Override
@@ -59,8 +61,11 @@ public class TelPhoneActivity extends AppCommonActivity implements View.OnClickL
         }
     }
 
-    private void commitData(String nickname) {
-
+    private void commitData(String telphone) {
+        Intent intent = new Intent();
+        intent.putExtra(Constants.TEL_NO, telphone);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

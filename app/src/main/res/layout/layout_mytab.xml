@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+    <!--<android.support.design.widget.TabLayout-->
+    <!--android:id="@+id/tl_tab"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/actionbar"-->
+    <!--android:visibility="visible"-->
+    <!--app:tabPadding="2dp">-->
+    <!--</android.support.design.widget.TabLayout>-->
+    <!--<com.geo.nsp.widget.MyExpandGridView-->
+    <!--android:id="@+id/tl_grid"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_marginTop="10dp"-->
+    <!--android:layout_marginBottom="10dp"-->
+    <!--android:padding="5dp"-->
+    <!--android:horizontalSpacing="5dp"-->
+    <!--android:verticalSpacing="5dp"-->
+    <!--android:numColumns="3">-->
+    <!--</com.geo.nsp.widget.MyExpandGridView>-->
+    <RadioGroup
+            android:id="@+id/radioGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+        <RadioButton
+                style="@style/MTabStyle"
+                android:id="@+id/btn1"
+                android:gravity="center"
+                android:text="出租车"
+                android:drawableTop="@mipmap/ic_taxi"/>
+        <RadioButton
+                style="@style/MTabStyle"
+                android:id="@+id/btn2"
+                android:gravity="center"
+                android:text="经济型"
+                android:drawableTop="@mipmap/ic_normal_car"/>
+        <RadioButton
+                style="@style/MTabStyle"
+                android:id="@+id/btn3"
+                android:gravity="center"
+                android:text="舒适型"
+                android:drawableTop="@mipmap/ic_comfortable_car"/>
+
+    </RadioGroup>
+    <com.xp.dc.xpdc.widget.choosecar.StatisticsListView
+            android:id="@+id/sl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"/>
+</LinearLayout>

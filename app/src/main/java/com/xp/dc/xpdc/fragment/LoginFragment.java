@@ -2,7 +2,6 @@ package com.xp.dc.xpdc.fragment;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +12,7 @@ import android.view.*;
 import android.widget.*;
 import com.example.hongcheng.common.util.ToastUtils;
 import com.xp.dc.xpdc.R;
+import com.xp.dc.xpdc.utils.TimerUtil;
 import com.xp.dc.xpdc.widget.PayPwdEditText;
 
 public class LoginFragment extends DialogFragment implements DialogInterface.OnKeyListener, View.OnClickListener {
@@ -22,6 +22,8 @@ public class LoginFragment extends DialogFragment implements DialogInterface.OnK
     private CheckBox checkbox;
     private Button btn_next;
     private PayPwdEditText mPayPwdEditText;
+    private TimerUtil timer = new TimerUtil();
+    private TextView tv_timer;
 
     @NonNull
     @Override
@@ -73,12 +75,17 @@ public class LoginFragment extends DialogFragment implements DialogInterface.OnK
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_next:
-                toNext();
+                nextStep();
                 break;
         }
     }
 
-    private void toNext() {
+    private void previousStep() {
+        dialogView.setContentView(R.layout.login_dialog);
+        initView();
+    }
+
+    private void nextStep() {
         String telNo = et_telNo.getText().toString().trim();
         if (TextUtils.isEmpty(telNo)) {
             ToastUtils.show(getContext(), getString(R.string.inputNo));
@@ -93,6 +100,7 @@ public class LoginFragment extends DialogFragment implements DialogInterface.OnK
     }
 
     private void initPwdView() {
+        tv_timer = (TextView) dialogView.findViewById(R.id.tv_timer);
         mPayPwdEditText = dialogView.findViewById(R.id.ppe_pwd);
         mPayPwdEditText.initStyle(R.drawable.edit_num_bg, 4, 10, R.color.white, R.color.text_black, 20);
         mPayPwdEditText.setFocus();
@@ -100,6 +108,7 @@ public class LoginFragment extends DialogFragment implements DialogInterface.OnK
             @Override
             public void onFinish(String str) {//密码输入完后的回调
                 if ("1111".equals(str)) {
+                    cancelTimer();
                     ToastUtils.show(getContext(), "登录成功");
                     dismiss();
                 } else {
@@ -107,6 +116,43 @@ public class LoginFragment extends DialogFragment implements DialogInterface.OnK
                 }
             }
         });
+        startTimer(tv_timer, 10);
     }
 
+
+    /**
+     * 界面开始倒计时
+     *
+     * @param tv_time
+     * @param time
+     */
+    public void startTimer(final TextView tv_time, int time) {
+        cancelTimer();
+        timer.setTiemrListener(new TimerUtil.TimerListener() {
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+                if (tv_time != null) {
+                    tv_time.setText(millisUntilFinished / 1000 + "s后重新获取");
+                }
+            }
+
+            @Override
+            public void onFinish() {
+                ToastUtils.show(getContext(), "请重新发送验证码");
+                previousStep();
+            }
+        });
+        timer.startTiemr(time);
+    }
+
+
+    /**
+     * 取消倒计时
+     */
+    public void cancelTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
 }

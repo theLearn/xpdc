@@ -40,9 +40,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView
+                android:id="@+id/iv_nickname"
                 android:layout_width="@dimen/public_space_value_17"
                 android:layout_height="@dimen/public_space_value_17"
                 android:src="@mipmap/arrow_right" android:layout_alignParentRight="true"/>
+
+        <TextView
+                android:id="@+id/tv_nickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/public_space_value_15"
+                android:layout_toLeftOf="@id/iv_nickname"
+                android:text="@string/nickname"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_gray"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -68,10 +79,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView
+                android:id="@+id/iv_sex"
                 android:layout_width="@dimen/public_space_value_17"
                 android:layout_height="@dimen/public_space_value_17"
                 android:layout_alignParentRight="true"
                 android:src="@mipmap/arrow_right"/>
+
+        <TextView
+                android:id="@+id/tv_sex"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/public_space_value_15"
+                android:layout_toLeftOf="@id/iv_sex"
+                android:text="@string/sex"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_gray"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -97,10 +119,21 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <ImageView
+                android:id="@+id/iv_tel"
                 android:layout_width="@dimen/public_space_value_17"
                 android:layout_height="@dimen/public_space_value_17"
                 android:layout_alignParentRight="true"
                 android:src="@mipmap/arrow_right"/>
+
+        <TextView
+                android:id="@+id/tv_tel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/public_space_value_15"
+                android:layout_toLeftOf="@id/iv_tel"
+                android:text="@string/telNo"
+                android:textSize="@dimen/big_text_size"
+                android:textColor="@color/text_gray"/>
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

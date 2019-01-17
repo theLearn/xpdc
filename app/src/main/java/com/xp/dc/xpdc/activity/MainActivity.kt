@@ -123,6 +123,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
 
     private fun getAddressInfo(latLng: LatLng) {
+        val geoCoder = GeoCoder.newInstance()
         geoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener {
             override fun onGetGeoCodeResult(geoCodeResult: GeoCodeResult) {
             }
