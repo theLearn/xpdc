@@ -19,24 +19,20 @@ package com.example.hongcheng.data.room
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import android.arch.persistence.room.TypeConverters
-import com.example.hongcheng.data.room.dao.CardDao
-import com.example.hongcheng.data.room.dao.CardInfoDao
-import com.example.hongcheng.data.room.entity.CardEntity
-import com.example.hongcheng.data.room.entity.CardInfoEntity
+import com.example.hongcheng.data.room.dao.HistoryAddressDao
+import com.example.hongcheng.data.room.entity.HistoryAddressEntity
 
 /**
  * The Room database for this app
  */
-@Database(entities = [CardEntity::class, CardInfoEntity::class], version = 1, exportSchema = false)
+@Database(entities = [HistoryAddressEntity::class], version = 1, exportSchema = false)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
 
-    abstract fun getCardDao(): CardDao
-    abstract fun getCardInfoDao(): CardInfoDao
+    abstract fun getHistoryAddressDao(): HistoryAddressDao
 
     companion object {
         const val DATABASE_NAME : String = "room_db"
-        const val CARD_TABLE_NAME : String  = "cards"
-        const val CARD_INFO_TABLE_NAME : String  = "cardInfo"
+        const val HISTORY_ADDRESS_TABLE_NAME : String  = "historyAddress"
     }
 }

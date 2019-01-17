@@ -7,12 +7,10 @@ import android.view.View;
 import android.widget.LinearLayout;
 import com.baidu.mapapi.map.*;
 import com.baidu.mapapi.model.LatLng;
-import com.baidu.mapapi.overlayutil.OverlayManager;
-import com.baidu.mapapi.utils.DistanceUtil;
+import com.baidu.mapapi.model.LatLngBounds;
 import com.xp.dc.xpdc.R;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -27,26 +25,22 @@ import java.util.List;
 
 public class CustomMapView extends LinearLayout {
     private MapView mapView;
-    private BaiduMap baiduMap;
+    BaiduMap mBaiduMap = null;
+    List<Overlay> mOverlayList = null;
 
     private BitmapDescriptor curPosIcon;        // 当前位置图标
     private BitmapDescriptor startPosIcon;      // 当前位置图标
+    private BitmapDescriptor startTempIcon;      // 当前位置图标
     private BitmapDescriptor endPosIcon;        // 当前位置图标
-    private Marker marker;
+
+    private Marker startTempMarker;
     private Marker startMarker;
     private Marker endMarker;
     private Marker curMarker;
-    private int zoomLevel[] = {2000000, 1000000, 500000, 200000, 100000, 50000,
-            25000, 20000, 10000, 5000, 2000, 1000, 500, 100, 50, 20, 0};
-    private int mapZoom;
-    private List<Overlay> routeOverlayList;
-    private Overlay overlay;
     private OnMapMarkerClickListener onMapMarkerClickListener;
-    private List<OverlayOptions> overlayOptionsList = null;
 
     public CustomMapView(Context context) {
-        super(context);
-        initialize(context, null, 0);
+        this(context, null);
     }
 
     /**
@@ -56,8 +50,7 @@ public class CustomMapView extends LinearLayout {
      * @param attrs
      */
     public CustomMapView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initialize(context, attrs, 0);
+        this(context, attrs, 0);
     }
 
     public CustomMapView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
@@ -73,106 +66,58 @@ public class CustomMapView extends LinearLayout {
      * @param defStyleAttr
      */
     private void initialize(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        mOverlayList = new ArrayList<>();
         curPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location_arrow);
-        startPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
+        startPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_call_start);
+        startTempIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
         endPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_end_position);
-        mapZoom = 17;
-        routeOverlayList = new ArrayList<>();
-        overlayOptionsList = new ArrayList<>();
         mapView = new MapView(context, new BaiduMapOptions().mapStatus(new MapStatus.Builder().overlook(1).zoom(17).build()).zoomControlsEnabled(false));
-        baiduMap = mapView.getMap();
+        mBaiduMap = mapView.getMap();
         this.addView(mapView); //在mapView创建完成后需要将其添加到当前视图中，否则地图将无法显示；
     }
 
     /**
-     * 添加标记Marker
-     * @param pos 起点经纬度所对应的LatLng
+     * 将所有Overlay 从 地图上消除
      */
-    public Marker addMarker(LatLng pos, BitmapDescriptor markerIcon, int zIndex, float v, float v1) {
-        if (baiduMap == null || pos == null || markerIcon == null) {
-            return null;
+    public final void removeFromMap() {
+        if (mBaiduMap == null) {
+            return;
         }
-        OverlayOptions option = new MarkerOptions()
-                .position(pos)
-                .icon(markerIcon)
-                .zIndex(zIndex)
-                .draggable(true)
-                .anchor(v, v1);
-        marker = (Marker) baiduMap.addOverlay(option);
-        return marker;
-    }
-
-    /**
-     * 添加标记Marker
-     *
-     * @param pos 起点经纬度所对应的LatLng
-     */
-    public Marker addMarkerWhithAnimate(LatLng pos, BitmapDescriptor markerIcon, int zIndex, float v, float v1) {
-        if (baiduMap == null || pos == null || markerIcon == null) {
-            return null;
-        }
-        OverlayOptions option = new MarkerOptions()
-                .position(pos)
-                .icon(markerIcon)
-                .zIndex(zIndex)
-                .draggable(false)
-                .animateType(MarkerOptions.MarkerAnimateType.grow)
-                .anchor(v, v1);
-        marker = (Marker) baiduMap.addOverlay(option);
-        return marker;
-    }
-
-    /**
-     * 添加起点的标记Marker
-     *
-     * @param startPos 起点经纬度所对应的LatLng
-     */
-    public Marker addStartMarker(LatLng startPos) {
-        if (baiduMap == null) {
-            return null;
-        }
-        removeStartMarker();
-        startMarker = addMarker(startPos, startPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 1.0f);
-        return startMarker;
-    }
-
-    /**
-     * 添加终点的标记Marker
-     *
-     * @param endPos
-     */
-    public Marker addEndMarker(LatLng endPos) {
-        if (baiduMap == null) {
-            return null;
-        }
-        removeEndMarker();
-        endMarker = addMarker(endPos, endPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 1.0f);
-        return endMarker;
-    }
-
-    /**
-     * 移除标记Marker
-     *
-     * @param marker
-     */
-    public void removeMarker(Marker marker) {
-        if (marker != null) {
+        for (Overlay marker : mOverlayList) {
             marker.remove();
         }
+
+        mOverlayList.clear();
+        mBaiduMap.clear();
+
+        startTempMarker = null;
+        startMarker = null;
+        endMarker = null;
+        curMarker = null;
     }
 
     /**
-     * 移除起点Marker
+     * 缩放地图，使所有Overlay都在合适的视野内
+     * <p>
+     * 注： 该方法只对Marker类型的overlay有效
+     * </p>
+     *
      */
-    public void removeStartMarker() {
-        removeMarker(startMarker);
-    }
-
-    /**
-     * 移除终点Marker
-     */
-    public void removeEndMarker() {
-        removeMarker(endMarker);
+    public void zoomToSpan() {
+        if (mBaiduMap == null) {
+            return;
+        }
+        if (mOverlayList.size() > 0) {
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (Overlay overlay : mOverlayList) {
+                // polyline 中的点可能太多，只按marker 缩放
+                if (overlay instanceof Marker) {
+                    builder.include(((Marker) overlay).getPosition());
+                }
+            }
+            mBaiduMap.setMapStatus(MapStatusUpdateFactory
+                    .newLatLngBounds(builder.build()));
+        }
     }
 
     /**
@@ -181,82 +126,28 @@ public class CustomMapView extends LinearLayout {
      * @param mapCenterPos
      */
     public void updateMapCenter(LatLng mapCenterPos) {
-        if (baiduMap == null || mapCenterPos == null) {
+        if (mBaiduMap == null || mapCenterPos == null) {
             return;
         }
         MapStatusUpdate msu = MapStatusUpdateFactory.newMapStatus(new MapStatus.Builder()
                 .target(mapCenterPos)
-                .zoom(baiduMap.getMapStatus().zoom)
+                .zoom(mBaiduMap.getMapStatus().zoom)
                 .build());
-        baiduMap.setMapStatus(msu);
-    }
-
-    /**
-     * 根据轨迹在地图上的起点、中点、终点的位置关系设置地图的缩放级别并更新地图的中心位置
-     *
-     * @param mapStartPos
-     * @param mapCenterPos
-     * @param mapEndPos
-     */
-    public void updateMapCenter(LatLng mapStartPos, LatLng mapCenterPos, LatLng mapEndPos) {
-        int distance01 = (int) DistanceUtil.getDistance(mapStartPos, mapEndPos);    //起点与终点的直线距离
-        int distance02 = (int) DistanceUtil.getDistance(mapStartPos, mapCenterPos); //起点与中点的直线距离
-        int distance03 = (int) DistanceUtil.getDistance(mapCenterPos, mapEndPos);   //中点与终点的直线距离
-        int maxDistance = distance01;
-        maxDistance = (maxDistance < distance02) ? distance02 : maxDistance;
-        maxDistance = (maxDistance < distance03) ? distance03 : maxDistance;
-        int i;
-        for (i = 0; i < 17; i++) {
-            if (zoomLevel[i] < maxDistance) {
-                break;
-            }
-        }
-        mapZoom = i + 6 > 17 ? 17 : i + 6;
-        updateMapCenter(mapCenterPos);
-    }
-
-
-    /**
-     * 更新当前图标的位置
-     *
-     * @param curPos
-     * @return
-     */
-    public Marker updateCurPosMarker(LatLng curPos) {
-        return updateCurPosMarkerNoDirection(curPos);
+        mBaiduMap.setMapStatus(msu);
     }
 
     /**
      * 更新当前图标的位置
-     *
-     * @param curPos
-     * @return
-     */
-    public Marker updateCurPosMarkerNoDirection(LatLng curPos) {
-        if (curPos == null || baiduMap == null) {
-            return null;
-        }
-        if (curMarker == null) {
-            curMarker = addMarker(curPos, curPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 0.5f);
-        } else {
-            curMarker.setPosition(curPos);
-        }
-        return curMarker;
-    }
-
-    /**
-     * 更新当前图标的位置
-     *
      * @param curPos
      * @param direction 方向数据
      * @return
      */
     public Marker updateCurPosMarker(LatLng curPos, float direction) {
-        if (curPos == null || baiduMap == null) {
+        if (curPos == null || mBaiduMap == null) {
             return null;
         }
         if (curMarker == null) {
-            curMarker = addMarker(curPos, curPosIcon, (int) baiduMap.getMapStatus().zoom, 0.5f, 0.5f);
+            curMarker = addMarker(curPos, curPosIcon);
             if (curMarker != null) {
                 curMarker.setRotate(360 - direction);
             }
@@ -267,66 +158,67 @@ public class CustomMapView extends LinearLayout {
         return curMarker;
     }
 
-    /**
-     * 移除当前位置的图标
-     */
-    public void removeCurPosMarker() {
-        removeMarker(curMarker);
-    }
-
-    /**
-     * 根据经纬度点的列表绘制轨迹
-     *
-     * @param pointList
-     * @return
-     */
-    public Overlay drawRouteInMap(List<LatLng> pointList) {
-        if (pointList == null || pointList.size() < 2 || baiduMap == null) {
-            return null;
-        }
-        if (overlay != null) {
-            overlay.remove();
-        }
-        OverlayOptions overlayOptions = new PolylineOptions()
-                .width(8)
-                .color(0xffff6600)
-                .points(pointList);
-        overlay = baiduMap.addOverlay(overlayOptions);
-        return overlay;
-    }
-
-
-    /**
-     * 清空地图上所有的轨迹线，仅供上报模块的路线采集清空上个任务信息使用
-     */
-    public void clerAllOverlay() {
-        if (routeOverlayList != null && routeOverlayList.size() > 0) {
-            for (Overlay overlay : routeOverlayList) {
-                if (overlay != null) {
-                    overlay.remove();
-                }
-            }
-        }
-    }
-
-    /**
-     * 从地图的其他地方定位到当前的定位位置
-     *
-     * @param curPosition
-     */
-    public void backToCurrentPosition(LatLng curPosition) {
-        if (curPosition == null || baiduMap == null) {
+    public void drawSEToMap (LatLng start, LatLng end) {
+        if (start == null || mBaiduMap == null) {
             return;
         }
-        MapStatusUpdate mapStatusUpdate = MapStatusUpdateFactory.newLatLng(curPosition);
-        baiduMap.animateMapStatus(mapStatusUpdate);
+
+        if(end == null) {
+            if (endMarker != null) {
+                endMarker.remove();
+                mOverlayList.remove(endMarker);
+            }
+
+            if (startTempMarker == null) {
+                startTempMarker = addMarker(start, startTempIcon);
+            } else {
+                startTempMarker.setPosition(start);
+            }
+
+            if (startMarker != null) {
+                startMarker.remove();
+                mOverlayList.remove(startMarker);
+            }
+        } else {
+            if (endMarker == null) {
+                endMarker = addMarker(end, endPosIcon);
+            } else {
+                endMarker.setPosition(end);
+            }
+
+            if (startMarker == null) {
+                startMarker = addMarker(start, startPosIcon);
+            } else {
+                startMarker.setPosition(start);
+            }
+
+            if (startTempMarker != null) {
+                startTempMarker.remove();
+                mOverlayList.remove(startTempMarker);
+            }
+        }
+
     }
 
     /**
-     * 地图marker点击的事件监听接口
+     * 添加标记Marker
+     *
+     * @param pos 起点经纬度所对应的LatLng
      */
-    public interface OnMapMarkerClickListener {
-        void onMapMarkerClick(Marker marker);
+    private Marker addMarker(LatLng pos, BitmapDescriptor markerIcon) {
+        if (mBaiduMap == null || pos == null || markerIcon == null) {
+            return null;
+        }
+        OverlayOptions option = new MarkerOptions()
+                .position(pos)
+                .icon(markerIcon)
+                .zIndex((int) mBaiduMap.getMapStatus().zoom)
+                .draggable(true)
+                .anchor(0.5f, 0.5f);
+        Marker marker = (Marker) mBaiduMap.addOverlay(option);
+        mOverlayList.add(marker);
+        zoomToSpan();
+        return marker;
     }
 
     /**
@@ -342,10 +234,10 @@ public class CustomMapView extends LinearLayout {
      * @param listener
      */
     public void setOnMapStatusChangeFinishListener(final OnMapStatusChangeFinishListener listener) {
-        if (baiduMap == null) {
+        if (mBaiduMap == null) {
             return;
         }
-        baiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+        mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
             @Override
             public void onMapStatusChangeStart(MapStatus mapStatus) {
 
@@ -370,13 +262,6 @@ public class CustomMapView extends LinearLayout {
         });
     }
 
-    /**
-     * 设置地图marker点击的事件监听
-     */
-    public void setOnMapMarkerClickListener(OnMapMarkerClickListener onMapMarkerClickListener) {
-        this.onMapMarkerClickListener = onMapMarkerClickListener;
-    }
-
 
     /**
      * 弹出WindowInfo框
@@ -386,10 +271,10 @@ public class CustomMapView extends LinearLayout {
      * @param i
      */
     public void showInfoWindow(View view, LatLng latLng, int i) {
-        if (baiduMap != null) {
-            baiduMap.hideInfoWindow();
+        if (mBaiduMap != null) {
+            mBaiduMap.hideInfoWindow();
             InfoWindow infoWindow = new InfoWindow(view, latLng, i);
-            baiduMap.showInfoWindow(infoWindow);
+            mBaiduMap.showInfoWindow(infoWindow);
         }
     }
 
@@ -419,138 +304,34 @@ public class CustomMapView extends LinearLayout {
             curPosIcon.recycle();
             curPosIcon = null;
         }
-        if (startPosIcon != null) {
-            startPosIcon.recycle();
-            startPosIcon = null;
+        if (startTempIcon != null) {
+            startTempIcon.recycle();
+            startTempIcon = null;
         }
+
         if (endPosIcon != null) {
             endPosIcon.recycle();
             endPosIcon = null;
         }
-        if (overlayOptionsList != null) {
-            overlayOptionsList.clear();
-            overlayOptionsList = null;
-        }
-        if (routeOverlayList != null) {
-            routeOverlayList.clear();
-            routeOverlayList = null;
-        }
-    }
 
-    public int getMapZoom(double maxLat, double minLat, double maxLon, double minLon) {
-        int jl = (int) DistanceUtil.getDistance(new LatLng(maxLat, maxLon), new LatLng(minLat, minLon));
-        int i;
-        for (i = 0; i < 17; i++) {
-            if (zoomLevel[i] < jl) {
-                break;
-            }
-        }
-        return i + 4;
-    }
-
-    /**
-     * 在屏幕范围内显示所有的Marker
-     *
-     * @param posList
-     */
-    public void addAllMarkerToBaiduMap(List<LatLng> posList) {
-        baiduMap.clear();
-        overlayOptionsList.clear();
-        if (posList == null || posList.size() == 0) {
-            return;
-        }
-        List<Double> latList = new ArrayList<>();
-        List<Double> lonList = new ArrayList<>();
-        for (LatLng latlng : posList) {
-            latList.add(latlng.latitude);
-            lonList.add(latlng.longitude);
-        }
-        int zoom = getMapZoom(Collections.max(latList), Collections.min(latList), Collections.max(lonList), Collections.min(lonList));
-        for (LatLng latLng : posList) {
-            OverlayOptions ooA = new MarkerOptions().position(latLng)
-                    .icon(startPosIcon) //无图标暂用中心图标代替
-                    .zIndex(zoom)
-                    .draggable(true)
-                    .extraInfo(null); //是否携带数据，以后待定
-            overlayOptionsList.add(ooA);
-        }
-        OverlayManager overlayManager = new OverlayManager(baiduMap) {
-            @Override
-            public List<OverlayOptions> getOverlayOptions() {
-                return overlayOptionsList;
-            }
-
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                if (onMapMarkerClickListener != null) {
-                    onMapMarkerClickListener.onMapMarkerClick(marker);
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onPolylineClick(Polyline polyline) {
-                return false;
-            }
-        };
-        overlayManager.addToMap();
-        overlayManager.zoomToSpan();
-    }
-
-    /**
-     * 展示特定经纬度的Marker列表
-     *
-     * @param latLngList    经纬度列表
-     * @param drawableResId 该经纬度列表所添加的marker的图标
-     * @return 所添加的maker列表
-     */
-    public List<Marker> showMark(List<LatLng> latLngList, int drawableResId) {
-        if (baiduMap == null || latLngList == null || latLngList.size() == 0) {
-            return null;
-        }
-        List<Marker> markerList = new ArrayList<>();
-        BitmapDescriptor icon = BitmapDescriptorFactory.fromResource(drawableResId);
-        for (LatLng latLng : latLngList) {
-            if (latLng != null) {
-                markerList.add(addMarker(latLng, icon, (int) baiduMap.getMapStatus().zoom, 0.5f, 1.0f));
-            }
-        }
-        if (icon != null) {
-            icon.recycle();
-        }
-        return markerList;
-    }
-
-    /**
-     * 移除marker列表
-     *
-     * @param markerList
-     */
-    public void removeMarkerList(List<Marker> markerList) {
-        if (markerList == null || markerList.size() == 0) {
-            return;
-        }
-        for (Marker marker : markerList) {
-            removeMarker(marker);
+        if (endPosIcon != null) {
+            endPosIcon.recycle();
+            endPosIcon = null;
         }
     }
 
     /**
-     * 在地图上移除轨迹
-     *
-     * @param overlay
+     * 设置地图marker点击的事件监听
      */
-    public void removeOverlay(Overlay overlay) {
-        if (overlay != null) {
-            overlay.remove();
-        }
+    public void setOnMapMarkerClickListener(OnMapMarkerClickListener onMapMarkerClickListener) {
+        this.onMapMarkerClickListener = onMapMarkerClickListener;
     }
 
     /**
-     * 移除所有的覆盖物和InfoWindow
+     * 地图marker点击的事件监听接口
      */
-    public void removeAllOverlay() {
-        baiduMap.clear();
+    public interface OnMapMarkerClickListener {
+        void onMapMarkerClick(Marker marker);
     }
 
 }

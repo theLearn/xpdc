@@ -2,6 +2,7 @@ package com.xp.dc.xpdc.activity
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Color
 import android.os.Handler
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBar
@@ -11,10 +12,14 @@ import android.view.View
 import com.baidu.mapapi.map.Marker
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.geocode.*
+import com.bigkoo.pickerview.builder.OptionsPickerBuilder
+import com.bigkoo.pickerview.listener.OnOptionsSelectListener
+import com.bigkoo.pickerview.view.OptionsPickerView
 import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
 import com.example.hongcheng.common.util.StringUtils
 import com.example.hongcheng.common.util.ViewUtils
+import com.example.hongcheng.common.view.fragment.SelectPreTimeFragment
 import com.example.hongcheng.common.view.spinkit.SpriteFactory
 import com.example.hongcheng.common.view.spinkit.Style
 import com.example.hongcheng.common.view.spinkit.sprite.Sprite
@@ -90,7 +95,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         //设置地图状态更改完成的函数
         mv_main.setOnMapStatusChangeFinishListener {
             if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
-                mv_main.addStartMarker(it.target)
+                mv_main.drawSEToMap(it.target, null)
                 getAddressInfo(it.target)
             }
         }
@@ -111,7 +116,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
             if (lastPosition == null) {
                 mv_main.updateMapCenter(ll)
-                mv_main.addStartMarker(ll)
+                mv_main.drawSEToMap(ll, null)
                 getAddressInfo(ll)
             }
             lastPosition = it
@@ -123,7 +128,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
 
     private fun getAddressInfo(latLng: LatLng) {
-        val geoCoder = GeoCoder.newInstance()
+        geoCoder = GeoCoder.newInstance()
         geoCoder.setOnGetGeoCodeResultListener(object : OnGetGeoCoderResultListener {
             override fun onGetGeoCodeResult(geoCodeResult: GeoCodeResult) {
             }
@@ -198,7 +203,41 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.tv_call_car_pre
             -> {
-                changeView(APPOINTMENT)
+//                var pvOptions = OptionsPickerBuilder(this,
+//                    OnOptionsSelectListener { options1, options2, options3, v -> })
+//                pvOptions.setSubmitText("确定")//确定按钮文字
+//                .setCancelText("取消")//取消按钮文字
+//                .setSubCalSize(18)//确定和取消文字大小
+//                .setTitleSize(20)//标题文字大小
+//                .setTitleColor(Color.BLACK)//标题文字颜色
+//                .setSubmitColor(Color.BLUE)//确定按钮文字颜色
+//                .setCancelColor(Color.BLUE)//取消按钮文字颜色
+//                .setTitleBgColor(0xFF333333.toInt())//标题背景颜色 Night mode
+//                .setBgColor(0xFF000000.toInt())//滚轮背景颜色 Night mode
+//                .setContentTextSize(18)//滚轮文字大小
+//                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
+//                .setCyclic(false, false, false)//循环与否
+//                .setSelectOptions(1, 1, 1)  //设置默认选中项
+//                .setOutSideCancelable(false)//点击外部dismiss default true
+//                .isDialog(true)//是否显示为对话框样式
+//                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
+//                .build<String>()
+//
+//        pvOptions.setPicker(options1Items, options2Items, options3Items)//添加数据源
+
+                val selectPreTimeFragment = SelectPreTimeFragment()
+                selectPreTimeFragment.setOnClickListener(object : SelectPreTimeFragment.OnSelectListener {
+                    override fun onSure(time: Long): Boolean {
+                        changeView(APPOINTMENT)
+                        return false
+                    }
+
+                    override fun onCancel(): Boolean {
+                        return false
+                    }
+                })
+
+                selectPreTimeFragment.show(supportFragmentManager, "selectPreTimeFragment")
             }
             R.id.ll_start_select
             -> {
@@ -219,7 +258,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
                     mv_main.updateMapCenter(ll)
                     if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
-                        mv_main.addStartMarker(ll)
+                        mv_main.drawSEToMap(ll, null)
                         getAddressInfo(ll)
                     }
                 }
@@ -291,8 +330,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     private fun showPointInMap() {
         val startPosition = AppLocationUtils.getInstance().startLocation
         val endPosition = AppLocationUtils.getInstance().endLocation
-        mv_main.addStartMarker(LatLng(startPosition.lat, startPosition.lon))
-        mv_main.addEndMarker(LatLng(endPosition.lat, endPosition.lon))
+        mv_main.drawSEToMap(LatLng(startPosition.lat, startPosition.lon), LatLng(endPosition.lat, endPosition.lon))
     }
 
     private fun calculate() {
@@ -308,13 +346,12 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                 -> {
                     val startLocation = AppLocationUtils.getInstance().startLocation
                     tv_current_position.text = startLocation.name
-                    mv_main.addStartMarker(LatLng(startLocation.lat, startLocation.lon))
+                    mv_main.drawSEToMap(LatLng(startLocation.lat, startLocation.lon), null)
                 }
                 END_REQUEST
                 -> {
                     val endLocation = AppLocationUtils.getInstance().endLocation
                     tv_destination_position.text = endLocation.name
-                    mv_main.addEndMarker(LatLng(endLocation.lat, endLocation.lon))
                     calculate()
                 }
                 else -> {
