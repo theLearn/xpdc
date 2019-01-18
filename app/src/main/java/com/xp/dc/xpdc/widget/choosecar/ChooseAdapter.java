@@ -19,22 +19,24 @@ import com.xp.dc.xpdc.bean.CarInfo;
 
 import java.util.List;
 
-class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder> {
+class ChooseAdapter<T extends CarClassfyInfo> extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private Context context;
-    private List<CarClassfyInfo> carClassfyInfos;
+    private List<T> carClassfyInfos;
     //    private  LinearLayoutManager linearLayoutManager;
     private boolean mode;
 
     private OnItemClickListener onItemClickListener;
+    private final SpaceItemDecoration spaceItemDecoration;
 
     public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public ChooseAdapter(Context context, List<CarClassfyInfo> carClassfyInfos) {
+    public ChooseAdapter(Context context, List<T> carClassfyInfos) {
         this.context = context;
         this.carClassfyInfos = carClassfyInfos;
+        spaceItemDecoration = new SpaceItemDecoration(10);
     }
 
     public void setMode(boolean mode) {
@@ -49,11 +51,19 @@ class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder>
         return new ChooseViewHolder(itemView);
     }
 
+
+
     @Override
-    public void onBindViewHolder(@NonNull ChooseViewHolder chooseViewHolder, final int i) {
-        final CarClassfyInfo carClassfyInfo = carClassfyInfos.get(i);
-        chooseViewHolder.iv_icon.setImageResource(carClassfyInfo.getIcon());
+    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, final int i) {
+        final T carClassfyInfo = carClassfyInfos.get(i);
+        ChooseViewHolder chooseViewHolder = (ChooseViewHolder) viewHolder;
+        chooseViewHolder.iv_icon.setImageResource(carClassfyInfo.isChecked() ? carClassfyInfo.getCheckIcon() : carClassfyInfo.getIcon());
         chooseViewHolder.tv_type.setText(carClassfyInfo.getType());
+        if (mode) {
+            chooseViewHolder.tv_type.setTextColor(context.getResources().getColor(R.color.text_black));
+        } else {
+            chooseViewHolder.tv_type.setTextColor(carClassfyInfo.isChecked() ? context.getResources().getColor(R.color.text_black) : context.getResources().getColor(R.color.text_gray));
+        }
         chooseViewHolder.tv_type.setGravity(mode ? Gravity.LEFT : Gravity.CENTER);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context);
         linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -62,11 +72,13 @@ class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder>
         carAdapter.setMode(mode);
         chooseViewHolder.rv_car.setAdapter(carAdapter);
         chooseViewHolder.rv_car.setVisibility(mode ? View.VISIBLE : View.GONE);
-        chooseViewHolder.rv_car.addItemDecoration(new SpaceItemDecoration(10));
         chooseViewHolder.iv_icon.setVisibility(!mode ? View.VISIBLE : View.GONE);
         chooseViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                for (CarClassfyInfo info : carClassfyInfos) {
+                    info.setChecked(false);
+                }
                 carClassfyInfo.setChecked(true);
                 notifyDataSetChanged();
                 if (onItemClickListener != null)
@@ -88,10 +100,10 @@ class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder>
         });
 
         if (!mode) {
-            if (carClassfyInfos.size() < 3) {
+            if (carClassfyInfos.size() < 4) {
                 chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / carClassfyInfos.size();
             } else {
-                chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / 3;
+                chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / 4;
             }
         } else {
             chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
@@ -116,6 +128,17 @@ class ChooseAdapter extends RecyclerView.Adapter<ChooseAdapter.ChooseViewHolder>
             iv_icon = itemView.findViewById(R.id.iv_icon);
             tv_type = itemView.findViewById(R.id.tv_type);
             rv_car = itemView.findViewById(R.id.rv_car);
+            rv_car.addItemDecoration(spaceItemDecoration);
+        }
+    }
+
+
+    /**
+     * 初始化是默认选中第一个item
+     */
+    public void initFirstItem() {
+        if (onItemClickListener != null && getItemCount() != 0) {
+            onItemClickListener.onItemClick(0);
         }
     }
 

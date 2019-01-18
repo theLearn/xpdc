@@ -5,7 +5,7 @@
               android:layout_height="100dp"
               android:gravity="center"
               android:orientation="vertical"
-              android:background="@drawable/ic_choosed_bg"
+              android:background="@mipmap/ic_choosed_bg"
               android:padding="@dimen/public_space_value_5">
 
 

@@ -6,7 +6,17 @@ public class CarClassfyInfo {
 
     private String type;
     private int icon;
+    private int checkIcon;
     private List<CarInfo> carInfo;
+
+
+    public int getCheckIcon() {
+        return checkIcon;
+    }
+
+    public void setCheckIcon(int checkIcon) {
+        this.checkIcon = checkIcon;
+    }
 
     private boolean isChecked;
 

@@ -1,8 +1,6 @@
 package com.xp.dc.xpdc.widget.choosecar;
 
-import android.app.Activity;
 import android.content.Context;
-import android.media.Image;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +14,10 @@ import com.xp.dc.xpdc.bean.CarInfo;
 
 import java.util.List;
 
-class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
+class CarHoriAdapter extends RecyclerView.Adapter<CarHoriAdapter.CarViewHolder> {
 
     private Context context;
     private List<CarInfo> carInfos;
-    private CarInfo lastCarInfo;
 
     private ChooseAdapter.OnItemClickListener onItemClickListener;
     private int parentWidth;
@@ -29,7 +26,7 @@ class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         this.onItemClickListener = onItemClickListener;
     }
 
-    public CarAdapter(Context context, List<CarInfo> carInfos) {
+    public CarHoriAdapter(Context context, List<CarInfo> carInfos) {
         this.context = context;
         this.carInfos = carInfos;
     }
@@ -71,12 +68,15 @@ class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
                 }
                 carInfo.setChecked(true);
                 notifyDataSetChanged();
-                lastCarInfo = carInfo;
                 if (onItemClickListener != null)
                     onItemClickListener.onItemClick(i);
             }
         });
-        carViewHolder.itemView.getLayoutParams().width = parentWidth / 3 - 15;
+        if (carInfos.size() < 3) {
+            carViewHolder.itemView.getLayoutParams().width = parentWidth / carInfos.size() - 15;
+        } else {
+            carViewHolder.itemView.getLayoutParams().width = parentWidth / 3 - 15;
+        }
     }
 
     @Override

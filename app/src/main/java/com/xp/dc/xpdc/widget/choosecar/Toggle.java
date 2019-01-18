@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.xp.dc.xpdc.R;
+import com.xp.dc.xpdc.bean.CarInfo;
 
 
 public class Toggle extends LinearLayout {
@@ -19,6 +20,7 @@ public class Toggle extends LinearLayout {
     private static final int STYLE_BLUE = 0;
     private static final int STYLE_RED = 1;
     int[] styles = new int[]{STYLE_BLUE, STYLE_RED};
+    private CarInfo info;
 
     public String getTopText() {
         return mTv_total.getText().toString().trim();
@@ -28,6 +30,13 @@ public class Toggle extends LinearLayout {
         return mTv_type.getText().toString().trim();
     }
 
+    public void setInfo(CarInfo info) {
+        this.info = info;
+    }
+
+    public CarInfo getInfo() {
+        return info;
+    }
 
     public enum Style {
         BLUE("#0086f1", "#9e9e9e", "#e9f3fd", "#edebeb"),
@@ -414,11 +423,11 @@ public class Toggle extends LinearLayout {
     }
 
     private Drawable getOnDrawable() {
-        return   mContext.getResources().getDrawable(R.drawable.ic_choosed_bg);
+        return mContext.getResources().getDrawable(R.drawable.ic_choosed_bg);
     }
 
     private Drawable getOffDrawable() {
-        return   mContext.getResources().getDrawable(R.mipmap.ic_unchoose);
+        return mContext.getResources().getDrawable(R.mipmap.ic_unchoose);
     }
 
     /**
@@ -439,12 +448,14 @@ public class Toggle extends LinearLayout {
     public void setToggleOn(boolean isToggleOn) {
         this.isToggleOn = isToggleOn;
         if (isToggleOn) {
+            info.setChecked(true);
             mLl_toggle.setBackgroundDrawable(getOnDrawable());
             mTv_total.setTextColor(Color.parseColor(on_top_color));
             mTv_type.setTextColor(Color.parseColor(on_botton_color));
             mIv_icon.setImageDrawable(on_res_id == 0 ? null : mContext.getDrawable(on_res_id));
             mIv_text_icon.setImageDrawable(on_text_res_id == 0 ? null : mContext.getDrawable(on_text_res_id));
         } else {
+            info.setChecked(false);
             mLl_toggle.setBackgroundDrawable(getOffDrawable());
             mTv_total.setTextColor(Color.parseColor(off_top_color));
             mTv_type.setTextColor(Color.parseColor(off_botton_color));

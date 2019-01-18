@@ -1,29 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:background="@color/white"
               android:layout_width="match_parent"
-              android:layout_height="match_parent"
+              android:layout_height="wrap_content"
 >
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:id="@+id/rv_type"/>
-
-    <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:id="@+id/rv_car"/>
-
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:id="@+id/ll_horizontal">
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/rv_type"/>
+        <com.xp.dc.xpdc.widget.choosecar.StatisticsListView
+                android:id="@+id/sl"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_marginTop="5dp"/>
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:visibility="gone"
+                                                android:id="@+id/rv_car"/>
+    </LinearLayout>
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical"
+                  android:visibility="gone"
+                  android:id="@+id/ll_vertical">
+        <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:id="@+id/rv_allcar"/>
+    </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:layout_margin="@dimen/public_space_value_10"
                   android:orientation="horizontal">
-        <ImageView android:layout_width="0dp" android:layout_height="wrap_content"
-                   android:layout_weight="1"
-                   android:background="@mipmap/spread"
-                   android:id="@+id/iv_change"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                  android:layout_weight="1"
+                  android:background="@drawable/tv_gray_bg"
+                  android:padding="@dimen/public_space_value_5"
+                  android:gravity="center"
+                  android:text="展开"
+                  android:id="@+id/tv_change"/>
 
-        <ImageView android:layout_width="0dp" android:layout_height="wrap_content"
-                   android:layout_marginLeft="@dimen/public_space_value_20"
-                   android:layout_weight="3"
-                   android:background="@mipmap/ic_use_car"
-                   android:id="@+id/iv_call"/>
+        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                  android:layout_marginLeft="@dimen/public_space_value_20"
+                  android:layout_weight="3"
+                  android:text="立即呼叫"
+                  android:textSize="@dimen/big_text_size"
+                  android:textColor="@color/white"
+                  android:padding="@dimen/public_space_value_5"
+                  android:gravity="center"
+                  android:background="@color/mediumturquoise"
+                  android:id="@+id/tv_call"/>
     </LinearLayout>
 </LinearLayout>

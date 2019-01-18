@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import com.example.hongcheng.common.util.ToastUtils;
 import com.xp.dc.xpdc.R;
 import com.xp.dc.xpdc.bean.CarClassfyInfo;
@@ -26,7 +27,6 @@ public class TestActivity extends AppCompatActivity {
      * 底部弹出view
      */
     BottomView bottomView;
-    private LinearLayout ll_bottonlayout;
     private ChooseView chooseView;
 
     @Override
@@ -38,7 +38,6 @@ public class TestActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        ll_bottonlayout = (LinearLayout) findViewById(R.id.ll_bottonlayout);
         initBottomView();
     }
 
@@ -50,17 +49,13 @@ public class TestActivity extends AppCompatActivity {
      */
     public void initBottomView() {
         chooseView = findViewById(R.id.chooseview);
-//        tabView.setOnTabChangeListener(new MyTabView.OnTabChangeListener() {
-//            @Override
-//            public void onTabSelected(int pos, String title, List<Toggle> toggleList) {
-//                ToastUtils.show(TestActivity.this, carClassfyInfos.get(pos).getType());
-//            }
-//
-//            @Override
-//            public void onToggleSingle(Toggle openToggle, Toggle closeToggle) {
-//                ToastUtils.show(TestActivity.this, openToggle.getType());
-//            }
-//        });
+        chooseView.setOnCallListener(new ChooseView.OnCallListener() {
+            @Override
+            public void onCall(CarInfo chooseCarInfo) {
+                if (chooseCarInfo != null)
+                    ToastUtils.show(TestActivity.this, chooseCarInfo.getCarName() + chooseCarInfo.getPrice());
+            }
+        });
     }
 
     private int checkToggleRes;
@@ -84,11 +79,12 @@ public class TestActivity extends AppCompatActivity {
         carClassfyInfos = new ArrayList<>();
         CarClassfyInfo carClassfyInfo = new CarClassfyInfo();
         carClassfyInfo.setType("出租车");
+        carClassfyInfo.setCheckIcon(R.mipmap.ico_taxi_checked);
         carClassfyInfo.setIcon(R.mipmap.ic_taxi);
         List<CarInfo> carInfos = new ArrayList<>();
         CarInfo carInfo = new CarInfo();
         carInfo.setCarIcon(R.mipmap.ic_didi);
-        carInfo.setCarName("滴滴快车");
+        carInfo.setCarName("出租车");
         carInfo.setId(1);
         carInfo.setPrice("11.5元");
         carInfos.add(carInfo);
@@ -101,7 +97,8 @@ public class TestActivity extends AppCompatActivity {
         carClassfyInfos.add(carClassfyInfo);
         carClassfyInfo = new CarClassfyInfo();
         carClassfyInfo.setType("经济型");
-        carClassfyInfo.setIcon(R.mipmap.ic_normal_car);
+        carClassfyInfo.setCheckIcon(R.mipmap.ic_normal_car);
+        carClassfyInfo.setIcon(R.mipmap.ico_normal_uncheck);
         carInfos = new ArrayList<>();
         carInfo = new CarInfo();
         carInfo.setCarIcon(R.mipmap.ic_didi);
@@ -118,6 +115,7 @@ public class TestActivity extends AppCompatActivity {
         carClassfyInfo.setCarInfo(carInfos);
         carClassfyInfos.add(carClassfyInfo);
         carClassfyInfo = new CarClassfyInfo();
+        carClassfyInfo.setCheckIcon(R.mipmap.ico_good_checked);
         carClassfyInfo.setIcon(R.mipmap.ic_comfortable_car);
         carClassfyInfo.setType("舒适型");
         carInfos = new ArrayList<>();
