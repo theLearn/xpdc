@@ -31,6 +31,12 @@
             android:orientation="vertical"
             android:background="@color/colorDefault">
 
+        <com.xp.dc.xpdc.widget.choosecar.ChooseView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:id="@+id/cc_main"/>
+
         <com.example.hongcheng.common.view.spinkit.SpinKitView
                 android:id="@+id/sk_call_query_load"
                 style="@style/SpinKitView.Circle"
@@ -72,7 +78,7 @@
                         android:text="@string/call_car_now"
                         android:id="@+id/tv_call_car_now"
                         android:background="@drawable/tv_gray_conner"
-                        android:textColor="@color/text_gray_call"
+                        android:textColor="@color/colorBase"
                         android:textSize="@dimen/normal_text_size"/>
 
                 <TextView

@@ -2,7 +2,6 @@ package com.xp.dc.xpdc.activity
 
 import android.app.Activity
 import android.content.Intent
-import android.graphics.Color
 import android.os.Handler
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBar
@@ -12,9 +11,6 @@ import android.view.View
 import com.baidu.mapapi.map.Marker
 import com.baidu.mapapi.model.LatLng
 import com.baidu.mapapi.search.geocode.*
-import com.bigkoo.pickerview.builder.OptionsPickerBuilder
-import com.bigkoo.pickerview.listener.OnOptionsSelectListener
-import com.bigkoo.pickerview.view.OptionsPickerView
 import com.example.hongcheng.common.base.BasicActivity
 import com.example.hongcheng.common.util.ScreenUtils
 import com.example.hongcheng.common.util.StringUtils
@@ -86,7 +82,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
         val style: Style = Style.values()[7]
         val drawable: Sprite = SpriteFactory.create(style)
-        (drawable as SpriteContainer).color = resources.getColor(R.color.app_theme)
+        (drawable as SpriteContainer).color = resources.getColor(R.color.colorBase)
         sk_call_query_load.setIndeterminateDrawable(drawable)
 
         AppLocationUtils.getInstance().init(BaseApplication.getInstance())
@@ -98,6 +94,10 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                 mv_main.drawSEToMap(it.target, null)
                 getAddressInfo(it.target)
             }
+        }
+
+        cc_main.setOnCallListener {
+            order()
         }
     }
 
@@ -134,6 +134,8 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
 
             override fun onGetReverseGeoCodeResult(reverseGeoCodeResult : ReverseGeoCodeResult) {
+                if(StringUtils.isEmpty(reverseGeoCodeResult.addressDetail?.city)) return
+
                 val sb = StringBuilder()
                 val poiList = reverseGeoCodeResult.poiList
                 if (poiList != null && !poiList.isEmpty()) {
@@ -203,32 +205,11 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.tv_call_car_pre
             -> {
-//                var pvOptions = OptionsPickerBuilder(this,
-//                    OnOptionsSelectListener { options1, options2, options3, v -> })
-//                pvOptions.setSubmitText("确定")//确定按钮文字
-//                .setCancelText("取消")//取消按钮文字
-//                .setSubCalSize(18)//确定和取消文字大小
-//                .setTitleSize(20)//标题文字大小
-//                .setTitleColor(Color.BLACK)//标题文字颜色
-//                .setSubmitColor(Color.BLUE)//确定按钮文字颜色
-//                .setCancelColor(Color.BLUE)//取消按钮文字颜色
-//                .setTitleBgColor(0xFF333333.toInt())//标题背景颜色 Night mode
-//                .setBgColor(0xFF000000.toInt())//滚轮背景颜色 Night mode
-//                .setContentTextSize(18)//滚轮文字大小
-//                .isCenterLabel(false) //是否只显示中间选中项的label文字，false则每项item全部都带有label。
-//                .setCyclic(false, false, false)//循环与否
-//                .setSelectOptions(1, 1, 1)  //设置默认选中项
-//                .setOutSideCancelable(false)//点击外部dismiss default true
-//                .isDialog(true)//是否显示为对话框样式
-//                .isRestoreItem(true)//切换时是否还原，设置默认选中第一项。
-//                .build<String>()
-//
-//        pvOptions.setPicker(options1Items, options2Items, options3Items)//添加数据源
-
                 val selectPreTimeFragment = SelectPreTimeFragment()
                 selectPreTimeFragment.setOnClickListener(object : SelectPreTimeFragment.OnSelectListener {
-                    override fun onSure(time: Long): Boolean {
+                    override fun onSure(time: Long, timeStr : String): Boolean {
                         changeView(APPOINTMENT)
+                        tv_call_car_pre.text = timeStr
                         return false
                     }
 
@@ -253,25 +234,29 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             R.id.iv_map_reset
             -> {
-                lastPosition?.let {
-                    val ll = LatLng(it.lat, it.lon)
-                    curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
-                    mv_main.updateMapCenter(ll)
-                    if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
-                        mv_main.drawSEToMap(ll, null)
-                        getAddressInfo(ll)
-                    }
-                }
+                resetMap()
             }
             else -> {
             }
         }
+    }
 
+    private fun resetMap() {
+        lastPosition?.let {
+            val ll = LatLng(it.lat, it.lon)
+            curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
+            mv_main.updateMapCenter(ll)
+            if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
+                mv_main.drawSEToMap(ll, null)
+                getAddressInfo(ll)
+            }
+        }
     }
 
     private fun changeView(state : Int) {
         if(CURRENT_STATE == state) return
         sk_call_query_load.visibility = View.GONE
+        cc_main.visibility = View.GONE
         wc_main.visibility = View.GONE
         ll_block_select_position.visibility = View.GONE
         when (state) {
@@ -282,12 +267,15 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     TypedValue.COMPLEX_UNIT_PX,
                     resources.getDimension(R.dimen.normal_text_size)
                 )
+                tv_call_car_now.setTextColor(resources.getColor(R.color.colorBase))
+                tv_call_car_pre.setTextColor(resources.getColor(R.color.text_gray_call))
                 tv_call_car_now.setBackgroundResource(R.drawable.tv_gray_conner)
                 tv_call_car_pre.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,
                     resources.getDimension(R.dimen.text_size_13)
                 )
                 tv_call_car_pre.setBackgroundDrawable(null)
+                tv_call_car_pre.setText(R.string.call_car_pre)
             }
             APPOINTMENT
             -> {
@@ -296,6 +284,8 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     TypedValue.COMPLEX_UNIT_PX,
                     resources.getDimension(R.dimen.normal_text_size)
                 )
+                tv_call_car_pre.setTextColor(resources.getColor(R.color.colorBase))
+                tv_call_car_now.setTextColor(resources.getColor(R.color.text_gray_call))
                 tv_call_car_pre.setBackgroundResource(R.drawable.tv_gray_conner)
                 tv_call_car_now.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,
@@ -305,11 +295,12 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
             SELECT_CAR
             -> {
+                showPointInMap()
                 tv_app_common_title.setText(R.string.main_title_call_confirm)
+                cc_main.visibility = View.VISIBLE
             }
             WAIT_ORDER_ACCEPT
             -> {
-                showPointInMap()
                 tv_app_common_title.setText(R.string.main_title_calling)
                 wc_main.visibility = View.VISIBLE
             }
@@ -335,6 +326,11 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
 
     private fun calculate() {
         changeView(LOADING)
+        Handler().postDelayed({ changeView(SELECT_CAR) }, 2000)
+    }
+
+    private fun order() {
+        changeView(LOADING)
         Handler().postDelayed({ changeView(WAIT_ORDER_ACCEPT) }, 2000)
     }
 
@@ -350,8 +346,6 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                 }
                 END_REQUEST
                 -> {
-                    val endLocation = AppLocationUtils.getInstance().endLocation
-                    tv_destination_position.text = endLocation.name
                     calculate()
                 }
                 else -> {
@@ -374,5 +368,18 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         super.onDestroy()
         mv_main.onDestroy()
         geoCoder.destroy()
+    }
+
+    override fun onBackPressed() {
+        when (CURRENT_STATE) {
+            SELECT_CAR
+            -> {
+                changeView(NOW)
+                resetMap()
+            }
+            else -> {
+                moveTaskToBack(true)
+            }
+        }
     }
 }

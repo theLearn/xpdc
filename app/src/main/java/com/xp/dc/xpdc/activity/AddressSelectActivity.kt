@@ -127,8 +127,8 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
         if(type > END) ll_home_company_block.visibility = View.GONE
         ll_home_block.setOnClickListener(this)
         ll_company_block.setOnClickListener(this)
-        iv_home_address_edit.setOnClickListener(this)
-        iv_home_company_edit.setOnClickListener(this)
+        fl_home_address_edit.setOnClickListener(this)
+        fl_company_address_edit.setOnClickListener(this)
 
         viewModel.searchPoi(tv_city_show.text.toString(), svAddress.text)
     }
@@ -164,10 +164,11 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
                     xpLocation.province = info.province
                     xpList.add(xpLocation)
 
-                    if(1 == info.type) {
+                    if(info.isHome) {
                         tv_address_home.text = info.name
                         homeAddress = xpLocation
-                    } else if(2 == info.type){
+                    }
+                    if(info.isCompany){
                         tv_address_company.text = info.name
                         companyAddress = xpLocation
                     }
@@ -193,13 +194,13 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
                     completeSelect(it)
                 }
             }
-            R.id.iv_home_address_edit
+            R.id.fl_home_address_edit
             -> {
                 val homeIntent = Intent(this, AddressSelectActivity::class.java)
                 homeIntent.putExtra("type", HOME)
                 startActivity(homeIntent)
             }
-            R.id.iv_home_company_edit
+            R.id.fl_company_address_edit
             -> {
                 val companyIntent = Intent(this, AddressSelectActivity::class.java)
                 companyIntent.putExtra("type", COMPANY)
@@ -211,14 +212,7 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
     }
 
     private fun completeSelect(xpLocation: XPLocation) {
-        val entity = HistoryAddressEntity()
-        entity.lat = xpLocation.lat
-        entity.lon = xpLocation.lon
-        entity.name = xpLocation.name
-        entity.address = xpLocation.address
-        entity.city = xpLocation.city
-        entity.province = xpLocation.province
-        entity.userNo = "123456"
+        val entity = convertAddress(xpLocation)
         when (type) {
             START
             -> {
@@ -230,11 +224,21 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
             }
             HOME
             -> {
-                entity.type = 1
+                if(entity.isHome) {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                    return
+                }
+                entity.isHome = true
             }
             COMPANY
             -> {
-                entity.type = 2
+                if(entity.isCompany) {
+                    setResult(Activity.RESULT_OK)
+                    finish()
+                    return
+                }
+                entity.isCompany = true
             }
             else -> {
             }
@@ -242,5 +246,24 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
         viewModel.insertSelectAddress(entity)
         setResult(Activity.RESULT_OK)
         finish()
+    }
+
+    private fun convertAddress(xpLocation: XPLocation): HistoryAddressEntity {
+        val entity = HistoryAddressEntity()
+        entity.lat = xpLocation.lat
+        entity.lon = xpLocation.lon
+        entity.name = xpLocation.name
+        entity.address = xpLocation.address
+        entity.city = xpLocation.city
+        entity.province = xpLocation.province
+        entity.userNo = "123456"
+        homeAddress?.let {
+            entity.isHome = it.lat == entity.lat && it.lon == entity.lon
+        }
+        companyAddress?.let {
+            entity.isCompany = it.lat == entity.lat && it.lon == entity.lon
+        }
+
+        return entity
     }
 }

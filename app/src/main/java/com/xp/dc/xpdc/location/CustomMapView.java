@@ -178,6 +178,7 @@ public class CustomMapView extends LinearLayout {
             if (startMarker != null) {
                 startMarker.remove();
                 mOverlayList.remove(startMarker);
+                startMarker = null;
             }
         } else {
             if (endMarker == null) {
@@ -195,6 +196,7 @@ public class CustomMapView extends LinearLayout {
             if (startTempMarker != null) {
                 startTempMarker.remove();
                 mOverlayList.remove(startTempMarker);
+                startTempMarker = null;
             }
         }
 

@@ -9,15 +9,12 @@ interface HistoryAddressDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertOrReplace(data: List<HistoryAddressEntity>) : List<Long>
 
-    @Delete
-    fun deleteByModel(data: List<HistoryAddressEntity>) : Int
+    @Query("UPDATE historyAddress SET isHome = :isHome where userNo = :userNo")
+    fun updateHomeAddress(isHome: Boolean, userNo : String) : Int
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    fun updateModel(data: List<HistoryAddressEntity>) : Int
+    @Query("UPDATE historyAddress SET isCompany = :isCompany where userNo = :userNo")
+    fun updateCompanyAddress(isCompany: Boolean, userNo : String) : Int
 
     @Query("SELECT * FROM historyAddress where userNo = :userNo")
     fun getAllInfoByUserNo(userNo : String): Flowable<List<HistoryAddressEntity>>
-
-    @Query("SELECT * FROM historyAddress where type = :type and userNo = :userNo")
-    fun getAllInfoByType(userNo : String, type : Int): Flowable<List<HistoryAddressEntity>>
 }

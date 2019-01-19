@@ -68,6 +68,8 @@ class HistoryAddressViewModel(private var ui: CommonUI?) : BaseViewModel(ui) {
     }
 
     fun insertSelectAddress(entity: HistoryAddressEntity) {
+        if (entity.isHome) DBInit.getInstance().getAppDatabase()?.getHistoryAddressDao()?.updateHomeAddress(false, "123456")
+        if (entity.isCompany) DBInit.getInstance().getAppDatabase()?.getHistoryAddressDao()?.updateCompanyAddress(false, "123456")
         val list = arrayListOf<HistoryAddressEntity>()
         list.add(entity)
         insertAddress(list)

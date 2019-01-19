@@ -36,7 +36,7 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemViewType(int position) {
         // 最后一个item设置为FooterView
-        if (position == getItemCount()) {
+        if (position == adapter.getItemCount()) {
             return TYPE_FOOTER;
         } else {
             return adapter.getItemViewType(position);

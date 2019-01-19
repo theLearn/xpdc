@@ -11,7 +11,7 @@
     <string name="set_home_hint">设置家的地址</string>
     <string name="set_company_hint">设置公司的地址</string>
     <string name="order">订单</string>
-    <string name="use_car_order">用车订单</string>
+    <string name="use_car_order">我的订单</string>
     <string name="my_order">我的订单</string>
     <string name="edit_pw">修改密码</string>
     <string name="about_app">关于小平</string>
@@ -43,4 +43,5 @@
     <string name="call_car_wait_tip3">滴滴快车-经济型</string>
     <string name="call_car_wait_tip4">平均等待一分钟</string>
     <string name="cancel_order">取消订单</string>
+    <string name="order_state_finish">已完成</string>
 </resources>

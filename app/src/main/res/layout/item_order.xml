@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="@dimen/public_space_value_5"
+        app:cardElevation="@dimen/public_space_value_3"
+        app:cardUseCompatPadding="true">
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/public_space_value_20"
+            android:orientation="vertical">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+            <TextView
+                    android:id="@+id/tv_order_car_type"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/text_black_call"
+                    android:text="@string/home"
+                    android:textSize="@dimen/text_size_13"/>
+            <TextView
+                    android:id="@+id/tv_order_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:layout_marginRight="@dimen/public_space_value_10"
+                    android:text="@string/order_state_finish"
+                    android:textColor="@color/text_gray_call"
+                    android:textSize="@dimen/text_size_13"/>
+
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/icon_arrow_right"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/public_space_value_10"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="@dimen/public_space_value_9"
+                    android:layout_height="@dimen/public_space_value_9"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_address_history"/>
+            <TextView
+                    android:id="@+id/tv_order_time"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:textColor="@color/text_black_call"
+                    android:text="@string/home"
+                    android:textSize="@dimen/small_text_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/public_space_value_10"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="@dimen/public_space_value_8"
+                    android:layout_height="@dimen/public_space_value_8"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_cycle_green"/>
+            <TextView
+                    android:id="@+id/tv_order_start_position"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:textColor="@color/text_black_call"
+                    android:text="@string/home"
+                    android:textSize="@dimen/small_text_size"/>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="@dimen/public_space_value_10"
+                android:orientation="horizontal">
+
+            <ImageView
+                    android:layout_width="@dimen/public_space_value_8"
+                    android:layout_height="@dimen/public_space_value_8"
+                    android:scaleType="fitXY"
+                    android:src="@mipmap/icon_cycle_red"/>
+            <TextView
+                    android:id="@+id/tv_order_end_position"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/public_space_value_10"
+                    android:textColor="@color/text_black_call"
+                    android:text="@string/home"
+                    android:textSize="@dimen/small_text_size"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

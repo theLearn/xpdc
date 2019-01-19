@@ -10,11 +10,13 @@ import android.view.*;
 import android.widget.TextView;
 import com.bigkoo.pickerview.adapter.ArrayWheelAdapter;
 import com.contrarywind.listener.OnItemSelectedListener;
-import com.contrarywind.view.WheelView;
 import com.example.hongcheng.common.R;
+import com.example.hongcheng.common.util.LoggerUtils;
+import com.example.hongcheng.common.view.wheelview.CustomWheelView;
 import com.example.hongcheng.common.view.wheelview.WheelStyle;
 
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by hongcheng on 17/8/21.
@@ -22,9 +24,11 @@ import java.util.Calendar;
 
 public class SelectPreTimeFragment extends DialogFragment
 {
-	private WheelView threeDayWheel;
-	private WheelView hourWheel;
-	private WheelView minuteWheel;
+	private CustomWheelView threeDayWheel;
+	private CustomWheelView hourWheel;
+	private CustomWheelView minuteWheel;
+
+	private static final String[] DAY_STRS = new String[]{"今天", "明天", "后天"};
 
 	private ArrayWheelAdapter threeDayAdapter;
 	private ArrayWheelAdapter hourAdapter;
@@ -69,9 +73,9 @@ public class SelectPreTimeFragment extends DialogFragment
 	
 	private void initView()
 	{
-		threeDayWheel = (WheelView) dialogView.findViewById(R.id.select_pre_wheel_day_wheel);
-		hourWheel = (WheelView) dialogView.findViewById(R.id.select_date_hour_wheel);
-		minuteWheel = (WheelView) dialogView.findViewById(R.id.select_date_minute_wheel);
+		threeDayWheel = dialogView.findViewById(R.id.select_pre_wheel_day_wheel);
+		hourWheel = dialogView.findViewById(R.id.select_date_hour_wheel);
+		minuteWheel = dialogView.findViewById(R.id.select_date_minute_wheel);
 
 		threeDayWheel.setCyclic(false);
 		threeDayAdapter = new ArrayWheelAdapter(WheelStyle.createThreeDayString());
@@ -134,16 +138,31 @@ public class SelectPreTimeFragment extends DialogFragment
 			@Override
 			public void onClick(View v)
 			{
-				Calendar calendar = Calendar.getInstance();
-				calendar.add(Calendar.DATE, dayIndex);
-				calendar.set(Calendar.HOUR_OF_DAY, selectHour);
-				calendar.set(Calendar.MINUTE, selectMinute);
-
-				long setTime = calendar.getTimeInMillis();
-				
 				if (onClickListener != null)
 				{
-					if (!onClickListener.onSure(setTime))
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(new Date());
+					calendar.add(Calendar.DATE, dayIndex);
+					String hour = (String) hourAdapter.getItem(selectHour);
+					String minute = (String) minuteAdapter.getItem(selectMinute);
+
+					try {
+						calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(hour));
+						calendar.set(Calendar.MINUTE, Integer.parseInt(minute));
+					}catch (NumberFormatException e) {
+						LoggerUtils.error("NumberFormatException", e.getMessage());
+					}
+
+					long setTime = calendar.getTimeInMillis();
+
+					StringBuilder sb = new StringBuilder();
+					sb.append(DAY_STRS[dayIndex]);
+					sb.append("  ");
+					sb.append(hour);
+					sb.append(" : ");
+					sb.append(minute);
+
+					if (!onClickListener.onSure(setTime, sb.toString()))
 					{
 						dialogView.dismiss();
 					}
@@ -172,7 +191,7 @@ public class SelectPreTimeFragment extends DialogFragment
 	 */
 	public interface OnSelectListener
 	{
-		boolean onSure(long time);
+		boolean onSure(long time, String timeStr);
 		
 		boolean onCancel();
 	}

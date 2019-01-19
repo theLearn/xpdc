@@ -38,7 +38,6 @@
                         android:paddingTop="@dimen/public_space_value_15"
                         android:paddingBottom="@dimen/public_space_value_15"
                         android:paddingLeft="@dimen/public_space_value_20"
-                        android:paddingRight="@dimen/public_space_value_20"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -74,16 +73,20 @@
                                 android:textSize="@dimen/small_text_size"/>
                     </LinearLayout>
 
-                    <ImageView
-                            android:id="@+id/iv_home_address_edit"
-                            android:layout_width="@dimen/public_space_value_20"
-                            android:layout_height="@dimen/public_space_value_20"
-                            android:paddingLeft="@dimen/public_space_value_10"
-                            android:paddingTop="@dimen/public_space_value_10"
-                            android:scaleType="fitXY"
-                            android:layout_gravity="bottom"
-                            android:layout_marginBottom="@dimen/public_space_value_2"
-                            android:src="@mipmap/icon_address_edit"/>
+                    <FrameLayout
+                            android:id="@+id/fl_home_address_edit"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:paddingRight="@dimen/public_space_value_20">
+                        <ImageView
+                                android:layout_width="@dimen/public_space_value_10"
+                                android:layout_height="@dimen/public_space_value_10"
+                                android:scaleType="fitXY"
+                                android:layout_gravity="bottom|left"
+                                android:layout_marginBottom="@dimen/public_space_value_2"
+                                android:src="@mipmap/icon_address_edit"/>
+                    </FrameLayout>
+
                 </LinearLayout>
 
                 <include layout="@layout/line_vertical"/>
@@ -94,7 +97,6 @@
                         android:paddingTop="@dimen/public_space_value_15"
                         android:paddingBottom="@dimen/public_space_value_15"
                         android:paddingLeft="@dimen/public_space_value_20"
-                        android:paddingRight="@dimen/public_space_value_20"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal">
 
@@ -130,16 +132,19 @@
                                 android:textSize="@dimen/small_text_size"/>
                     </LinearLayout>
 
-                    <ImageView
-                            android:id="@+id/iv_home_company_edit"
-                            android:layout_width="@dimen/public_space_value_20"
-                            android:layout_height="@dimen/public_space_value_20"
-                            android:paddingLeft="@dimen/public_space_value_10"
-                            android:paddingTop="@dimen/public_space_value_10"
-                            android:scaleType="fitXY"
-                            android:layout_gravity="bottom"
-                            android:layout_marginBottom="@dimen/public_space_value_2"
-                            android:src="@mipmap/icon_address_edit"/>
+                    <FrameLayout
+                            android:id="@+id/fl_company_address_edit"
+                            android:paddingRight="@dimen/public_space_value_20"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent">
+                        <ImageView
+                                android:layout_width="@dimen/public_space_value_10"
+                                android:layout_height="@dimen/public_space_value_10"
+                                android:scaleType="fitXY"
+                                android:layout_gravity="bottom|left"
+                                android:layout_marginBottom="@dimen/public_space_value_2"
+                                android:src="@mipmap/icon_address_edit"/>
+                    </FrameLayout>
                 </LinearLayout>
             </LinearLayout>
 

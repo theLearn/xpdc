@@ -11,6 +11,7 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.xp.dc.xpdc.R
+import com.xp.dc.xpdc.bean.WaitCallCarViewModel
 import kotlinx.android.synthetic.main.layout_call_car_wait.view.*
 
 class WaitCallCarView : LinearLayout {
@@ -53,13 +54,4 @@ class WaitCallCarView : LinearLayout {
             .transition(DrawableTransitionOptions.withCrossFade()).into(iv_user_photo)
 
     }
-
-    data class WaitCallCarViewModel(
-        var orderNo: String = "123456789",
-        var userImgUrl: String = "",
-        var carTypeNum: String = "1",
-        var carType: String = "滴滴快车-经济型",
-        var carImgUrl: String = "",
-        var limitTime: Long = 10000
-    )
 }
