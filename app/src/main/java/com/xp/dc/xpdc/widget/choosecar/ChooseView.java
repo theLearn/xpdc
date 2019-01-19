@@ -39,7 +39,12 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
     private StatisticsListView mSl;
     List<Toggle> toggleList = new ArrayList<>();
     private OnCallListener onCallListener;
+    private OnStateChangeListener onStateChangeListener;
     private ImageView iv_close;
+
+    public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
+        this.onStateChangeListener = onStateChangeListener;
+    }
 
     public void setOnCallListener(OnCallListener onCallListener) {
         this.onCallListener = onCallListener;
@@ -83,7 +88,7 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
         carInfo.setCarIcon(R.mipmap.ic_didi);
         carInfo.setCarName("出租车");
         carInfo.setId(1);
-        carInfo.setPrice("11.5元");
+        carInfo.setPrice("约11.5元");
         carInfos.add(carInfo);
 //        carInfo = new CarInfo();
 //        carInfo.setCarIcon(R.mipmap.ic_caocao);
@@ -92,6 +97,7 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
 //        carInfos.add(carInfo);
         carClassfyInfo.setCarInfo(carInfos);
         carClassfyInfos.add(carClassfyInfo);
+
         carClassfyInfo = new CarClassfyInfo();
         carClassfyInfo.setType("经济型");
         carClassfyInfo.setCheckIcon(R.mipmap.ic_normal_car);
@@ -100,17 +106,18 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
         carInfo = new CarInfo();
         carInfo.setCarIcon(R.mipmap.ic_didi);
         carInfo.setCarName("滴滴快车");
-        carInfo.setPrice("12.5元");
+        carInfo.setPrice("约12.5元");
         carInfo.setId(2);
         carInfos.add(carInfo);
         carInfo = new CarInfo();
         carInfo.setCarIcon(R.mipmap.ic_caocao);
         carInfo.setCarName("曹操专车");
-        carInfo.setPrice("13.5元");
+        carInfo.setPrice("约13.5元");
         carInfo.setId(3);
         carInfos.add(carInfo);
         carClassfyInfo.setCarInfo(carInfos);
         carClassfyInfos.add(carClassfyInfo);
+
         carClassfyInfo = new CarClassfyInfo();
         carClassfyInfo.setCheckIcon(R.mipmap.ico_good_checked);
         carClassfyInfo.setIcon(R.mipmap.ic_comfortable_car);
@@ -124,8 +131,27 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
         carInfo = new CarInfo();
         carInfo.setCarIcon(R.mipmap.ic_caocao);
         carInfo.setCarName("曹操专车");
-        carInfo.setPrice("14.5元");
+        carInfo.setPrice("约14.5元");
         carInfo.setId(4);
+        carInfos.add(carInfo);
+        carClassfyInfo.setCarInfo(carInfos);
+        carClassfyInfos.add(carClassfyInfo);
+
+        carClassfyInfo = new CarClassfyInfo();
+        carClassfyInfo.setCheckIcon(R.mipmap.ico_good_checked);
+        carClassfyInfo.setIcon(R.mipmap.ic_comfortable_car);
+        carClassfyInfo.setType("豪华型");
+        carInfos = new ArrayList<>();
+//        carInfo = new CarInfo();
+//        carInfo.setCarIcon(R.mipmap.ic_didi);
+//        carInfo.setCarName("滴滴");
+//        carInfo.setPrice("12.5元");
+//        carInfos.add(carInfo);
+        carInfo = new CarInfo();
+        carInfo.setCarIcon(R.mipmap.ic_caocao);
+        carInfo.setCarName("首汽约车");
+        carInfo.setPrice("约18.5元");
+        carInfo.setId(5);
         carInfos.add(carInfo);
         carClassfyInfo.setCarInfo(carInfos);
         carClassfyInfos.add(carClassfyInfo);
@@ -294,6 +320,8 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
         chooseVerAdapter.setMode(mode);
         chooseAdapter.setMode(mode);
 //        carAdapter.setMode(mode);
+        if (onStateChangeListener != null)
+            onStateChangeListener.onStateChange(mode);
     }
 
 
@@ -326,5 +354,9 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
 
     public interface OnCallListener {
         void onCall(List<CarInfo> chooseCarInfos);
+    }
+
+    public interface OnStateChangeListener {
+        void onStateChange(boolean isOpen);
     }
 }

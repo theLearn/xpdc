@@ -44,17 +44,18 @@
             />
         </LinearLayout>
     </LinearLayout>
-    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+    <LinearLayout android:layout_width="match_parent" android:layout_height="0dp"
+                  android:layout_weight="1"
                   android:orientation="vertical"
                   android:visibility="gone"
                   android:id="@+id/ll_vertical">
-        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:padding="@dimen/public_space_value_5"
-                  android:gravity="center"
-                  android:textColor="@color/text_black"
-                  android:textSize="@dimen/xlarge_text_size"
-                  android:textStyle="bold"
-                  android:text="选择车型"/>
+        <!--<TextView android:layout_width="match_parent" android:layout_height="wrap_content"-->
+                  <!--android:padding="@dimen/public_space_value_5"-->
+                  <!--android:gravity="center"-->
+                  <!--android:textColor="@color/text_black"-->
+                  <!--android:textSize="@dimen/xlarge_text_size"-->
+                  <!--android:textStyle="bold"-->
+                  <!--android:text="选择车型"/>-->
 
         <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                       android:layout_marginTop="@dimen/public_space_value_5"
@@ -71,7 +72,7 @@
             />
         </LinearLayout>
         <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                                                android:layout_height="300dp"
+                                                android:layout_height="wrap_content"
                                                 android:id="@+id/rv_allcar"/>
         <View android:layout_width="match_parent" android:layout_height="2dp"
               android:background="@mipmap/ic_gray_bg"/>

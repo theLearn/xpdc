@@ -90,7 +90,7 @@ class ChooseAdapter<T extends CarClassfyInfo> extends RecyclerView.Adapter<Recyc
             if (carClassfyInfos.size() < 4) {
                 chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / carClassfyInfos.size();
             } else {
-                chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / 4;
+                chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth() / 3;
             }
         } else {
             chooseViewHolder.itemView.getLayoutParams().width = ((Activity) context).getWindowManager().getDefaultDisplay().getWidth();
