@@ -38,10 +38,23 @@
     <string name="main_title_call_confirm">确认叫车</string>
     <string name="main_title_select_car">选择车型</string>
     <string name="main_title_calling">正在叫车</string>
+    <string name="main_title_wait_car">等待接驾</string>
+    <string name="main_title_driving">行驶中</string>
+    <string name="main_title_order_finish">订单完成</string>
     <string name="call_car_wait_tip1">下单成功，叫车中...</string>
     <string name="call_car_wait_tip2">等待%1$s种车型应答</string>
     <string name="call_car_wait_tip3">滴滴快车-经济型</string>
     <string name="call_car_wait_tip4">平均等待一分钟</string>
     <string name="cancel_order">取消订单</string>
+    <string name="contact_driver">联系司机</string>
     <string name="order_state_finish">已完成</string>
+    <string name="order_state_make">订单进行中</string>
+    <string name="order_state_wait_car_tip1">司机正在努力前往...</string>
+    <string name="order_state_wait_car_tip2">您可在01月13日18:30前免费取消</string>
+    <string name="order_state_make_tip">行程已开始，全程%1$s公里，预计行驶%2$s</string>
+    <string name="order_state_make_price_tip">订单金额以实际定价为准</string>
+    <string name="order_finish_tip">订单已完成</string>
+    <string name="pay">支付</string>
+    <string name="pay_price">%1$s元</string>
+    <string name="to_evaluate">去评价</string>
 </resources>

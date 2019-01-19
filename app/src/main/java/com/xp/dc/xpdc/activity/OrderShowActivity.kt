@@ -11,6 +11,7 @@ import com.example.hongcheng.common.util.ScreenUtils
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.adapter.OrderAdapter
 import com.xp.dc.xpdc.bean.CarInfo
+import com.xp.dc.xpdc.bean.DriverInfo
 import com.xp.dc.xpdc.bean.OrderInfo
 import com.xp.dc.xpdc.location.XPLocation
 import kotlinx.android.synthetic.main.activity_order_show.*
@@ -73,9 +74,7 @@ class OrderShowActivity : AppCommonActivity(), SwipeRefreshLayout.OnRefreshListe
             startPosition.name = "朗诗里程"
             val endPosition = XPLocation()
             endPosition.name = "武汉工程大学"
-            val carInfo = CarInfo()
-            carInfo.carName = "滴滴快车"
-            val orderInfo = OrderInfo("123456789", 0, Date().time, startPosition, endPosition, carInfo)
+            val orderInfo = OrderInfo("123456789", 0, Date().time, 5.0, 15, "20", startPosition, endPosition, arrayListOf(), DriverInfo())
             for (i in 1..20) {
                 dataList.add(orderInfo)
             }

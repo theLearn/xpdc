@@ -16,7 +16,7 @@ class OrderAdapter : BaseListAdapter<OrderInfo, OrderViewHolder>() {
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
         val model = data[position]
-        holder.tvCarType.text = model.carInfo?.carName
+        holder.tvCarType.text = model.driverInfo?.carType
 //        holder.tvState.text = model.address
         holder.tvTime.text = DateUtils.getTime(model.time)
         holder.tvStartPosition.text = model.startPosition.name

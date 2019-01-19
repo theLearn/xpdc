@@ -1,6 +1,8 @@
 package com.xp.dc.xpdc.activity
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Handler
 import android.support.v4.view.GravityCompat
@@ -22,22 +24,29 @@ import com.example.hongcheng.common.view.spinkit.sprite.Sprite
 import com.example.hongcheng.common.view.spinkit.sprite.SpriteContainer
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.application.BaseApplication
+import com.xp.dc.xpdc.bean.CarInfo
+import com.xp.dc.xpdc.bean.OrderInfo
+import com.xp.dc.xpdc.bean.OrderState
 import com.xp.dc.xpdc.fragment.LoginFragment
 import com.xp.dc.xpdc.location.AppLocationUtils
 import com.xp.dc.xpdc.location.XPLocation
+import com.xp.dc.xpdc.viewmodel.MainViewModel
+import com.xp.dc.xpdc.viewmodel.MainViewModelFactory
+import com.xp.dc.xpdc.widget.WaitCallCarView
+import com.xp.dc.xpdc.widget.choosecar.ChooseView
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.layout_app_common_title.*
 
 
-class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPLocationListener {
+class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPLocationListener,
+    WaitCallCarView.OnOrderActionListener {
     companion object {
         private const val LOADING: Int = -1
         private const val NOW: Int = 0
         private const val APPOINTMENT: Int = 1
         private const val SELECT_CAR: Int = 2
-        private const val WAIT_ORDER_ACCEPT: Int = 3
-        private const val WAIT_CAR: Int = 4
+        private const val WAIT_ORDER: Int = 3
         private const val START_REQUEST: Int = 100
         private const val END_REQUEST: Int = 200
     }
@@ -50,6 +59,8 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     private var isLogin: Boolean = false
 
     private var mLoginDialog: LoginFragment? = null
+
+    private lateinit var viewModel: MainViewModel
 
     override fun getLayoutResId(): Int {
         return R.layout.activity_main
@@ -96,9 +107,55 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             }
         }
 
-        cc_main.setOnCallListener {
-            order()
-        }
+        cc_main.setOnCallListener(object : ChooseView.OnCallListener {
+            override fun onCall(chooseCarInfos: MutableList<CarInfo>?) {
+                changeView(LOADING)
+                viewModel.order()
+            }
+
+            override fun onStateChange(isOpen: Boolean) {
+                if(isOpen) {
+                    tv_app_common_title.setText(R.string.main_title_select_car)
+                } else {
+                    tv_app_common_title.setText(R.string.main_title_call_confirm)
+                }
+            }
+        })
+
+        wc_main.onOrderActionListener = this
+
+        val factory = MainViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, factory).get(MainViewModel::class.java)
+
+        viewModel.order.observe(this, Observer { it ->
+            it?.let {
+                wc_main.setViewModel(it)
+                when(it.state) {
+                    OrderState.DEFAULT
+                    -> {
+                        changeView(WAIT_ORDER)
+                        tv_app_common_title.setText(R.string.main_title_calling)
+                    }
+                    OrderState.WAIT_CAR
+                    -> {
+                        tv_app_common_title.setText(R.string.main_title_wait_car)
+                    }
+                    OrderState.DRIVING
+                    -> {
+                        tv_app_common_title.setText(R.string.main_title_driving)
+                    }
+                    OrderState.WAIT_PAY
+                    -> {
+                        tv_app_common_title.setText(R.string.main_title_order_finish)
+                    }
+                    OrderState.FINISH
+                    -> {
+                    }
+                    else -> {
+                    }
+                }
+            }
+        })
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -242,6 +299,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
     }
 
     private fun resetMap() {
+        tv_app_common_title.setText(R.string.app_name)
         lastPosition?.let {
             val ll = LatLng(it.lat, it.lon)
             curPosMark = mv_main.updateCurPosMarker(ll, it.direction)
@@ -299,13 +357,9 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                 tv_app_common_title.setText(R.string.main_title_call_confirm)
                 cc_main.visibility = View.VISIBLE
             }
-            WAIT_ORDER_ACCEPT
+            WAIT_ORDER
             -> {
-                tv_app_common_title.setText(R.string.main_title_calling)
                 wc_main.visibility = View.VISIBLE
-            }
-            WAIT_CAR
-            -> {
             }
             LOADING
             -> {
@@ -329,9 +383,13 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         Handler().postDelayed({ changeView(SELECT_CAR) }, 2000)
     }
 
-    private fun order() {
-        changeView(LOADING)
-        Handler().postDelayed({ changeView(WAIT_ORDER_ACCEPT) }, 2000)
+    override fun cancel(orderInfo: OrderInfo) {
+    }
+
+    override fun evaluate(orderInfo: OrderInfo) {
+    }
+
+    override fun contact(orderInfo: OrderInfo) {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

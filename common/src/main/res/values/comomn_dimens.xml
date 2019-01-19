@@ -28,6 +28,7 @@
     <dimen name="iv_logo">150dp</dimen>
 
     <!-- 公用的间距，以距离值标记 -->
+    <dimen name="public_ne_value_10">-10dp</dimen>
     <dimen name="public_space_value_0">0dp</dimen>
     <dimen name="public_space_value_0.5">0.5dp</dimen>
     <dimen name="public_space_value_0.7">0.7dp</dimen>
@@ -73,6 +74,7 @@
     <dimen name="public_space_value_50">50dp</dimen>
     <dimen name="public_space_value_53">53dp</dimen>
     <dimen name="public_space_value_54">54dp</dimen>
+    <dimen name="public_space_value_55">55dp</dimen>
     <dimen name="public_space_value_56">56dp</dimen>
     <dimen name="public_space_value_60">60dp</dimen>
     <dimen name="public_space_value_62">62dp</dimen>

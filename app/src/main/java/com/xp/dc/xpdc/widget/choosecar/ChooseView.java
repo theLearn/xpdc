@@ -39,12 +39,7 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
     private StatisticsListView mSl;
     List<Toggle> toggleList = new ArrayList<>();
     private OnCallListener onCallListener;
-    private OnStateChangeListener onStateChangeListener;
     private ImageView iv_close;
-
-    public void setOnStateChangeListener(OnStateChangeListener onStateChangeListener) {
-        this.onStateChangeListener = onStateChangeListener;
-    }
 
     public void setOnCallListener(OnCallListener onCallListener) {
         this.onCallListener = onCallListener;
@@ -320,8 +315,8 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
         chooseVerAdapter.setMode(mode);
         chooseAdapter.setMode(mode);
 //        carAdapter.setMode(mode);
-        if (onStateChangeListener != null)
-            onStateChangeListener.onStateChange(mode);
+        if (onCallListener != null)
+            onCallListener.onStateChange(mode);
     }
 
 
@@ -354,9 +349,10 @@ public class ChooseView extends LinearLayout implements View.OnClickListener {
 
     public interface OnCallListener {
         void onCall(List<CarInfo> chooseCarInfos);
+        void onStateChange(boolean isOpen);
     }
 
     public interface OnStateChangeListener {
-        void onStateChange(boolean isOpen);
+
     }
 }
