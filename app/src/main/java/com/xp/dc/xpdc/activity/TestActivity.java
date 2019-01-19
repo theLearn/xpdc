@@ -1,15 +1,10 @@
 package com.xp.dc.xpdc.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v7.app.AppCompatActivity;
-import android.text.TextUtils;
-import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import com.example.hongcheng.common.util.ToastUtils;
+import android.util.Log;
 import com.xp.dc.xpdc.R;
 import com.xp.dc.xpdc.bean.CarClassfyInfo;
 import com.xp.dc.xpdc.bean.CarInfo;
@@ -20,8 +15,10 @@ import com.xp.dc.xpdc.widget.choosecar.Toggle;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class TestActivity extends AppCompatActivity {
+
 
     /**
      * 底部弹出view
@@ -34,7 +31,7 @@ public class TestActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
         initView();
-        initData();
+//        initData();
     }
 
     private void initView() {
@@ -50,10 +47,13 @@ public class TestActivity extends AppCompatActivity {
     public void initBottomView() {
         chooseView = findViewById(R.id.chooseview);
         chooseView.setOnCallListener(new ChooseView.OnCallListener() {
+
             @Override
-            public void onCall(CarInfo chooseCarInfo) {
-                if (chooseCarInfo != null)
-                    ToastUtils.show(TestActivity.this, chooseCarInfo.getCarName() + chooseCarInfo.getPrice());
+            public void onCall(List<CarInfo> chooseCarInfos) {
+                for (CarInfo chooseCarInfo : chooseCarInfos) {
+                    Log.i("TestActivity", chooseCarInfo.getCarName() + chooseCarInfo.getPrice());
+                }
+
             }
         });
     }

@@ -20,14 +20,8 @@ class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
 
     private Context context;
     private List<CarInfo> carInfos;
-    private CarInfo lastCarInfo;
 
-    private ChooseAdapter.OnItemClickListener onItemClickListener;
     private int parentWidth;
-
-    public void setOnItemClickListener(ChooseAdapter.OnItemClickListener onItemClickListener) {
-        this.onItemClickListener = onItemClickListener;
-    }
 
     public CarAdapter(Context context, List<CarInfo> carInfos) {
         this.context = context;
@@ -65,18 +59,11 @@ class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         carViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                for (CarInfo info : carInfos) {
-                    if (carInfo.getId() != info.getId())
-                        info.setChecked(false);
-                }
-                carInfo.setChecked(true);
+                carInfo.setChecked(!carInfo.isChecked());
                 notifyDataSetChanged();
-                lastCarInfo = carInfo;
-                if (onItemClickListener != null)
-                    onItemClickListener.onItemClick(i);
             }
         });
-        carViewHolder.itemView.getLayoutParams().width = parentWidth / 3 - 15;
+//        carViewHolder.itemView.getLayoutParams().width = parentWidth / 3 - 15;
     }
 
     @Override
@@ -100,7 +87,4 @@ class CarAdapter extends RecyclerView.Adapter<CarAdapter.CarViewHolder> {
         }
     }
 
-    interface OnItemClickListener {
-        void onItemClick(int position);
-    }
 }

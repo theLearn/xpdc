@@ -2,10 +2,12 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/ll_toggle"
               android:layout_width="match_parent"
-              android:layout_height="80dp"
+              android:layout_height="120dp"
               android:gravity="center"
               android:orientation="vertical"
+              android:background="@mipmap/ic_choosed_bg"
               android:padding="@dimen/public_space_value_5">
+
 
     <LinearLayout
             android:layout_width="match_parent"
@@ -33,7 +35,6 @@
             android:layout_height="24dp"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginTop="@dimen/public_space_value_10"
             android:padding="3dp">
 
         <ImageView

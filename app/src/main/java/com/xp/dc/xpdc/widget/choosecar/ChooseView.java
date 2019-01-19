@@ -2,50 +2,44 @@ package com.xp.dc.xpdc.widget.choosecar;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.Point;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.view.Display;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import com.example.hongcheng.common.util.LoggerUtils;
-import com.example.hongcheng.common.util.ToastUtils;
-import com.example.hongcheng.common.view.DividerItemDecoration;
 import com.xp.dc.xpdc.R;
 import com.xp.dc.xpdc.bean.CarClassfyInfo;
 import com.xp.dc.xpdc.bean.CarInfo;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implements View.OnClickListener {
+public class ChooseView extends LinearLayout implements View.OnClickListener {
     private Context mContext;
     private View view;
     private RecyclerView rv_type;
-    private RecyclerView rv_car;
-    private List<T> carClassfyInfos = new ArrayList<>();
+    //    private RecyclerView rv_car;
+    private List<CarClassfyInfo> carClassfyInfos = new ArrayList<>();
     private List<CarInfo> carInfos = new ArrayList<>();
-    private ChooseAdapter<T> chooseAdapter;
-    private CarHoriAdapter carAdapter;
+    private ChooseAdapter<? extends CarClassfyInfo> chooseAdapter;
+    //    private CarHoriAdapter carAdapter;
     private boolean isOpen;//false表示未展开，true表示展开
-    private ChooseAdapter<T> chooseVerAdapter;
+    private ChooseAdapter chooseVerAdapter;
     private RecyclerView rv_allcar;
     private LinearLayout ll_horizontal;
     private LinearLayout ll_vertical;
     private TextView tv_change;
     private TextView tv_call;
     private StatisticsListView mSl;
-    private CarInfo chooseCarInfo;
     List<Toggle> toggleList = new ArrayList<>();
     private OnCallListener onCallListener;
+    private ImageView iv_close;
 
     public void setOnCallListener(OnCallListener onCallListener) {
         this.onCallListener = onCallListener;
@@ -75,6 +69,67 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
         initHoriView();
         initVeriView();
         addView(view);
+        initTestData();
+    }
+
+    private void initTestData() {
+        List<CarClassfyInfo> carClassfyInfos = new ArrayList<>();
+        CarClassfyInfo carClassfyInfo = new CarClassfyInfo();
+        carClassfyInfo.setType("出租车");
+        carClassfyInfo.setCheckIcon(R.mipmap.ico_taxi_checked);
+        carClassfyInfo.setIcon(R.mipmap.ic_taxi);
+        List<CarInfo> carInfos = new ArrayList<>();
+        CarInfo carInfo = new CarInfo();
+        carInfo.setCarIcon(R.mipmap.ic_didi);
+        carInfo.setCarName("出租车");
+        carInfo.setId(1);
+        carInfo.setPrice("11.5元");
+        carInfos.add(carInfo);
+//        carInfo = new CarInfo();
+//        carInfo.setCarIcon(R.mipmap.ic_caocao);
+//        carInfo.setCarName("曹操");
+//        carInfo.setPrice("13.5元");
+//        carInfos.add(carInfo);
+        carClassfyInfo.setCarInfo(carInfos);
+        carClassfyInfos.add(carClassfyInfo);
+        carClassfyInfo = new CarClassfyInfo();
+        carClassfyInfo.setType("经济型");
+        carClassfyInfo.setCheckIcon(R.mipmap.ic_normal_car);
+        carClassfyInfo.setIcon(R.mipmap.ico_normal_uncheck);
+        carInfos = new ArrayList<>();
+        carInfo = new CarInfo();
+        carInfo.setCarIcon(R.mipmap.ic_didi);
+        carInfo.setCarName("滴滴快车");
+        carInfo.setPrice("12.5元");
+        carInfo.setId(2);
+        carInfos.add(carInfo);
+        carInfo = new CarInfo();
+        carInfo.setCarIcon(R.mipmap.ic_caocao);
+        carInfo.setCarName("曹操专车");
+        carInfo.setPrice("13.5元");
+        carInfo.setId(3);
+        carInfos.add(carInfo);
+        carClassfyInfo.setCarInfo(carInfos);
+        carClassfyInfos.add(carClassfyInfo);
+        carClassfyInfo = new CarClassfyInfo();
+        carClassfyInfo.setCheckIcon(R.mipmap.ico_good_checked);
+        carClassfyInfo.setIcon(R.mipmap.ic_comfortable_car);
+        carClassfyInfo.setType("舒适型");
+        carInfos = new ArrayList<>();
+//        carInfo = new CarInfo();
+//        carInfo.setCarIcon(R.mipmap.ic_didi);
+//        carInfo.setCarName("滴滴");
+//        carInfo.setPrice("12.5元");
+//        carInfos.add(carInfo);
+        carInfo = new CarInfo();
+        carInfo.setCarIcon(R.mipmap.ic_caocao);
+        carInfo.setCarName("曹操专车");
+        carInfo.setPrice("14.5元");
+        carInfo.setId(4);
+        carInfos.add(carInfo);
+        carClassfyInfo.setCarInfo(carInfos);
+        carClassfyInfos.add(carClassfyInfo);
+        refreshData(carClassfyInfos);
     }
 
     private void initVeriView() {
@@ -85,6 +140,7 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         rv_allcar.setLayoutManager(linearLayoutManager);
         rv_allcar.setAdapter(chooseVerAdapter);
+        iv_close = (ImageView) view.findViewById(R.id.iv_close);
 //        rv_allcar.getLayoutManager().smoothScrollToPosition(rv_allcar, null, 0);
 
 
@@ -114,38 +170,33 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
             public void onItemClick(int position) {
                 carInfos.clear();
                 carInfos.addAll(carClassfyInfos.get(position).getCarInfo());
-                for (CarClassfyInfo carClassfyInfo : carClassfyInfos) {
-                    for (CarInfo carInfo : carClassfyInfo.getCarInfo()) {
-                        carInfo.setChecked(false);
-                    }
-                }
-                carAdapter.notifyDataSetChanged();
+//                carAdapter.notifyDataSetChanged();
                 refreshSlView();
             }
         });
 
 
-        //未展开的子view
-        carAdapter = new CarHoriAdapter(mContext, carInfos);
-        rv_car = view.findViewById(R.id.rv_car);
-        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mContext);
-        linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rv_car.setLayoutManager(linearLayoutManager1);
-        rv_car.setAdapter(carAdapter);
-        rv_car.addItemDecoration(new SpaceItemDecoration(10));
-        carAdapter.setOnItemClickListener(new ChooseAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                CarInfo carInfo = carInfos.get(position);
-                for (CarClassfyInfo classfyInfo : carClassfyInfos) {
-                    for (CarInfo info : classfyInfo.getCarInfo()) {
-                        if (carInfo.getId() != info.getId())
-                            info.setChecked(false);
-                    }
-                }
-                carAdapter.notifyDataSetChanged();
-            }
-        });
+//        //未展开的子view
+//        carAdapter = new CarHoriAdapter(mContext, carInfos);
+//        rv_car = view.findViewById(R.id.rv_car);
+//        LinearLayoutManager linearLayoutManager1 = new LinearLayoutManager(mContext);
+//        linearLayoutManager1.setOrientation(LinearLayoutManager.HORIZONTAL);
+//        rv_car.setLayoutManager(linearLayoutManager1);
+//        rv_car.setAdapter(carAdapter);
+//        rv_car.addItemDecoration(new SpaceItemDecoration(10));
+//        carAdapter.setOnItemClickListener(new ChooseAdapter.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(int position) {
+//                CarInfo carInfo = carInfos.get(position);
+//                for (CarClassfyInfo classfyInfo : carClassfyInfos) {
+//                    for (CarInfo info : classfyInfo.getCarInfo()) {
+//                        if (carInfo.getId() != info.getId())
+//                            info.setChecked(false);
+//                    }
+//                }
+//                carAdapter.notifyDataSetChanged();
+//            }
+//        });
 
         tv_change = view.findViewById(R.id.tv_change);
         tv_change.setOnClickListener(this);
@@ -163,35 +214,26 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
             final Toggle toggle = new Toggle(mContext);
             toggle.setType(carInfo.getCarName());
             toggle.setPosition(i);
-            toggle.setTopTextSize(12);
-            toggle.setButtonTextSize(12);
-            toggle.setStrokeWidth(3);
             toggle.setInfo(carInfo);
             toggle.setTopText(carInfo.getCarName());
             toggle.setBottonText(carInfo.getPrice());
             toggle.setOn_text_res_id(carInfo.getCarIcon());
             toggle.setOff_text_res_id(carInfo.getCarIcon());
             toggle.setStyle(Toggle.Style.GREEN);
+            toggle.setOffTextColor("#666666");
             toggle.setToggleOn(carInfo.isChecked());
             toggle.setOnClickListener(new OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toggle curToggle = null;
-                    for (Toggle tog : toggleList) {
-                        if (tog.isToggleOn()) {
-                            curToggle = tog;
-                            curToggle.setToggleOn(false);
-                            break;
-                        }
-                    }
-                    toggle.setToggleOn(true);
-
+                    toggle.toggle();
                 }
             });
             mSl.addView(toggle);
+            mSl.setForegroundGravity(Gravity.CENTER);
             LayoutParams layoutParams = ((LayoutParams) toggle.getLayoutParams());
             if (carInfos.size() < 4) {
-                layoutParams.width = ((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth() / carInfos.size();
+                layoutParams.width = (((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth() - 60) / carInfos.size();
+
             } else {
                 layoutParams.width = ((Activity) mContext).getWindowManager().getDefaultDisplay().getWidth() / 4;
             }
@@ -200,7 +242,7 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
         }
     }
 
-    public void refreshData(List<T> data) {
+    public void refreshData(List<? extends CarClassfyInfo> data) {
         carClassfyInfos.clear();
         carClassfyInfos.addAll(data);
         chooseAdapter.notifyDataSetChanged();
@@ -208,7 +250,7 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
             data.get(0).setChecked(true);
             carInfos.clear();
             carInfos.addAll(data.get(0).getCarInfo());
-            carAdapter.notifyDataSetChanged();
+//            carAdapter.notifyDataSetChanged();
             refreshSlView();
         }
     }
@@ -221,14 +263,14 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
             }
         }
         chooseAdapter.notifyDataSetChanged();
-        carAdapter.notifyDataSetChanged();
+//        carAdapter.notifyDataSetChanged();
         chooseVerAdapter.notifyDataSetChanged();
         if (isOpen) {
 //            LinearLayoutManager linearLayoutManager = new LinearLayoutManager(mContext);
 //            linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 //            rv_type.setLayoutManager(linearLayoutManager);
 //            rv_car.setVisibility(GONE);
-            tv_change.setText("收缩");
+            tv_change.setText("收起");
             ll_horizontal.setVisibility(GONE);
             ll_vertical.setVisibility(VISIBLE);
         } else {
@@ -251,7 +293,7 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
         }
         chooseVerAdapter.setMode(mode);
         chooseAdapter.setMode(mode);
-        carAdapter.setMode(mode);
+//        carAdapter.setMode(mode);
     }
 
 
@@ -268,27 +310,21 @@ public class ChooseView<T extends CarClassfyInfo> extends LinearLayout implement
     }
 
     private void call() {
-        CarInfo chooseCarInfo = null;
+        List<CarInfo> chooseCarInfos = new ArrayList<>();
         for (CarClassfyInfo carClassfyInfo : carClassfyInfos) {
             for (CarInfo carInfo : carClassfyInfo.getCarInfo()) {
                 if (carInfo.isChecked()) {
                     Log.d("chooseview", carInfo.getCarName() + carInfo.getPrice());
-                    chooseCarInfo = carInfo;
-                    break;
+                    chooseCarInfos.add(carInfo);
                 }
             }
         }
-        this.chooseCarInfo = chooseCarInfo;
         if (onCallListener != null) {
-            onCallListener.onCall(chooseCarInfo);
+            onCallListener.onCall(chooseCarInfos);
         }
     }
 
-    public CarInfo getChooseCarInfo() {
-        return chooseCarInfo;
-    }
-
     public interface OnCallListener {
-        void onCall(CarInfo chooseCarInfo);
+        void onCall(List<CarInfo> chooseCarInfos);
     }
 }

@@ -4,6 +4,7 @@
               android:background="@color/white"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              android:padding="@dimen/public_space_value_10"
 >
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:orientation="vertical"
@@ -14,33 +15,82 @@
         <com.xp.dc.xpdc.widget.choosecar.StatisticsListView
                 android:id="@+id/sl"
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"/>
         <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
                                                 android:layout_height="wrap_content"
                                                 android:visibility="gone"
                                                 android:id="@+id/rv_car"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/public_space_value_10"
+                      android:gravity="center_vertical"
+                      android:background="@mipmap/ic_red_bg"
+                      android:orientation="horizontal">
+            <TextView android:layout_width="0dp" android:layout_height="30dp"
+                      android:layout_weight="1"
+                      android:paddingLeft="@dimen/public_space_value_8"
+                      android:gravity="center_vertical"
+                      android:textColor="#F06862"
+                      android:textSize="@dimen/small_text_size"
+                      android:text="支持同时呼叫多种车型，优先匹配接单最快车辆"
+            />
+
+            <ImageView
+                    android:id="@+id/iv_close"
+                    android:layout_width="30dp" android:layout_height="30dp"
+                    android:scaleType="center"
+                    android:src="@mipmap/ic_close_red"
+            />
+        </LinearLayout>
     </LinearLayout>
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                   android:orientation="vertical"
                   android:visibility="gone"
                   android:id="@+id/ll_vertical">
+        <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                  android:padding="@dimen/public_space_value_5"
+                  android:gravity="center"
+                  android:textColor="@color/text_black"
+                  android:textSize="@dimen/xlarge_text_size"
+                  android:textStyle="bold"
+                  android:text="选择车型"/>
+
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                      android:layout_marginTop="@dimen/public_space_value_5"
+                      android:orientation="vertical">
+            <TextView android:layout_width="wrap_content" android:layout_height="30dp"
+                      android:gravity="center_vertical"
+                      android:paddingLeft="@dimen/public_space_value_8"
+                      android:paddingRight="@dimen/public_space_value_8"
+                      android:layout_gravity="center"
+                      android:textColor="#ABABAB"
+                      android:background="@mipmap/ic_gray_bg"
+                      android:textSize="@dimen/small_text_size"
+                      android:text="支持同时呼叫多种车型，优先匹配接单最快车辆"
+            />
+        </LinearLayout>
         <android.support.v7.widget.RecyclerView android:layout_width="match_parent"
-                                                android:layout_height="wrap_content"
+                                                android:layout_height="300dp"
                                                 android:id="@+id/rv_allcar"/>
+        <View android:layout_width="match_parent" android:layout_height="2dp"
+              android:background="@mipmap/ic_gray_bg"/>
     </LinearLayout>
+
     <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                  android:layout_margin="@dimen/public_space_value_10"
+                  android:layout_marginTop="@dimen/public_space_value_10"
                   android:orientation="horizontal">
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+        <TextView android:layout_width="0dp" android:layout_height="45dp"
                   android:layout_weight="1"
                   android:background="@drawable/tv_gray_bg"
                   android:padding="@dimen/public_space_value_5"
                   android:gravity="center"
+                  android:textColor="@color/text_black"
+                  android:textSize="@dimen/big_text_size"
                   android:text="展开"
                   android:id="@+id/tv_change"/>
 
-        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+        <TextView android:layout_width="0dp" android:layout_height="45dp"
                   android:layout_marginLeft="@dimen/public_space_value_20"
                   android:layout_weight="3"
                   android:text="立即呼叫"

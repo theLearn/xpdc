@@ -85,19 +85,6 @@ class ChooseAdapter<T extends CarClassfyInfo> extends RecyclerView.Adapter<Recyc
                     onItemClickListener.onItemClick(i);
             }
         });
-        carAdapter.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(int position) {
-                CarInfo carInfo = carClassfyInfo.getCarInfo().get(position);
-                for (CarClassfyInfo classfyInfo : carClassfyInfos) {
-                    for (CarInfo info : classfyInfo.getCarInfo()) {
-                        if (carInfo.getId() != info.getId())
-                            info.setChecked(false);
-                    }
-                }
-                notifyDataSetChanged();
-            }
-        });
 
         if (!mode) {
             if (carClassfyInfos.size() < 4) {
