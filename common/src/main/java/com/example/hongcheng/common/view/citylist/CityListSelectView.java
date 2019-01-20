@@ -111,6 +111,9 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
     @Override
     public void onTouchingLetterChanged(String s) {
         int index = mAdapter.getSelectIndex(s);
+        if(index < 0) {
+            return;
+        }
         mRecyclerView.scrollToPosition(index);
         overlay.setText(s);
         overlay.setVisibility(View.VISIBLE);

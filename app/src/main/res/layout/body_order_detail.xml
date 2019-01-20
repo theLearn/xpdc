@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+        <com.xp.dc.xpdc.location.CustomMapView
+                android:id="@+id/mv_order_detail"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"/>
+        <ImageView
+                android:id="@+id/iv_reset_order_detail"
+                android:layout_width="@dimen/px102"
+                android:layout_height="@dimen/px102"
+                android:src="@mipmap/icon_map_location"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentRight="true"
+                android:scaleType="fitXY"
+                android:layout_marginBottom="@dimen/public_space_value_20"
+                android:layout_marginRight="@dimen/public_space_value_20"/>
+    </RelativeLayout>
+
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@color/colorDefault">
+
+        <com.example.hongcheng.common.view.spinkit.SpinKitView
+                android:id="@+id/sk_call_query_load_order_detail"
+                style="@style/SpinKitView.Circle"
+                android:layout_marginTop="@dimen/public_space_value_20"
+                android:layout_marginBottom="@dimen/public_space_value_20"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_gravity="center"
+                android:fitsSystemWindows="true"
+                android:indeterminate="true"/>
+
+        <com.xp.dc.xpdc.widget.WaitCallCarView
+                android:id="@+id/wc_order_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+    </LinearLayout>
+</LinearLayout>

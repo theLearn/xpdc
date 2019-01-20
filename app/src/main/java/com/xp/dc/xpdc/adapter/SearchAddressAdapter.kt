@@ -8,12 +8,11 @@ import com.xp.dc.xpdc.adapter.viewholder.SearchAddressViewHolder
 import com.xp.dc.xpdc.location.XPLocation
 
 class SearchAddressAdapter : BaseListAdapter<XPLocation, SearchAddressViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAddressViewHolder {
+    override fun onBaseCreateViewHolder(parent: ViewGroup, viewType: Int): SearchAddressViewHolder {
         return SearchAddressViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_search_address, parent, false))
     }
 
-    override fun onBindViewHolder(holder: SearchAddressViewHolder, position: Int) {
+    override fun onBaseBindViewHolder(holder: SearchAddressViewHolder, position: Int) {
         val model = data[position]
         holder.tvName.text = model.name
         holder.tvDes.text = model.address

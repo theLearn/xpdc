@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import com.example.hongcheng.common.R;
 import com.example.hongcheng.common.base.BaseListAdapter;
 import com.example.hongcheng.common.util.LoggerUtils;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +80,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
 
     @NonNull
     @Override
-    public CityListViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    public CityListViewHolder onBaseCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
         return new CityListViewHolder(LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_city_cell, viewGroup, false));
     }
 
@@ -97,6 +98,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
             } else {
                 holder.name.setText(str);
             }
+            holder.itemView.setOnClickListener(null);
         } else {
             CityItem model = getData().get(sourceMap.get(i).first).second.get(sourceMap.get(i).second);
             holder.itemView.setBackgroundResource(R.color.white);
@@ -111,5 +113,10 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
                 }
             });
         }
+    }
+
+    @Override
+    public void onBaseBindViewHolder(@NotNull CityListViewHolder holder, int position) {
+
     }
 }

@@ -1,5 +1,6 @@
 package com.xp.dc.xpdc.activity
 
+import android.content.Intent
 import android.graphics.Color
 import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
@@ -7,15 +8,13 @@ import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
+import com.example.hongcheng.common.base.BaseListAdapter
 import com.example.hongcheng.common.util.ScreenUtils
 import com.xp.dc.xpdc.R
 import com.xp.dc.xpdc.adapter.OrderAdapter
-import com.xp.dc.xpdc.bean.CarInfo
-import com.xp.dc.xpdc.bean.DriverInfo
 import com.xp.dc.xpdc.bean.OrderInfo
-import com.xp.dc.xpdc.location.XPLocation
+import com.xp.dc.xpdc.viewmodel.OrderViewModel
 import kotlinx.android.synthetic.main.activity_order_show.*
-import java.util.*
 
 
 class OrderShowActivity : AppCommonActivity(), SwipeRefreshLayout.OnRefreshListener {
@@ -47,6 +46,17 @@ class OrderShowActivity : AppCommonActivity(), SwipeRefreshLayout.OnRefreshListe
         rv_order.setEmptyView(emptyView)
         emptyView.visibility = View.GONE
 
+        mAdapter.onItemClickListener = object : BaseListAdapter.OnItemClickListener{
+            override fun onItemClick(position: Int) {
+                val orderIntent = Intent(this@OrderShowActivity, OrderDetailActivity::class.java)
+                orderIntent.putExtra("order", dataList[position])
+                startActivity(orderIntent)
+            }
+
+            override fun onItemLongClick(position: Int) {
+            }
+        }
+
         // 设置加载更多监听
         rv_order.setLoadMoreListener { getData() }
 
@@ -70,13 +80,8 @@ class OrderShowActivity : AppCommonActivity(), SwipeRefreshLayout.OnRefreshListe
 
     private fun getData() {
         Handler().postDelayed({
-            val startPosition = XPLocation()
-            startPosition.name = "朗诗里程"
-            val endPosition = XPLocation()
-            endPosition.name = "武汉工程大学"
-            val orderInfo = OrderInfo("123456789", 0, Date().time, 5.0, 15, "20", startPosition, endPosition, arrayListOf(), DriverInfo())
             for (i in 1..20) {
-                dataList.add(orderInfo)
+                dataList.add(OrderViewModel.order())
             }
 
             srl_order.isRefreshing = false

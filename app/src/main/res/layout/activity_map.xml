@@ -48,13 +48,6 @@
                 android:layout_gravity="center"
                 android:fitsSystemWindows="true"
                 android:indeterminate="true"/>
-
-        <com.xp.dc.xpdc.widget.WaitCallCarView
-                android:id="@+id/wc_main"
-                android:visibility="gone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-
         <LinearLayout
                 android:id="@+id/ll_block_select_position"
                 android:layout_width="match_parent"

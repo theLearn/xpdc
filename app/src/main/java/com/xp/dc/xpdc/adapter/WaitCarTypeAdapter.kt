@@ -9,11 +9,11 @@ import com.xp.dc.xpdc.bean.CallCarInfo
 
 class WaitCarTypeAdapter : BaseListAdapter<CallCarInfo, WaitCarTypeViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WaitCarTypeViewHolder {
+    override fun onBaseCreateViewHolder(parent: ViewGroup, viewType: Int): WaitCarTypeViewHolder {
         return WaitCarTypeViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_wait_car_info, parent, false))
     }
 
-    override fun onBindViewHolder(holder: WaitCarTypeViewHolder, position: Int) {
+    override fun onBaseBindViewHolder(holder: WaitCarTypeViewHolder, position: Int) {
         val model = data[position]
         holder.tvType.text = model.carType
     }

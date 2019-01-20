@@ -180,6 +180,12 @@ public class CustomMapView extends LinearLayout {
                 mOverlayList.remove(startMarker);
                 startMarker = null;
             }
+
+            if (endMarker != null) {
+                endMarker.remove();
+                mOverlayList.remove(endMarker);
+                endMarker = null;
+            }
         } else {
             if (endMarker == null) {
                 endMarker = addMarker(end, endPosIcon);

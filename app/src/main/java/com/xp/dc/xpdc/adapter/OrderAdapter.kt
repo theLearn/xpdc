@@ -9,12 +9,11 @@ import com.xp.dc.xpdc.adapter.viewholder.OrderViewHolder
 import com.xp.dc.xpdc.bean.OrderInfo
 
 class OrderAdapter : BaseListAdapter<OrderInfo, OrderViewHolder>() {
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
+    override fun onBaseCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         return OrderViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_order, parent, false))
     }
 
-    override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
+    override fun onBaseBindViewHolder(holder: OrderViewHolder, position: Int) {
         val model = data[position]
         holder.tvCarType.text = model.driverInfo?.carType
 //        holder.tvState.text = model.address
