@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="@dimen/img_large"
         android:layout_height="@dimen/img_large"
-        android:src="@mipmap/app_nothing"/>
+        android:src="@drawable/app_nothing"/>
 
     <TextView
         android:id="@+id/tv_nothing_tip"

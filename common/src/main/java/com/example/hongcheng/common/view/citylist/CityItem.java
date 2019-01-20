@@ -7,10 +7,12 @@ public class CityItem {
 
     private String name;
     private String pinyin;
+    private String fs;
 
-    public CityItem(String name, String pinyin) {
+    public CityItem(String name, String pinyin, String fs) {
         this.name = name;
         this.pinyin = pinyin;
+        this.fs = fs;
     }
 
     public CityItem() {
@@ -30,5 +32,13 @@ public class CityItem {
 
     public void setPinyin(String pinyin) {
         this.pinyin = pinyin;
+    }
+
+    public String getFs() {
+        return fs;
+    }
+
+    public void setFs(String fs) {
+        this.fs = fs;
     }
 }

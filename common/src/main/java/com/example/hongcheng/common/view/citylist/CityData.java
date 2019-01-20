@@ -1,6 +1,7 @@
 package com.example.hongcheng.common.view.citylist;
 
 import android.util.Pair;
+import com.example.hongcheng.common.util.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -40,7 +41,7 @@ public final class CityData {
                 for (int i = 0; i < ja1.length(); i++) {
                     String cityName = ja1.getString(i);
 
-                    all.add(new CityItem(cityName, PingYinUtil.getPingYin(cityName)));
+                    all.add(new CityItem(cityName, PingYinUtil.getPingYin(cityName), PingYinUtil.converterToFirstSpell(cityName)));
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -53,14 +54,14 @@ public final class CityData {
     public List<CityItem> getHotCityList() {
         if(hot.isEmpty()) {
             for (int i = 0; i < hotCity.length; i++) {
-                hot.add(new CityItem(hotCity[i], PingYinUtil.getPingYin(hotCity[i])));
+                hot.add(new CityItem(hotCity[i], PingYinUtil.getPingYin(hotCity[i]), PingYinUtil.converterToFirstSpell(hotCity[i])));
             }
         }
         return hot;
     }
 
     public void init() {
-        allSource.add(Pair.create("0", getHotCityList()));
+        allSource.add(Pair.create("★", getHotCityList()));
 
         List<CityItem> list = getCityList();
         Collections.sort(list, comparator);
@@ -69,7 +70,7 @@ public final class CityData {
             if (!allSource.isEmpty()) {
                 lastTitle = allSource.get(allSource.size() - 1).first;
             }
-            String currentTitle = cityItem.getPinyin().substring(0, 1);
+            String currentTitle = cityItem.getPinyin().substring(0, 1).toUpperCase();
             if (currentTitle.equals(lastTitle)) {
                 allSource.get(allSource.size() - 1).second.add(cityItem);
             } else {
@@ -99,5 +100,35 @@ public final class CityData {
 
     public List<Pair<String, List<CityItem>>> getAllSource() {
         return allSource;
+    }
+
+    public List<Pair<String, List<CityItem>>> getSearchSource(String search) {
+        if(StringUtils.isEmpty(search)){
+            return allSource;
+        }
+
+        List<Pair<String, List<CityItem>>> searchSource = new ArrayList<>();
+        List<CityItem> list = new ArrayList<>();
+        for (CityItem item :getCityList()) {
+            if(item.getName().contains(search) || item.getPinyin().contains(search) || item.getFs().contains(search)) {
+                list.add(item);
+            }
+        }
+        Collections.sort(list, comparator);
+        String lastTitle = "";
+        for (CityItem cityItem : list) {
+            if (!searchSource.isEmpty()) {
+                lastTitle = searchSource.get(searchSource.size() - 1).first;
+            }
+            String currentTitle = cityItem.getPinyin().substring(0, 1).toUpperCase();
+            if (currentTitle.equals(lastTitle)) {
+                searchSource.get(searchSource.size() - 1).second.add(cityItem);
+            } else {
+                List<CityItem> temp = new ArrayList<>();
+                temp.add(cityItem);
+                searchSource.add(Pair.create(currentTitle, temp));
+            }
+        }
+        return searchSource;
     }
 }

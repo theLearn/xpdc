@@ -1,11 +1,14 @@
 package com.example.hongcheng.common.view.citylist;
 
 import android.content.Context;
+import android.graphics.PixelFormat;
+import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.example.hongcheng.common.R;
@@ -15,6 +18,11 @@ import com.example.hongcheng.common.view.EmptyRecyclerView;
 
 public class CityListSelectView extends LinearLayout implements LetterListView.OnTouchingLetterChangedListener, View.OnClickListener {
 
+    private Handler handler;
+    private OverlayThread overlayThread;
+    private WindowManager windowManager;
+    private TextView overlay;
+    private EmptyRecyclerView mRecyclerView;
     private CityListAdapter mAdapter;
     private TextView tvCurrentCity;
     private OnCitySelectListener listener;
@@ -43,7 +51,8 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
         findViewById(R.id.ll_current_city_block).setOnClickListener(this);
         tvCurrentCity = findViewById(R.id.tv_city_current);
 
-        EmptyRecyclerView mRecyclerView = findViewById(R.id.city_container);
+        View emptyView = LayoutInflater.from(getContext()).inflate(R.layout.layout_list_nothing, this, false);
+        mRecyclerView = findViewById(R.id.city_container);
         final LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -53,6 +62,8 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
         mAdapter = new CityListAdapter();
         mAdapter.setSource(CityData.getInstance().getAllSource());
         mRecyclerView.setAdapter(mAdapter);
+        mRecyclerView.setEmptyView(emptyView);
+        emptyView.setVisibility(View.GONE);
 
         mAdapter.setOnItemClickListener(new BaseListAdapter.OnItemClickListener() {
             @Override
@@ -73,10 +84,48 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
 
         LetterListView letter_container = findViewById(R.id.letter_container);
         letter_container.setOnTouchingLetterChangedListener(this);
+        initOverlay();
+    }
+
+    private void initOverlay() {
+        handler = new Handler();
+        overlayThread = new OverlayThread();
+        LayoutInflater inflater = LayoutInflater.from(getContext());
+        overlay = (TextView) inflater.inflate(R.layout.overlay, null);
+        overlay.setVisibility(View.INVISIBLE);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT,
+                WindowManager.LayoutParams.TYPE_APPLICATION,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
+                        | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                PixelFormat.TRANSLUCENT);
+        windowManager = (WindowManager) getContext()
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.addView(overlay, lp);
+    }
+
+    public void onDestroy() {
+        windowManager.removeView(overlay);
     }
 
     @Override
     public void onTouchingLetterChanged(String s) {
+        int index = mAdapter.getSelectIndex(s);
+        mRecyclerView.scrollToPosition(index);
+        overlay.setText(s);
+        overlay.setVisibility(View.VISIBLE);
+        handler.removeCallbacks(overlayThread);
+        // Уoverlay
+        handler.postDelayed(overlayThread, 1500);
+    }
+
+    // overlay
+    private class OverlayThread implements Runnable {
+
+        @Override
+        public void run() {
+            overlay.setVisibility(View.GONE);
+        }
 
     }
 
@@ -91,6 +140,11 @@ public class CityListSelectView extends LinearLayout implements LetterListView.O
 
     public void setCurrentCity(String cityName) {
         tvCurrentCity.setText(cityName);
+    }
+
+    public void setSearchSource(String searchKey) {
+        mAdapter.setSource(CityData.getInstance().getSearchSource(searchKey));
+        mAdapter.notifyDataSetChanged();
     }
 
     public void setOnCitySelectListener(OnCitySelectListener listener) {

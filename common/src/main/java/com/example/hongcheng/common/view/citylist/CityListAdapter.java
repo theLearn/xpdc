@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.example.hongcheng.common.R;
 import com.example.hongcheng.common.base.BaseListAdapter;
+import com.example.hongcheng.common.util.LoggerUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,24 +19,37 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
 
     private int size = 0;
     private Map<Integer, Pair<Integer, Integer>> sourceMap = new HashMap<>();
+    private Map<String, Integer> alphaIndexMap = new HashMap<>();
 
     public void setSource(List<Pair<String, List<CityItem>>> data) {
         super.setData(data);
 
+        sourceMap.clear();
+        alphaIndexMap.clear();
+        size = 0;
         if (data.isEmpty()) {
             return;
         }
-
-        size = 0;
         for (int i = 0; i < data.size(); i++) {
-            sourceMap.put(size, Pair.create(i, -1));
-            size++;
             Pair<String, List<CityItem>> item = data.get(i);
+            sourceMap.put(size, Pair.create(i, -1));
+            alphaIndexMap.put(item.first, size);
+            size++;
             for (int j = 0; j < item.second.size(); j++) {
                 sourceMap.put(size, Pair.create(i, j));
                 size++;
             }
         }
+    }
+
+    public int getSelectIndex(String key) {
+        int position = -1;
+        try {
+            position = alphaIndexMap.get(key);
+        } catch(Exception e) {
+            LoggerUtils.error("Exception", e.getMessage());
+        }
+        return position;
     }
 
     @Override
@@ -77,7 +91,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
             holder.itemView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.default_background));
             holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_ab));
             String str = getData().get(sourceMap.get(i).first).first;
-            if("0".equals(str)) {
+            if("★".equals(str)) {
                 holder.name.setText("热门城市");
                 holder.icon.setVisibility(View.VISIBLE);
             } else {

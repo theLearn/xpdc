@@ -72,6 +72,7 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
         svCity = findViewById(R.id.sv_city)
         svCity.setOnSearchListener(object : ICallBack {
             override fun queryData(string: String?) {
+                cs_city_search_list.setSearchSource(string)
             }
 
             override fun onFocusChange(hasFocus: Boolean) {
@@ -265,5 +266,10 @@ class AddressSelectActivity : BasicActivity(), View.OnClickListener {
         }
 
         return entity
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cs_city_search_list.onDestroy()
     }
 }
