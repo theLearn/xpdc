@@ -1,8 +1,10 @@
 package com.xp.dc.xpdc.location;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 import com.baidu.mapapi.map.*;
@@ -37,7 +39,8 @@ public class CustomMapView extends LinearLayout {
     private Marker startMarker;
     private Marker endMarker;
     private Marker curMarker;
-    private OnMapMarkerClickListener onMapMarkerClickListener;
+
+    private boolean isNeedSelectTip = false;
 
     public CustomMapView(Context context) {
         this(context, null);
@@ -66,11 +69,24 @@ public class CustomMapView extends LinearLayout {
      * @param defStyleAttr
      */
     private void initialize(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        if (attrs != null) {
+            TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CustomMapView, 0, 0);
+            isNeedSelectTip = a.getBoolean(R.styleable.CustomMapView_isNeedSelectTip, false);
+        }
+
         mOverlayList = new ArrayList<>();
         curPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location_arrow);
-        startPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_call_start);
-        startTempIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
         endPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_end_position);
+        if (isNeedSelectTip) {
+            View overlayEnd = LayoutInflater.from(getContext()).inflate(R.layout.overlay_select_end_position, this, false);
+            startTempIcon = BitmapDescriptorFactory.fromView(overlayEnd);
+            View overlayStart = LayoutInflater.from(getContext()).inflate(R.layout.overlay_select_start_position, this, false);
+            startPosIcon = BitmapDescriptorFactory.fromView(overlayStart);
+        } else {
+            startPosIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_call_start);
+            startTempIcon = BitmapDescriptorFactory.fromResource(R.mipmap.icon_location);
+        }
+
         mapView = new MapView(context, new BaiduMapOptions().mapStatus(new MapStatus.Builder().overlook(1).zoom(17).build()).zoomControlsEnabled(false));
         mBaiduMap = mapView.getMap();
         this.addView(mapView); //在mapView创建完成后需要将其添加到当前视图中，否则地图将无法显示；
@@ -101,7 +117,6 @@ public class CustomMapView extends LinearLayout {
      * <p>
      * 注： 该方法只对Marker类型的overlay有效
      * </p>
-     *
      */
     public void zoomToSpan() {
         if (mBaiduMap == null) {
@@ -138,6 +153,7 @@ public class CustomMapView extends LinearLayout {
 
     /**
      * 更新当前图标的位置
+     *
      * @param curPos
      * @param direction 方向数据
      * @return
@@ -147,7 +163,7 @@ public class CustomMapView extends LinearLayout {
             return null;
         }
         if (curMarker == null) {
-            curMarker = addMarker(curPos, curPosIcon);
+            curMarker = addMarker(curPos, curPosIcon, 1, 0.5f,  0.5f);
             if (curMarker != null) {
                 curMarker.setRotate(360 - direction);
             }
@@ -158,17 +174,12 @@ public class CustomMapView extends LinearLayout {
         return curMarker;
     }
 
-    public void drawSEToMap (LatLng start, LatLng end) {
+    public void drawSEToMap(LatLng start, LatLng end) {
         if (start == null || mBaiduMap == null) {
             return;
         }
 
-        if(end == null) {
-            if (endMarker != null) {
-                endMarker.remove();
-                mOverlayList.remove(endMarker);
-            }
-
+        if (end == null) {
             if (startTempMarker == null) {
                 startTempMarker = addMarker(start, startTempIcon);
             } else {
@@ -188,7 +199,7 @@ public class CustomMapView extends LinearLayout {
             }
         } else {
             if (endMarker == null) {
-                endMarker = addMarker(end, endPosIcon);
+                endMarker = addMarker(end, endPosIcon, (int) mBaiduMap.getMapStatus().zoom, 0.5f,  0.5f);
             } else {
                 endMarker.setPosition(end);
             }
@@ -205,7 +216,6 @@ public class CustomMapView extends LinearLayout {
                 startTempMarker = null;
             }
         }
-
     }
 
     /**
@@ -214,15 +224,20 @@ public class CustomMapView extends LinearLayout {
      * @param pos 起点经纬度所对应的LatLng
      */
     private Marker addMarker(LatLng pos, BitmapDescriptor markerIcon) {
+        float v1 = isNeedSelectTip ? 1f : 0.5f;
+        return addMarker(pos, markerIcon, (int) mBaiduMap.getMapStatus().zoom, 0.5f,  v1);
+    }
+
+    private Marker addMarker(LatLng pos, BitmapDescriptor markerIcon, int zIndex, float v, float v1) {
         if (mBaiduMap == null || pos == null || markerIcon == null) {
             return null;
         }
         OverlayOptions option = new MarkerOptions()
                 .position(pos)
                 .icon(markerIcon)
-                .zIndex((int) mBaiduMap.getMapStatus().zoom)
+                .zIndex(zIndex)
                 .draggable(true)
-                .anchor(0.5f, 0.5f);
+                .anchor(v, v1);
         Marker marker = (Marker) mBaiduMap.addOverlay(option);
         mOverlayList.add(marker);
         zoomToSpan();
@@ -286,6 +301,12 @@ public class CustomMapView extends LinearLayout {
         }
     }
 
+    public void hideInfoWindow() {
+        if (mBaiduMap != null) {
+            mBaiduMap.hideInfoWindow();
+        }
+    }
+
 
     /**
      * MapView的相关的生命周期的方法,分别对应在Activity或Fragment的相对应的生命周期方法中调用
@@ -305,6 +326,7 @@ public class CustomMapView extends LinearLayout {
 
     public void onDestroy() {
         if (mapView != null) {
+            removeFromMap();
             mapView.onDestroy();
         }
         //回收相关的地图覆盖物，防止内存泄漏
@@ -317,9 +339,9 @@ public class CustomMapView extends LinearLayout {
             startTempIcon = null;
         }
 
-        if (endPosIcon != null) {
-            endPosIcon.recycle();
-            endPosIcon = null;
+        if (startPosIcon != null) {
+            startPosIcon.recycle();
+            startPosIcon = null;
         }
 
         if (endPosIcon != null) {
@@ -331,15 +353,32 @@ public class CustomMapView extends LinearLayout {
     /**
      * 设置地图marker点击的事件监听
      */
-    public void setOnMapMarkerClickListener(OnMapMarkerClickListener onMapMarkerClickListener) {
-        this.onMapMarkerClickListener = onMapMarkerClickListener;
+    public void setOnMapMarkerClickListener(final OnMapMarkerClickListener listener) {
+        if (mBaiduMap == null) {
+            return;
+        }
+        mBaiduMap.setOnMarkerClickListener(new BaiduMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                if(marker == startMarker) {
+                    if(listener != null) {
+                        listener.onSetStartPosition();
+                    }
+                } else if(marker == startTempMarker) {
+                    if(listener != null) {
+                        listener.onSetEndPosition();
+                    }
+                }
+                return false;
+            }
+        });
     }
 
     /**
      * 地图marker点击的事件监听接口
      */
     public interface OnMapMarkerClickListener {
-        void onMapMarkerClick(Marker marker);
+        void onSetStartPosition();
+        void onSetEndPosition();
     }
-
 }

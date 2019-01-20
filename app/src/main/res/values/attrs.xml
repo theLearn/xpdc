@@ -3,5 +3,7 @@
     <declare-styleable name="Toggle">
         <attr name="isToggle" format="boolean"/>
     </declare-styleable>
-
+    <declare-styleable name="CustomMapView">
+        <attr name="isNeedSelectTip" format="boolean"/>
+    </declare-styleable>
 </resources>

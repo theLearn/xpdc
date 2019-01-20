@@ -41,6 +41,11 @@
     <string name="main_title_wait_car">等待接驾</string>
     <string name="main_title_driving">行驶中</string>
     <string name="main_title_order_finish">订单完成</string>
+    <string name="replace_start_position">修改起点</string>
+    <string name="set_end_position">立即叫车</string>
+    <string name="drive_time_tip0">到达这里，需要</string>
+    <string name="drive_time_tip1">分钟</string>
+    <string name="call_car_wait_tip0">叫车中</string>
     <string name="call_car_wait_tip1">下单成功，叫车中...</string>
     <string name="call_car_wait_tip2">等待%1$s种车型应答</string>
     <string name="call_car_wait_tip3">滴滴快车-经济型</string>

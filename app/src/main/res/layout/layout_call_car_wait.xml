@@ -196,7 +196,8 @@
                 android:orientation="horizontal">
             <TextView
                     android:id="@+id/tv_wait_order_action"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/public_space_value_45"
                     android:gravity="center"
                     android:text="@string/cancel_order"
@@ -210,7 +211,8 @@
 
             <TextView
                     android:id="@+id/tv_wait_order_action_right"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
                     android:layout_height="@dimen/public_space_value_45"
                     android:gravity="center"
                     android:visibility="gone"

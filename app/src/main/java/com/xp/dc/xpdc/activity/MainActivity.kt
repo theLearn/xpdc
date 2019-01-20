@@ -6,6 +6,7 @@ import android.os.Handler
 import android.support.v4.view.GravityCompat
 import android.support.v7.app.ActionBar
 import android.util.TypedValue
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
 import com.baidu.mapapi.map.Marker
@@ -25,6 +26,7 @@ import com.xp.dc.xpdc.application.BaseApplication
 import com.xp.dc.xpdc.bean.CarInfo
 import com.xp.dc.xpdc.fragment.LoginFragment
 import com.xp.dc.xpdc.location.AppLocationUtils
+import com.xp.dc.xpdc.location.CustomMapView
 import com.xp.dc.xpdc.location.XPLocation
 import com.xp.dc.xpdc.viewmodel.OrderViewModel
 import com.xp.dc.xpdc.widget.choosecar.ChooseView
@@ -33,7 +35,9 @@ import kotlinx.android.synthetic.main.activity_map.*
 import kotlinx.android.synthetic.main.layout_app_common_title.*
 
 
-class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPLocationListener {
+class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPLocationListener,
+    CustomMapView.OnMapMarkerClickListener {
+
     companion object {
         private const val LOADING: Int = -1
         private const val NOW: Int = 0
@@ -96,6 +100,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                 getAddressInfo(it.target)
             }
         }
+        mv_main.setOnMapMarkerClickListener(this)
 
         cc_main.setOnCallListener(object : ChooseView.OnCallListener {
             override fun onCall(chooseCarInfos: MutableList<CarInfo>?) {
@@ -256,6 +261,18 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         }
     }
 
+    override fun onSetStartPosition() {
+        val startIntent = Intent(this, AddressSelectActivity::class.java)
+        startIntent.putExtra("type", AddressSelectActivity.START)
+        startActivityForResult(startIntent, START_REQUEST)
+    }
+
+    override fun onSetEndPosition() {
+        val endIntent = Intent(this, AddressSelectActivity::class.java)
+        endIntent.putExtra("type", AddressSelectActivity.END)
+        startActivityForResult(endIntent, END_REQUEST)
+    }
+
     private fun resetMap() {
         tv_app_common_title.setText(R.string.app_name)
         lastPosition?.let {
@@ -264,7 +281,9 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             mv_main.updateMapCenter(ll)
             if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
                 mv_main.drawSEToMap(ll, null)
+                mv_main.hideInfoWindow()
                 getAddressInfo(ll)
+                AppLocationUtils.getInstance().endLocation = null
             }
         }
     }
@@ -329,6 +348,9 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
         val startPosition = AppLocationUtils.getInstance().startLocation
         val endPosition = AppLocationUtils.getInstance().endLocation
         mv_main.drawSEToMap(LatLng(startPosition.lat, startPosition.lon), LatLng(endPosition.lat, endPosition.lon))
+
+        val overlay = LayoutInflater.from(this).inflate(R.layout.overlay_drive_time_tip, cc_main, false)
+        mv_main.showInfoWindow(overlay, LatLng(endPosition.lat, endPosition.lon), -47)
     }
 
     private fun calculate() {
@@ -342,9 +364,13 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
             when (requestCode) {
                 START_REQUEST
                 -> {
-                    val startLocation = AppLocationUtils.getInstance().startLocation
-                    tv_current_position.text = startLocation.name
-                    mv_main.drawSEToMap(LatLng(startLocation.lat, startLocation.lon), null)
+                    if(CURRENT_STATE == NOW || CURRENT_STATE == APPOINTMENT) {
+                        val startLocation = AppLocationUtils.getInstance().startLocation
+                        tv_current_position.text = startLocation.name
+                        mv_main.drawSEToMap(LatLng(startLocation.lat, startLocation.lon), null)
+                    } else {
+                        calculate()
+                    }
                 }
                 END_REQUEST
                 -> {

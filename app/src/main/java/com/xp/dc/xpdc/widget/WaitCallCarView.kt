@@ -76,7 +76,7 @@ class WaitCallCarView : LinearLayout, View.OnClickListener {
                 mAdapter.data = viewModel.carInfo
                 rv_wait_accept_block.visibility = View.VISIBLE
                 ll_order_bottom.visibility = View.VISIBLE
-                tv_wait_order_action.setText(R.string.cancel)
+                tv_wait_order_action.setText(R.string.cancel_order)
                 tv_wait_car_top.setText(R.string.call_car_wait_tip1)
                 tv_wait_car_down.text =
                         String.format(context.getString(R.string.call_car_wait_tip2), viewModel.carInfo.size)
@@ -88,7 +88,7 @@ class WaitCallCarView : LinearLayout, View.OnClickListener {
                 ll_order_bottom.visibility = View.VISIBLE
                 line_order_bottom_h.visibility = View.VISIBLE
                 tv_wait_order_action_right.visibility = View.VISIBLE
-                tv_wait_order_action.setText(R.string.cancel)
+                tv_wait_order_action.setText(R.string.cancel_order)
                 tv_wait_car_top.text = viewModel.driverInfo?.carNo
                 tv_wait_car_down.text = viewModel.driverInfo?.carType + " " + viewModel.driverInfo?.carName + " " +
                         viewModel.driverInfo?.name

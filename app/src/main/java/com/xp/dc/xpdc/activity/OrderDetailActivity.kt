@@ -2,6 +2,7 @@ package com.xp.dc.xpdc.activity
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.view.LayoutInflater
 import android.view.View
 import com.baidu.mapapi.model.LatLng
 import com.example.hongcheng.common.util.ViewUtils
@@ -54,6 +55,9 @@ class OrderDetailActivity : AppCommonActivity(), View.OnClickListener,
         wc_order_detail.setViewModel(order)
         showPointInMap()
 
+        val overlay = LayoutInflater.from(this).inflate(R.layout.overlay_wait_order_accept, wc_order_detail, false)
+        mv_order_detail.showInfoWindow(overlay, LatLng(order.startPosition.lat, order.startPosition.lon), -47)
+
         val factory = OrderViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, factory).get(OrderViewModel::class.java)
         viewModel.order.observe(this, Observer { it ->
@@ -67,6 +71,7 @@ class OrderDetailActivity : AppCommonActivity(), View.OnClickListener,
                     }
                     OrderState.WAIT_CAR
                     -> {
+                        mv_order_detail.hideInfoWindow()
                         tv_app_common_title.setText(R.string.main_title_wait_car)
                     }
                     OrderState.DRIVING
@@ -92,7 +97,7 @@ class OrderDetailActivity : AppCommonActivity(), View.OnClickListener,
     override fun onClick(v: View?) {
         if (ViewUtils.isFastClick()) return
         when (v?.id) {
-            R.id.iv_map_reset
+            R.id.iv_reset_order_detail
             -> {
             }
             else -> {
