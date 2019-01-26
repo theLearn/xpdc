@@ -22,7 +22,6 @@
     <string name="change_nick">修改昵称</string>
     <string name="city_search_hint">城市中文名或拼音</string>
     <string name="address_search_hint">搜索地址</string>
-    <string name="nothing_info">没有相关数据哦</string>
     <string name="confirm">确定</string>
     <string name="complete">完成</string>
     <string name="loginOrRegist">登录/注册</string>

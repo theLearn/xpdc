@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion androidVersion.compileSdkVersion
@@ -26,6 +27,10 @@ android {
     }
 }
 
+kapt {
+    generateStubs = true
+}
+
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     //android必要依賴
@@ -40,6 +45,8 @@ dependencies {
     implementation supportLibs.logger
     api supportLibs.gson
     api supportLibs.glide
+    annotationProcessor supportLibs.glideCompiler
+    kapt supportLibs.glideCompiler
     //三方組件
     api supportLibs.pickerView
 

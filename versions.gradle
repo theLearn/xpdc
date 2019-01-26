@@ -51,6 +51,7 @@ ext{
             logger : "com.orhanobut:logger:$libVersion.logger",
             pickerView : "com.contrarywind:Android-PickerView:$libVersion.pickerView",
             glide : "com.github.bumptech.glide:glide:$libVersion.glide",
+            glideCompiler : "com.github.bumptech.glide:compiler:$libVersion.glide",
             roomRuntime : "android.arch.persistence.room:runtime:$libVersion.room",
             roomCompiler : "android.arch.persistence.room:compiler:$libVersion.room",
             roomRxjava : "android.arch.persistence.room:rxjava2:$libVersion.room",
