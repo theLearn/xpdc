@@ -4,6 +4,7 @@
     <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="android:windowNoTitle">true</item>
+        <!--<item name="android:windowTranslucentStatus" tools:targetApi="kitkat">true</item>-->
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorPrimary">@color/colorBase</item>
         <item name="colorPrimaryDark">@color/colorBase</item>

@@ -1,5 +1,6 @@
 <resources>
     <string name="save">保存</string>
+    <string name="submit">提交</string>
     <string name="ok">确认</string>
     <string name="cancel">取消</string>
     <string name="loading_more_load_foot">正在加载更多数据</string>

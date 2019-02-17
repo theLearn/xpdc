@@ -19,13 +19,14 @@ abstract class CommonActivity : BaseActivity() {
 
     override fun initTitleView(view: View) {
         setSupportActionBar(tb_common)
-        ScreenUtils.setWindowStatusBarColor(this, resources.getColor(R.color.colorBase))
+        ScreenUtils.setLightStatusBar(this, true)
+        ScreenUtils.setWindowStatusBarColor(this, R.color.colorBase)
         if (isNeedShowBack()) {
             tb_common.setNavigationIcon(R.drawable.back)
             tb_common.setNavigationOnClickListener { onBackPressed() }
         }
 
-        val actionBar : ActionBar? = supportActionBar
+        val actionBar: ActionBar? = supportActionBar
         actionBar?.setTitle(setToolbarTitle())
     }
 
@@ -41,5 +42,5 @@ abstract class CommonActivity : BaseActivity() {
     }
 
     abstract fun isNeedShowBack(): Boolean
-    abstract fun setToolbarTitle() : Int
+    abstract fun setToolbarTitle(): Int
 }

@@ -86,6 +86,12 @@ public final class ScreenUtils {
         return statusHeight;
     }
 
+    public static void setStatusBarTranslucent(Activity activity) {
+        WindowManager.LayoutParams localLayoutParams = activity.getWindow().getAttributes();
+        localLayoutParams.flags = (WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS | localLayoutParams.flags);
+    }
+
+
     /**
      * 5.0以上修改状态栏颜色
      *
@@ -97,6 +103,7 @@ public final class ScreenUtils {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 Window window = activity.getWindow();
                 window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
                 window.setStatusBarColor(activity.getResources().getColor(colorResId));
             } else {
                 SystemBarTintManager mTintManager = new SystemBarTintManager(activity);

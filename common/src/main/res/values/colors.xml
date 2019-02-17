@@ -274,7 +274,10 @@
     <color name="text_red_d0">#d0021b</color>
     <color name="text_red_ff">#ff0000</color>
     <color name="text_red_ff4b">#ff4b4b</color>
+    <color name="text_red_ff50">#FF5050</color>
     <color name="text_gray_b8">#b8b8b8</color>
+    <color name="text_ab">#ffababab</color>
+    <color name="text_26">#ff262626</color>
 
     <!-- 背景颜色 -->
     <color name="bg_gray_d9">#d9d9d9</color>
@@ -283,6 +286,7 @@
     <color name="bg_gray_f2">#f2f2f2</color>
     <color name="bg_gray_f5">#f5f5f5</color>
     <color name="bg_gray_f7">#f7f7f7</color>
+    <color name="gray_e6">#ffe6e6e6</color>
 
     <color name="colorBase">#ff6adabe</color>
     <color name="colorDefaultPressed">#5DCCFF</color>
@@ -295,7 +299,4 @@
     <color name="text_default_second">#6A6A6A</color>
     <color name="text_gray">#AAAAAA</color>
     <color name="line_gray">#E6E6E6</color>
-    <color name="text_ab">#ffababab</color>
-    <color name="text_26">#ff262626</color>
-    <color name="gray_e6">#ffe6e6e6</color>
 </resources>
