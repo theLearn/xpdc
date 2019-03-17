@@ -76,6 +76,14 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="LinearLayoutForRect">
+        <attr name="ll_scale" format="float"  />
+    </declare-styleable>
+
+    <declare-styleable name="FrameLayoutForRect">
+        <attr name="fl_scale" format="float"  />
+    </declare-styleable>
+
     <declare-styleable name="Themes">
         <attr name="numberProgressBarStyle" format="reference"/>
     </declare-styleable>

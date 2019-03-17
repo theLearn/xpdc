@@ -38,7 +38,7 @@ public class LoadingFragment extends DialogFragment implements DialogInterface.O
 		final Window window = dialogView.getWindow();
 		if (window != null)
 		{
-			window.setWindowAnimations(R.style.AnimTop);
+			window.setWindowAnimations(R.style.AnimFade2);
 			final WindowManager.LayoutParams lp = window.getAttributes();
 			Point size = new Point();
 			Display display = getActivity().getWindowManager().getDefaultDisplay();

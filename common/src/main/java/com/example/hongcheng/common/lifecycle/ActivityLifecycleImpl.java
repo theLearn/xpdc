@@ -163,6 +163,12 @@ public class ActivityLifecycleImpl implements Application.ActivityLifecycleCallb
         return null;
     }
 
+    public void finishAll() {
+        for(Activity activity : mActivityList) {
+            activity.finish();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////
     // interface
     ///////////////////////////////////////////////////////////////////////////

@@ -7,17 +7,29 @@ import android.databinding.ViewDataBinding
 import android.os.Bundle
 import android.support.v4.app.ActivityCompat
 import android.support.v7.app.AppCompatActivity
+import com.example.hongcheng.common.rx.RxUtils
+import com.example.hongcheng.common.util.LoggerUtils
 import com.example.hongcheng.common.view.fragment.LoadingFragment
+import io.reactivex.disposables.CompositeDisposable
+import java.lang.Exception
 
 abstract class BasicActivity : AppCompatActivity(), CommonUI {
+
+    protected lateinit var compositeDisposable: CompositeDisposable
 
     private var mLoadingDialog: LoadingFragment? = null
     protected var binding: ViewDataBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        compositeDisposable = RxUtils.getCompositeDisposable(this.javaClass)
         setContentView(getLayoutResId(), isNeedBind())
         initView()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        RxUtils.unsubscribe(compositeDisposable)
     }
 
     private fun setContentView(layoutResID: Int, isNeedBind : Boolean) {
@@ -38,7 +50,19 @@ abstract class BasicActivity : AppCompatActivity(), CommonUI {
             mLoadingDialog = LoadingFragment()
         }
 
-        mLoadingDialog?.let { if (isOpen) it.show(supportFragmentManager, "LoadingFragment") else it.dismiss() }
+        mLoadingDialog?.let {
+            val isShow = it.dialog !=null && it.dialog.isShowing
+            try {
+                if(!isOpen) {
+                    it.dismiss()
+                } else if(!it.isAdded && !isShow) {
+                    it.show(supportFragmentManager, "LoadingFragment")
+                }
+            } catch (e : Exception) {
+                it.dismiss()
+                LoggerUtils.error("exception", e.message)
+            }
+        }
     }
 
     private val REQUEST_PERMISSIONS_NEED= 1
