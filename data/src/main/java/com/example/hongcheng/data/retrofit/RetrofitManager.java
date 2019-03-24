@@ -1,32 +1,29 @@
 package com.example.hongcheng.data.retrofit;
 
 import android.content.Context;
-
 import com.example.hongcheng.common.util.NetUtils;
 import com.example.hongcheng.common.util.StringUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
-
-import okhttp3.Cache;
-import okhttp3.CacheControl;
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
+import com.google.gson.Gson;
+import okhttp3.*;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
-import retrofit2.converter.gson.GsonConverterFactory;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by hongcheng on 16/3/30.
  */
 public class RetrofitManager {
     public static Map<String, Object> mRetrofitMap = new HashMap<String, Object>();
+    private static List<Interceptor> interceptors = new ArrayList<>();
+    private static Gson mGson = new Gson();
 
     public static <T> T createRetrofit(Context context, Class<T> t){
 
@@ -35,7 +32,7 @@ public class RetrofitManager {
         if(mRetrofit == null){
             //设置缓存
             HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
-            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+            httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
             OkHttpClient.Builder okHttpBuilder = new OkHttpClient.Builder().addInterceptor(httpLoggingInterceptor);
             //缓存路径
             File httpCache = context.getCacheDir();
@@ -43,8 +40,6 @@ public class RetrofitManager {
                 httpCache = new File(httpCache, "HttpResponseCache");
                 okHttpBuilder.cache(new Cache(httpCache, HttpConstants.HTTP_RESPONSE_DISK_CACHE_MAX_SIZE));
             }
-            //设置缓存策略
-            okHttpBuilder.addNetworkInterceptor(new CacheInterceptors(context));
 
             //设置超时时间
             okHttpBuilder.connectTimeout(HttpConstants.CONNECT_TIMEOUT, TimeUnit.MILLISECONDS);
@@ -62,9 +57,16 @@ public class RetrofitManager {
 //                }
 //            });
 
+            for (Interceptor interceptor : interceptors) {
+                //设置缓存策略
+//                okHttpBuilder.addNetworkInterceptor(new CacheInterceptors(context));
+                okHttpBuilder.addNetworkInterceptor(interceptor);
+            }
+
+
             Retrofit retrofit = new Retrofit.Builder()
                                     .baseUrl(HttpConstants.BASE_URL)
-                                    .addConverterFactory(GsonConverterFactory.create())
+                                    .addConverterFactory(LenientGsonConverterFactory.create(mGson))
                                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                                     .client(okHttpBuilder.build())
                                     .build();
@@ -73,6 +75,10 @@ public class RetrofitManager {
         }
 
         return mRetrofit;
+    }
+
+    public static void setInterceptors(List<Interceptor> interceptors) {
+        RetrofitManager.interceptors = interceptors;
     }
 
     private static class CacheInterceptors implements Interceptor {

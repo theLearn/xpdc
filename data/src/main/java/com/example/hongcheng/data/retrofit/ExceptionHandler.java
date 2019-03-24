@@ -26,7 +26,7 @@ public class ExceptionHandler {
             ex = new ActionException(httpException.code(), httpException.getMessage());
             return ex;
         } else if (e instanceof SocketTimeoutException || e instanceof TimeoutException) {
-            ex = new ActionException(e, ERROR.TIMEOUT_ERROR, e.getMessage());
+            ex = new ActionException(e, ERROR.TIMEOUT_ERROR, "连接超时");
             return ex;
         } else if (e instanceof JsonParseException
                 || e instanceof JSONException
@@ -40,7 +40,7 @@ public class ExceptionHandler {
             ex = new ActionException(e, ERROR.SSL_ERROR, "证书验证失败");
             return ex;
         } else {
-            ex = new ActionException(e, ERROR.UNKNOWN, "未知错误");
+            ex = new ActionException(e, ERROR.UNKNOWN, e.getMessage());
             return ex;
         }
     }
