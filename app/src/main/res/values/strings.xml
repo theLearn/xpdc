@@ -61,4 +61,5 @@
     <string name="pay">支付</string>
     <string name="pay_price">%1$s元</string>
     <string name="to_evaluate">去评价</string>
+    <string name="please_input_nick">请输入昵称</string>
 </resources>

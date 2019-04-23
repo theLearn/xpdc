@@ -55,15 +55,9 @@
         </activity>
         <activity android:name=".activity.UserCenterActivity">
         </activity>
-        <activity android:name=".activity.NameSettingActivity">
+        <activity android:name=".activity.ModifyInfoActivity">
         </activity>
         <activity android:name=".activity.PasswordActivity">
-        </activity>
-        <activity android:name=".activity.TelPhoneActivity">
-        </activity>
-        
-        <activity android:name=".activity.TestActivity">
-
         </activity>
     </application>
 

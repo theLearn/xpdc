@@ -43,7 +43,7 @@ public class EditText_Clear extends android.support.v7.widget.AppCompatEditText 
      */
     private void init() {
         clearDrawable = getResources().getDrawable(R.drawable.clear);
-        clearDrawable.setBounds(0,0, ScreenUtils.dp2px(getContext(), 15), ScreenUtils.dp2px(getContext(), 15));
+        clearDrawable.setBounds(0,0, ScreenUtils.dp2px(getContext(), 10), ScreenUtils.dp2px(getContext(), 10));
         setCompoundDrawablesWithIntrinsicBounds(null, null,
                 null, null);
         // setCompoundDrawablesWithIntrinsicBounds(Drawable left, Drawable top, Drawable right, Drawable bottom)介绍

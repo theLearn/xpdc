@@ -34,8 +34,11 @@
                     android:text="@string/order"
                     android:textColor="@color/text_default"
                     android:textSize="@dimen/big_text_size"
-                    android:paddingRight="@dimen/public_space_value_20"
-                    android:paddingLeft="@dimen/public_space_value_20"
+                    android:paddingTop="@dimen/public_space_value_5"
+                    android:paddingBottom="@dimen/public_space_value_5"
+                    android:paddingRight="@dimen/public_space_value_10"
+                    android:paddingLeft="@dimen/public_space_value_10"
+                    android:layout_marginRight="@dimen/public_space_value_10"
                     android:visibility="gone"/>
         </android.support.v7.widget.Toolbar>
     </android.support.design.widget.AppBarLayout>
