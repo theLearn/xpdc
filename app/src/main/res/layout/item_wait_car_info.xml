@@ -16,9 +16,10 @@
             android:id="@+id/tv_wait_car_type_tip"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/public_space_value_5"
             android:layout_weight="1"
             android:text="@string/call_car_wait_tip3"
-            android:textColor="@color/text_black_call"
+            android:textColor="@color/text_default"
             android:textSize="@dimen/small_text_size"/>
 
     <TextView
@@ -27,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/public_space_value_10"
             android:text="@string/call_car_wait_tip4"
-            android:textColor="@color/text_black_call"
+            android:textColor="@color/text_default"
             android:textSize="@dimen/small_text_size"/>
 
 </LinearLayout>

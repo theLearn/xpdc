@@ -90,7 +90,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
         holder.icon.setVisibility(View.GONE);
         if (TYPE_HEAD == type) {
             holder.itemView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.default_background));
-            holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_ab));
+            holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_second_default));
             String str = getData().get(sourceMap.get(i).first).first;
             if("★".equals(str)) {
                 holder.name.setText("热门城市");
@@ -102,7 +102,7 @@ public class CityListAdapter extends BaseListAdapter<Pair<String, List<CityItem>
         } else {
             CityItem model = getData().get(sourceMap.get(i).first).second.get(sourceMap.get(i).second);
             holder.itemView.setBackgroundResource(R.color.white);
-            holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_26));
+            holder.name.setTextColor(holder.itemView.getContext().getResources().getColor(R.color.text_default));
             holder.name.setText(model.getName());
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

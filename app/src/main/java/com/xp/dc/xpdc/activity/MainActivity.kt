@@ -302,7 +302,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     resources.getDimension(R.dimen.normal_text_size)
                 )
                 tv_call_car_now.setTextColor(resources.getColor(R.color.colorBase))
-                tv_call_car_pre.setTextColor(resources.getColor(R.color.text_gray_call))
+                tv_call_car_pre.setTextColor(resources.getColor(R.color.text_second_default))
                 tv_call_car_now.setBackgroundResource(R.drawable.tv_gray_conner)
                 tv_call_car_pre.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,
@@ -319,7 +319,7 @@ class MainActivity : BasicActivity(), View.OnClickListener, AppLocationUtils.XPL
                     resources.getDimension(R.dimen.normal_text_size)
                 )
                 tv_call_car_pre.setTextColor(resources.getColor(R.color.colorBase))
-                tv_call_car_now.setTextColor(resources.getColor(R.color.text_gray_call))
+                tv_call_car_now.setTextColor(resources.getColor(R.color.text_second_default))
                 tv_call_car_pre.setBackgroundResource(R.drawable.tv_gray_conner)
                 tv_call_car_now.setTextSize(
                     TypedValue.COMPLEX_UNIT_PX,

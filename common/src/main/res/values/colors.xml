@@ -292,8 +292,8 @@
     <color name="colorBlack">#000000</color>
     <color name="default_background">#F5F5F5</color>
     <color name="colorGray">#CCCCCC</color>
-    <color name="text_default">#666666</color>
-    <color name="text_second_default">#6A6A6A</color>
+    <color name="text_default">#ff262626</color>
+    <color name="text_second_default">#ffababab</color>
     <color name="text_third_default">#ff474747</color>
     <color name="text_gray">#AAAAAA</color>
     <color name="line_gray">#E6E6E6</color>

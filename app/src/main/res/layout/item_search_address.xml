@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/normal_text_size"
-                android:textColor="@color/text_black_call"/>
+                android:textColor="@color/text_default"/>
         <TextView
                 android:layout_marginTop="@dimen/public_space_value_5"
                 android:id="@+id/tv_search_address_des"
@@ -35,7 +35,7 @@
                 android:layout_height="wrap_content"
                 android:singleLine="true"
                 android:textSize="@dimen/small_text_size"
-                android:textColor="@color/text_gray_call"/>
+                android:textColor="@color/text_second_default"/>
 
     </LinearLayout>
 

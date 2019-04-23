@@ -11,7 +11,7 @@
               android:hint="@string/nickname"
               android:textSize="@dimen/big_text_size"
               android:background="@drawable/editview_bg"
-              android:textColor="@color/text_black_call"/>
+              android:textColor="@color/text_default"/>
 
     <ImageView
             android:id="@+id/iv_clear"

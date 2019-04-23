@@ -25,7 +25,7 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:text="@string/home"
                     android:textSize="@dimen/text_size_13"/>
             <TextView
@@ -35,7 +35,7 @@
                     android:layout_marginLeft="@dimen/public_space_value_10"
                     android:layout_marginRight="@dimen/public_space_value_10"
                     android:text="@string/order_state_finish"
-                    android:textColor="@color/text_gray_call"
+                    android:textColor="@color/text_second_default"
                     android:textSize="@dimen/text_size_13"/>
 
             <ImageView
@@ -62,7 +62,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/public_space_value_10"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:text="@string/home"
                     android:textSize="@dimen/small_text_size"/>
         </LinearLayout>
@@ -85,7 +85,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/public_space_value_10"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:text="@string/home"
                     android:textSize="@dimen/small_text_size"/>
         </LinearLayout>
@@ -108,7 +108,7 @@
                     android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/public_space_value_10"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:text="@string/home"
                     android:textSize="@dimen/small_text_size"/>
         </LinearLayout>

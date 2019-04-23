@@ -11,5 +11,5 @@
               android:hint="@string/telNo"
               android:textSize="@dimen/big_text_size"
               android:background="@drawable/editview_bg"
-              android:textColor="@color/text_black_call"/>
+              android:textColor="@color/text_default"/>
 </LinearLayout>

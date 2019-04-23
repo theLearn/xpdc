@@ -22,7 +22,7 @@
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
                   android:layout_centerHorizontal="true"
                   android:text="@string/change_icon"
-                  android:textColor="@color/text_gray_call"
+                  android:textColor="@color/text_second_default"
                   android:textSize="@dimen/large_text_size"
                   android:layout_marginTop="@dimen/public_space_value_10"
                   android:layout_below="@id/iv_head"/>
@@ -60,7 +60,7 @@
                 android:layout_marginLeft="@dimen/public_space_value_15"
                 android:text="@string/nickname"
                 android:textSize="@dimen/big_text_size"
-                android:textColor="@color/text_black_call"/>
+                android:textColor="@color/text_default"/>
     </RelativeLayout>
 
     <View android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_1"
@@ -100,7 +100,7 @@
                 android:layout_marginLeft="@dimen/public_space_value_15"
                 android:text="@string/sex"
                 android:textSize="@dimen/big_text_size"
-                android:textColor="@color/text_black_call"/>
+                android:textColor="@color/text_default"/>
     </RelativeLayout>
 
     <View android:layout_width="match_parent" android:layout_height="@dimen/public_space_value_1"
@@ -140,6 +140,6 @@
                 android:layout_marginLeft="@dimen/public_space_value_15"
                 android:text="@string/telNo"
                 android:textSize="@dimen/big_text_size"
-                android:textColor="@color/text_black_call"/>
+                android:textColor="@color/text_default"/>
     </RelativeLayout>
 </LinearLayout>

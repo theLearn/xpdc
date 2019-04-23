@@ -12,7 +12,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/drive_time_tip0"
-            android:textColor="@color/text_black_call"
+            android:textColor="@color/text_default"
             android:textSize="@dimen/small_text_size"/>
 
     <TextView
@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:text="@string/drive_time_tip1"
-            android:textColor="@color/text_black_call"
+            android:textColor="@color/text_default"
             android:textSize="@dimen/small_text_size"/>
 
 </LinearLayout>

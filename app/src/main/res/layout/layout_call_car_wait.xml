@@ -30,7 +30,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1"
                     android:text="@string/call_car_wait_tip1"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:textSize="@dimen/big_text_size"/>
 
             <TextView
@@ -38,7 +38,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/call_car_wait_tip2"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:textSize="@dimen/small_text_size"/>
         </LinearLayout>
 
@@ -56,7 +56,7 @@
                 android:text="@string/call_car_now"
                 android:id="@+id/tv_call_car_order_no"
                 android:layout_marginLeft="@dimen/public_space_value_5"
-                android:textColor="@color/text_gray_call"
+                android:textColor="@color/text_second_default"
                 android:textSize="@dimen/smaller_text_size"/>
 
     </LinearLayout>
@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/order_state_wait_car_tip1"
                 android:layout_marginLeft="@dimen/public_space_value_55"
-                android:textColor="@color/text_black_call"
+                android:textColor="@color/text_default"
                 android:textSize="@dimen/normal_text_size"/>
 
         <TextView
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:text="@string/order_state_wait_car_tip2"
-                android:textColor="@color/text_gray_call"
+                android:textColor="@color/text_second_default"
                 android:textSize="@dimen/small_text_size"/>
     </LinearLayout>
 
@@ -114,7 +114,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_state_make_tip"
-                android:textColor="@color/text_gray_call"
+                android:textColor="@color/text_second_default"
                 android:textSize="@dimen/small_text_size"/>
 
         <RelativeLayout
@@ -130,7 +130,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/order_state_make"
                     android:layout_centerHorizontal="true"
-                    android:textColor="@color/text_gray_call"
+                    android:textColor="@color/text_second_default"
                     android:textSize="@dimen/small_text_size"/>
 
             <TextView
@@ -138,7 +138,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/order_state_make_price_tip"
                     android:layout_centerInParent="true"
-                    android:textColor="@color/text_black_call"
+                    android:textColor="@color/text_default"
                     android:textSize="@dimen/big_text_size"/>
         </RelativeLayout>
 
@@ -160,7 +160,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/order_finish_tip"
-                android:textColor="@color/text_gray_call"
+                android:textColor="@color/text_second_default"
                 android:textSize="@dimen/small_text_size"/>
 
         <TextView
@@ -169,7 +169,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/pay_price"
-                android:textColor="@color/text_black_call"
+                android:textColor="@color/text_default"
                 android:textSize="@dimen/large_text_size"/>
 
         <TextView
@@ -201,7 +201,7 @@
                     android:layout_height="@dimen/public_space_value_45"
                     android:gravity="center"
                     android:text="@string/cancel_order"
-                    android:textColor="@color/text_gray_call"
+                    android:textColor="@color/text_second_default"
                     android:textSize="@dimen/normal_text_size"/>
 
             <include
