@@ -78,7 +78,7 @@
         <item name="android:backgroundDimEnabled">false</item>
     </style>
 
-    <style name="ActivityTranslucent">
+    <style name="ActivityTranslucent" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:background">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>
         <item name="android:windowActionBar">false</item>

@@ -18,11 +18,12 @@ public class BaseConstants {
     public static final int LIMIT_NUM = 30;
 
     //日志相关
-    public static final String BASE_FILE_PATH = "LearnKotlin";
+    public static final String BASE_FILE_PATH = "xp";
     public static final String LOG_PATH = BASE_FILE_PATH + File.separator + "log";
     public static final String LOG_FILE = BASE_FILE_PATH + ".log";
     public static final String CRASH_PATH = BASE_FILE_PATH + File.separator + "crash";
     public static final String APK_PATH = BASE_FILE_PATH + File.separator + "apk";
+    public static final String PHOTO_PATH = BASE_FILE_PATH + File.separator + "Picture";
 
     //屏幕相关
     public static final String URI_PROVIDER = ".common.provider";

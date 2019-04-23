@@ -36,7 +36,7 @@ public class ValidateUtils {
     private final static Pattern email_pattern = Pattern.compile("^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\\.[a-zA-Z0-9_-]+)+$");
 
     //手机号表达式
-    private final static Pattern phone_pattern = Pattern.compile("^(13|15|18)\\d{9}$");
+    private final static Pattern phone_pattern = Pattern.compile("^1(3[0-9]|4[57]|5[0-35-9]|6[6]|8[0-9]|9[89]|7[0678])\\d{8}$");
 
     //银行卡号表达式
     private final static Pattern bankNo_pattern = Pattern.compile("^[0-9]{16,19}$");

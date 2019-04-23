@@ -63,6 +63,19 @@ public final class FileUtils {
     }
 
     /**
+     * 获取apk文件目录
+     *
+     * @return
+     */
+    public static String getPictureFilePath() {
+        String sdPath = SDUtils.getSDCardPath();
+        if (!StringUtils.isEmpty(sdPath)) {
+            return sdPath + BaseConstants.PHOTO_PATH;
+        }
+        return "";
+    }
+
+    /**
      * read file
      *
      * @param filePath

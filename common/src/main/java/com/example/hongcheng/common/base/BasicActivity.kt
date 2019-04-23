@@ -30,6 +30,7 @@ abstract class BasicActivity : AppCompatActivity(), CommonUI {
     override fun onDestroy() {
         super.onDestroy()
         RxUtils.unsubscribe(compositeDisposable)
+        operateLoadingDialog(false)
     }
 
     private fun setContentView(layoutResID: Int, isNeedBind : Boolean) {
@@ -46,7 +47,7 @@ abstract class BasicActivity : AppCompatActivity(), CommonUI {
     abstract fun getLayoutResId(): Int
 
     override fun operateLoadingDialog(isOpen: Boolean) {
-        if (mLoadingDialog == null) {
+        if (isOpen && mLoadingDialog == null) {
             mLoadingDialog = LoadingFragment()
         }
 
@@ -54,7 +55,7 @@ abstract class BasicActivity : AppCompatActivity(), CommonUI {
             val isShow = it.dialog !=null && it.dialog.isShowing
             try {
                 if(!isOpen) {
-                    it.dismiss()
+                    if(isShow) it.dismiss()
                 } else if(!it.isAdded && !isShow) {
                     it.show(supportFragmentManager, "LoadingFragment")
                 }

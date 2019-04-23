@@ -155,7 +155,7 @@ public final class SPUtils {
     }
 
     public static void writeSp(Context context, String key,
-                               List<Integer> ints) {
+                               List<String> ints) {
         SharedPreferences sp = getSharedPreferences(context);
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < ints.size(); i++) {
@@ -167,15 +167,15 @@ public final class SPUtils {
         sp.edit().putString(key, sb.toString()).commit();
     }
 
-    public static List<Integer> readSp(Context context, String key) {
+    public static List<String> readSp(Context context, String key) {
         SharedPreferences sp = getSharedPreferences(context);
-        List<Integer> result = new ArrayList<Integer>();
+        List<String> result = new ArrayList<>();
         String str = sp.getString(key, "");
         if (str.length() > 0) {
             String[] split = str.split(":");
 
             for (String string : split) {
-                result.add(Integer.valueOf(string));
+                result.add(string);
             }
         }
         return result;
